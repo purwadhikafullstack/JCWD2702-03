@@ -184,7 +184,7 @@ model Transaction {
   quantity   Int
   buy_date   DateTime @db.Date
   price      Int
-  discount   String
+  discount   String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -241,6 +241,7 @@ model Discount {
   code_voucher     String
   discount_voucher String
   expired          DateTime @db.Date
+  min_payment      Int?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
