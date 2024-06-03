@@ -95,6 +95,8 @@ model Product {
   price         Int
   description   String @db.LongText
 
+  category ProductCategory @relation(fields: [category_id], references: [id])
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -133,6 +135,8 @@ model ProductCategory {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  product Product[]
 
   @@map("products_category")
 }
