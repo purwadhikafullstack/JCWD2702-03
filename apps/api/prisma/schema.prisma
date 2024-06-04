@@ -23,6 +23,10 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
+  userProfile UserProfile?
+  Transaction Transaction[]
+  Cart        Cart[]
+
   @@map("users")
 }
 
@@ -33,33 +37,37 @@ enum EmailUserVerify {
 
 model UserProfile {
   id            Int      @id @default(autoincrement())
-  user_id       String
   profile_image String
-  ktp           String
   fullname      String
   birthDate     DateTime @db.Date
-  province      String
-  city          String
-  address       String
-  zip_code      String
-  phone_number  String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  userUid   String  @unique
+  user      User    @relation(fields: [userUid], references: [uid])
+  addressId Int
+  address   Address @relation(fields: [addressId], references: [id])
 
   @@map("user_profiles")
 }
 
-model UserImage {
-  id         Int @id @default(autoincrement())
-  profile_id Int
+model Address {
+  id           Int    @id @default(autoincrement())
+  province     String
+  city         String
+  address      String
+  zip_code     String
+  phone_number String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  @@map("user_images")
+  userProfileId UserProfile[]
+
+  @@map("address")
 }
 
 model UserRole {
@@ -75,55 +83,37 @@ model UserRole {
   @@map("user_role")
 }
 
-// rancu
-model UserAddress {
-  id Int @id @default(autoincrement())
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@map("users_address")
-}
-
 model Product {
-  id            Int    @id @default(autoincrement())
-  category_id   Int
-  product_image String
-  name          String
-  quantity      Int
-  price         Int
-  description   String @db.LongText
-
-  category ProductCategory @relation(fields: [category_id], references: [id])
+  id          Int    @id @default(autoincrement())
+  name        String
+  price       Int
+  description String @db.LongText
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  categoryId      Int
+  productCategory ProductCategory @relation(fields: [categoryId], references: [id])
+  ProductImage    ProductImage[]
+  StokProduct     StokProduct[]
+  Transaction     Transaction[]
+  Cart            Cart[]
+  Discount        Discount[]
 
   @@map("products")
 }
 
-// rancu
-model ProductDetail {
-  id            Int    @id @default(autoincrement())
-  product_image String
-  product_id    Int
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@map("product_details")
-}
-
-// rancu
 model ProductImage {
-  id Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
+  productImage String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   @@map("product_images")
 }
@@ -135,121 +125,126 @@ model ProductCategory {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-
-  product Product[]
+  Product   Product[]
 
   @@map("products_category")
 }
 
 model StokProduct {
-  id         Int @id @default(autoincrement())
-  store_id   Int
-  product_id Int
-  stok       Int
+  id   Int @id @default(autoincrement())
+  stok Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  storeId   Int
+  store     Store   @relation(fields: [storeId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   @@map("stok_products")
 }
 
 model Store {
-  id          Int    @id @default(autoincrement())
-  name        String
-  location_id Int
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@map("stores")
-}
-
-model LocationStore {
   id       Int    @id @default(autoincrement())
+  name     String
   province String
   city     String
   address  String @db.MediumText
   zip_code String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  StokProduct StokProduct[]
 
-  @@map("location_stores")
+  @@map("stores")
 }
 
 model Transaction {
-  id         Int      @id @default(autoincrement())
-  user_id    String
-  product_id Int
-  order      String
-  quantity   Int
-  buy_date   DateTime @db.Date
-  price      Int
-  discount   String?
+  id       Int      @id @default(autoincrement())
+  order    String
+  quantity Int
+  buy_date DateTime @db.Date
+  price    Int
+  discount String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  userUid   String
+  user      User       @relation(fields: [userUid], references: [uid])
+  productId Int
+  product   Product    @relation(fields: [productId], references: [id])
+  Shipping  Shipping[]
+  Payment   Payment[]
 
   @@map("transactions")
 }
 
 model Shipping {
-  id             Int    @id @default(autoincrement())
-  transaction_id Int
-  receiver       String
-  phone_number   String
-  province       String
-  city           String
-  zip_code       Int
-  address        String
+  id           Int    @id @default(autoincrement())
+  receiver     String
+  phone_number String
+  province     String
+  city         String
+  zip_code     Int
+  address      String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  transactionId Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
 
   @@map("shipping")
 }
 
 model Cart {
-  id         Int    @id @default(autoincrement())
-  user_id    String
-  product_id Int
+  id Int @id @default(autoincrement())
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  userUid   String
+  user      User    @relation(fields: [userUid], references: [uid])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   @@map("carts")
 }
 
 model Payment {
-  id             Int    @id @default(autoincrement())
-  transaction_id Int
-  payment_image  String
-  status         String @default("PENDING")
+  id            Int    @id @default(autoincrement())
+  payment_image String
+  status        String @default("PENDING")
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  transactionId Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
 
   @@map("payments")
 }
 
 model Discount {
   id               Int      @id @default(autoincrement())
-  product_id       Int
   code_voucher     String
   discount_voucher String
   expired          DateTime @db.Date
-  min_payment      Int?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   @@map("discounts")
 }

@@ -9,7 +9,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        greenSoft: '#4bb57b',
+        softed: '#28b293',
+      },
     },
     screens: {
       mobile: { max: '639px' },

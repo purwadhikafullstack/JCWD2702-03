@@ -11,21 +11,24 @@ export const createProductServices = async (data: any, product_images: any) => {
     if (existingProduct) {
       throw new Error(`Product with the name ${data.name} already exists!`);
     }
+
+    const createProduct = await tx.product.create({
+      data: {
+        categoryId: data.categoryId,
+        name: data.name,
+        price: data.price,
+        description: data.description,
+      },
+    });
     const imageToCreate: any = [];
     product_images.forEach((item: any) => {
       imageToCreate.push({
-        url: item.path,
+        productImage: item.path,
+        productId: createProduct.id,
       });
     });
-    await tx.product.create({
-      data: {
-        category_id: data.category_id,
-        product_image: data.product_image,
-        name: data.name,
-        price: data.price,
-        quantity: data.quantity,
-        description: data.description,
-      },
+    await tx.productImage.createMany({
+      data: [...imageToCreate],
     });
   });
 };
@@ -36,12 +39,12 @@ export const updateProductServices = async (
   id: string,
 ) => {
   return await prisma.$transaction(async (tx) => {
-    const updateProduct = await tx.product.findUnique({
+    const findProduct = await tx.product.findUnique({
       where: {
         id: Number(id),
       },
     });
-    if (!updateProduct) throw new Error('Product Not Found');
+    if (!findProduct) throw new Error('Product Not Found');
 
     const existingProduct = await tx.product.findFirst({
       where: {
@@ -53,37 +56,61 @@ export const updateProductServices = async (
       throw new Error(`Product with the name ${data.name} already exists!`);
     }
 
-    const imageToCreate: any = [];
-    product_images.forEach((item: any) => {
-      imageToCreate.push({
-        url: item.path,
-      });
-    });
-
     await tx.product.update({
       where: {
         id: Number(id),
       },
       data: {
-        category_id: data.category_id,
-        product_image: data.product_image,
+        categoryId: data.categoryId,
         name: data.name,
         price: data.price,
-        quantity: data.quantity,
         description: data.description,
       },
     });
+
+    const findProductImage = await tx.productImage.findMany({
+      where: {
+        productId: findProduct.id,
+      },
+    });
+
+    await tx.productImage.deleteMany({
+      where: {
+        productId: findProduct.id,
+      },
+    });
+
+    const imageToCreate: any = [];
+    product_images.forEach((item: any) => {
+      imageToCreate.push({
+        productImage: item.path,
+        productId: findProduct.id,
+      });
+    });
+    await tx.productImage.createMany({
+      data: [...imageToCreate],
+    });
+    return findProductImage;
   });
 };
 
 export const findAllProductServices = async () => {
-  return await prisma.product.findMany();
+  return await prisma.product.findMany({
+    include: {
+      productCategory: true,
+      ProductImage: true,
+    },
+  });
 };
 
 export const findProductByIdServices = async (id: string) => {
   return await prisma.product.findUnique({
     where: {
       id: Number(id),
+    },
+    include: {
+      productCategory: true,
+      ProductImage: true,
     },
   });
 };
