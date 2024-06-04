@@ -1,4 +1,4 @@
-import { ModalCreateProduct } from '@/components/modalCreateProduct';
+import ModalCreateProduct from '@/components/modalCreateProduct';
 import { FormProduct } from '@/components/formProduct';
 
 export default function ProductAdminPage() {
@@ -7,7 +7,11 @@ export default function ProductAdminPage() {
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">PRODUCT</h1>
         <div className="flex gap-10 pb-5">
-          <span>Category :</span>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text">Category Product :</span>
+            </div>
+          </label>
           <select name="" id="">
             <option value="">Choose Category</option>
             <option value="">Rempah - Rempah</option>
@@ -15,9 +19,18 @@ export default function ProductAdminPage() {
             <option value="">Rempah - Rempah</option>
           </select>
         </div>
-        <div className="flex gap-2 pb-5">
-          <h1>Name Product :</h1>
-          <input type="text" name="" id="" placeholder="Search Product" />
+        <div className="flex">
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text">Search Product :</span>
+            </div>
+            <input
+              type="text"
+              name="name"
+              placeholder="Input Name to Search Product"
+              className="input input-bordered w-[20vw]"
+            />
+          </label>
         </div>
         <div className="flex items-end justify-end">
           <ModalCreateProduct />
