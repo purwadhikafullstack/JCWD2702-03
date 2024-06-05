@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { CreateUserControllers } from "./UsersController";
+import { registerUsers } from "./UsersController";
+import { validatorCreateUsers } from "../../middleware/UsersValidator";
+import { handleErrorValidator } from "@/middleware/HandleErrorExpressValidator";
+import { tokenVerify } from "../../helpers/Token";
 
 const router = Router();
 
-router.post('/', CreateUserControllers)
+router.post('/', validatorCreateUsers, handleErrorValidator, registerUsers)
 
 export default router
