@@ -7,6 +7,10 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import TanstackProvider from '../providers/TanstackProvider';
 import { usePathname } from 'next/navigation';
+import TanstackProvider from '@/providers/TanstackProviders';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +27,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <TanstackProvider>
           {path.includes(admin) ? null : <Header />}
+          <ToastContainer />
+          <Header />
           {children}
           <Footer />
         </TanstackProvider>
