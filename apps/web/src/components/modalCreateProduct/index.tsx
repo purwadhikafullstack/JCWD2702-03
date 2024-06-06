@@ -1,18 +1,18 @@
 'use client';
-import { ValidasiCreateProduct } from '@/supports/createProductSchema';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useCreateProductMutate } from '@/app/admin/product/hooks/useCreateProductMutate';
 import { useState } from 'react';
+import { useCreateProduct } from '@/features/product/hooks/useCreateProduct';
+import { ValidasiCreateProduct } from '@/supports/schema/createProductSchema';
 
 export default function ModalCreateProduct() {
-  const [upload, setUplad]: any = useState([]);
-  const { mutateCreateProduct } = useCreateProductMutate();
+  const [upload, setUpload]: any = useState([]);
+  const { createProduct } = useCreateProduct();
 
   const onSetFile = (event: any) => {
     try {
-      const acceptedFormat = ['jpg,', 'jpeg', 'webp', 'png', 'gif'];
+      const acceptedFormat = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
       const files = [...event.target.files];
-      files.forEach((file) => {
+      files.forEach((file: any) => {
         if (
           !acceptedFormat.includes(
             file.name.split('.')[file.name.split('.').length - 1],
@@ -20,12 +20,12 @@ export default function ModalCreateProduct() {
         ) {
           throw { message: `${file.name} Format Not Acceptable` };
         }
-        if (file.size > 1000000) {
+        if (file.size > 100000) {
           throw { message: `${file.name} is too Large!` };
         }
       });
       if (files.length > 3) throw { message: `Selected File More Than 3` };
-      setUplad(files);
+      setUpload(files);
     } catch (error) {
       console.log(error);
     }
@@ -46,26 +46,22 @@ export default function ModalCreateProduct() {
           categoryId: '',
         }}
         validationSchema={ValidasiCreateProduct}
-        onSubmit={async (values, { resetForm }) => {
-          try {
-            const fd = new FormData();
-            fd.append(
-              'data',
-              JSON.stringify({
-                name: values.name,
-                price: parseInt(values.price),
-                description: values.description,
-                categoryId: parseInt(values.categoryId),
-              }),
-            );
-            upload.forEach((file: any) => {
-              fd.append('product_images', file);
-            });
-            await mutateCreateProduct(fd);
-            resetForm();
-          } catch (error) {
-            console.log(error);
-          }
+        onSubmit={(values, { resetForm }) => {
+          const fd = new FormData();
+          fd.append(
+            'data',
+            JSON.stringify({
+              name: values.name,
+              price: parseInt(values.price),
+              description: values.description,
+              categoryId: parseInt(values.categoryId),
+            }),
+          );
+          upload.forEach((file: any) => {
+            fd.append('product_images', file);
+          });
+          createProduct(fd);
+          resetForm();
         }}
       >
         <Form>
@@ -163,7 +159,10 @@ export default function ModalCreateProduct() {
                   />
                 </label>
               </fieldset>
-              <button className="btn bg-gray-800 text-white hover:bg-gray-800 w-full">
+              <button
+                type="submit"
+                className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"
+              >
                 Submit
               </button>
             </div>

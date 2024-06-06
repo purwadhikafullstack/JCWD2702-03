@@ -27,6 +27,7 @@ export const createProductController = async (
       data: null,
     });
   } catch (error) {
+    console.log(error);
     deletedUploadFile(req.files);
     next(error);
   }
@@ -97,13 +98,14 @@ export const deletedProductController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
-    await deletedProductServices(id);
+    const result = await deletedProductServices(id);
 
     res.status(201).send({
       error: false,
       message: 'Deleted Product Success!',
+      data: result,
     });
   } catch (error) {
     next(error);

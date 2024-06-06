@@ -84,10 +84,11 @@ model UserRole {
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   price       Int
-  description String @db.LongText
+  description String  @db.LongText
+  deleted     Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -105,8 +106,9 @@ model Product {
 }
 
 model ProductImage {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   productImage String
+  deleted      Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

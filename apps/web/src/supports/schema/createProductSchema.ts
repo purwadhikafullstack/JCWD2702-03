@@ -5,5 +5,4 @@ export const ValidasiCreateProduct = Yup.object().shape({
   price: Yup.number().required('Price is Required'),
   description: Yup.string().required('Description is Required'),
   categoryId: Yup.string().required('Category is Required'),
-  image: Yup.string().required('Image is Required'),
 });

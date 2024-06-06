@@ -1,7 +1,12 @@
+'use client';
 import ModalCreateProduct from '@/components/modalCreateProduct';
-import { FormProduct } from '@/components/formProduct';
+import FormProduct from '@/components/formProduct';
+import { useGetProduct } from '@/features/product/hooks/useGetProduct';
 
 export default function ProductAdminPage() {
+  const { dataProduct, isLoading } = useGetProduct();
+
+  if (isLoading) return <div>Loading.....</div>;
   return (
     <div className="min-h-screen">
       <div className="p-10">
@@ -36,8 +41,8 @@ export default function ProductAdminPage() {
           <ModalCreateProduct />
         </div>
         <div className="divider w-full"></div>
-        <div>
-          <FormProduct />
+        <div className="h-full w-full overflow-x-auto">
+          <FormProduct productData={dataProduct} />
         </div>
       </div>
     </div>
