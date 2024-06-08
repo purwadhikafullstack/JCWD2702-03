@@ -11,19 +11,6 @@ export default function ProductAdminPage() {
     <div className="min-h-screen">
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">PRODUCT</h1>
-        <div className="flex gap-10 pb-5">
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">Category Product :</span>
-            </div>
-          </label>
-          <select name="" id="">
-            <option value="">Choose Category</option>
-            <option value="">Rempah - Rempah</option>
-            <option value="">Rempah - Rempah</option>
-            <option value="">Rempah - Rempah</option>
-          </select>
-        </div>
         <div className="flex">
           <label className="form-control">
             <div className="label">

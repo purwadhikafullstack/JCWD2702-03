@@ -42,7 +42,6 @@ export const updateProductServices = async (
     const findProduct = await tx.product.findUnique({
       where: {
         id: Number(id),
-        deleted: false,
       },
     });
     if (!findProduct) throw new Error('Product Not Found');
@@ -50,7 +49,6 @@ export const updateProductServices = async (
     const existingProduct = await tx.product.findFirst({
       where: {
         name: data.name,
-        deleted: false,
       },
     });
 
@@ -67,23 +65,18 @@ export const updateProductServices = async (
         name: data.name,
         price: data.price,
         description: data.description,
-        deleted: true,
       },
     });
 
     const findProductImage = await tx.productImage.findMany({
       where: {
         productId: findProduct.id,
-        deleted: false,
       },
     });
 
-    await tx.productImage.updateMany({
+    await tx.productImage.deleteMany({
       where: {
         productId: findProduct.id,
-      },
-      data: {
-        deleted: true,
       },
     });
 
@@ -123,9 +116,12 @@ export const findProductByIdServices = async (id: string) => {
 };
 
 export const deletedProductServices = async (id: string) => {
-  return await prisma.product.delete({
+  return await prisma.product.update({
     where: {
       id: Number(id),
+    },
+    data: {
+      deleted: true,
     },
   });
 };
