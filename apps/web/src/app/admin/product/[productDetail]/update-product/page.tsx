@@ -4,11 +4,14 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useGetProductById } from '@/features/product/hooks/useGetProductById';
 import { useUpdateProduct } from '@/features/product/hooks/useUpdateProduct';
 import { ValidasiCreateProduct } from '@/supports/schema/createProductSchema';
+import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import { useRouter } from 'next/navigation';
 
 export default function ModalUpdateProductPage(params: any) {
   const [upload, setUpload]: any = useState([]);
   const { data } = useGetProductById(params.params.productDetail);
+  const { dataCategory }: any = useGetCategory();
+
   const nav = useRouter();
   const { updateProduct } = useUpdateProduct();
   const onSetFile = (event: any) => {
@@ -93,11 +96,20 @@ export default function ModalUpdateProductPage(params: any) {
                           <span className="label-text">Category Product</span>
                         </div>
                         <Field
-                          type="text"
+                          component="select"
                           id="categoryId"
                           name="categoryId"
-                          className="input input-bordered"
-                        />
+                          className="select select-bordered"
+                        >
+                          <option>Choose Category</option>
+                          {dataCategory?.map((category: any, index: number) => {
+                            return (
+                              <option value={category.id} key={index}>
+                                {category.name}
+                              </option>
+                            );
+                          })}
+                        </Field>
                         <ErrorMessage
                           name="categoryId"
                           component="div"

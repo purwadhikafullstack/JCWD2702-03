@@ -3,6 +3,7 @@ import {
   CreateCategorySevices,
   DeletedCategoryServices,
   FindAllCategoryServices,
+  FindCategoryByIdServices,
   UpdateCategoryServices,
 } from './CategoryServices';
 
@@ -50,6 +51,24 @@ export const FindAllCategoryController = async (
 ) => {
   try {
     const result = await FindAllCategoryServices();
+    res.status(200).send({
+      error: false,
+      message: 'Find Category Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const FindCategoryByIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const result = FindCategoryByIdServices(id);
     res.status(200).send({
       error: false,
       message: 'Find Category Success!',

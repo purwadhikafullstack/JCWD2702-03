@@ -1,12 +1,13 @@
 import { useUpdateProductMutation } from '../api/useUpdateProductMutation';
+import { toast } from 'react-toastify';
 
 export const useUpdateProduct = () => {
   const { mutate: updateProduct } = useUpdateProductMutation({
     onSuccess: (res: any) => {
-      console.log(res);
+      toast.success(res.data.message);
     },
     onError: (err: any) => {
-      console.log(err);
+      toast.error(err.response.data.message);
     },
   });
   return {

@@ -1,13 +1,14 @@
 'use client';
 import { CreateCategoryMutation } from '../api/useCreateCategoryMutation';
+import { toast } from 'react-toastify';
 
 export const useCreateCategoryMutate = () => {
   const { mutate: mutateCreateCategory } = CreateCategoryMutation({
     onSuccess: (res: any) => {
-      console.log(res);
+      toast.success(res.data.message);
     },
     onError: (err: any) => {
-      console.log(err);
+      toast.error(err.response.data.message);
     },
   });
   return {

@@ -1,8 +1,8 @@
-import { useCreateProductMutation } from '../api/useCreateProductMutation';
+import { useUpdateCategoryMutation } from '../api/useUpdateCategoryMutation';
 import { toast } from 'react-toastify';
 
-export const useCreateProduct = () => {
-  const { mutate: createProduct } = useCreateProductMutation({
+export const useUpdateCategory = () => {
+  const { mutate: updateCategory } = useUpdateCategoryMutation({
     onSuccess: (res: any) => {
       toast.success(res.data.message);
     },
@@ -10,7 +10,8 @@ export const useCreateProduct = () => {
       toast.error(err.response.data.message);
     },
   });
+
   return {
-    createProduct,
+    updateCategory,
   };
 };

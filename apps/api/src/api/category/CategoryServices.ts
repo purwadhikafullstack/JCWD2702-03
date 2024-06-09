@@ -50,6 +50,14 @@ export const FindAllCategoryServices = async () => {
   return await prisma.productCategory.findMany();
 };
 
+export const FindCategoryByIdServices = async (id: string) => {
+  return await prisma.productCategory.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+};
+
 export const DeletedCategoryServices = async (id: string) => {
   return await prisma.$transaction(async (tx) => {
     const findCategory = await tx.productCategory.findUnique({
