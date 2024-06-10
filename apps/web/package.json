@@ -10,6 +10,7 @@
     "test": "npx cypress verify & cypress run --component"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.5",
     "@tanstack/react-query": "^5.40.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",

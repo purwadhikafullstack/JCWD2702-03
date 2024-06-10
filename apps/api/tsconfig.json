@@ -13,6 +13,6 @@
     }
   },
   // "include": ["src/**/*"],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "src/utils/respHandler.js","src/express.d.ts"],
   "exclude": ["node_modules"]
 }

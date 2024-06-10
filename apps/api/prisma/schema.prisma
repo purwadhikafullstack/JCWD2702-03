@@ -45,7 +45,7 @@ model UserProfile {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userUid  String  @unique
+  userUid   String  @unique
   user      User    @relation(fields: [userUid], references: [uid])
   addressId Int
   address   Address @relation(fields: [addressId], references: [id])
@@ -93,7 +93,7 @@ model Product {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  categoryId     Int
+  categoryId      Int
   productCategory ProductCategory @relation(fields: [categoryId], references: [id])
   ProductImage    ProductImage[]
   StokProduct     StokProduct[]
@@ -205,6 +205,8 @@ model Shipping {
 
 model Cart {
   id Int @id @default(autoincrement())
+  quantity Int
+  status Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -216,6 +218,7 @@ model Cart {
   product   Product @relation(fields: [productId], references: [id])
 
   @@map("carts")
+  @@unique([userUid, productId])
 }
 
 model Payment {

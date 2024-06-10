@@ -9,3 +9,5 @@ export const CreateUserServices = async ({email, password}: ICreateUser) => {
     }
   })
 }
+
+
