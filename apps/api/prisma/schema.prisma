@@ -11,11 +11,13 @@ datasource db {
 }
 
 model User {
-  uid      String          @id @default(cuid())
-  verify   EmailUserVerify @default(UNVERIFY)
-  roleId   Int             @default(3)
-  email    String
-  password String
+  uid             String          @id @default(cuid())
+  firstName       String?
+  lastName        String?
+  verify          EmailUserVerify @default(UNVERIFY)
+  roleId          Int             @default(3)
+  email           String
+  password        String?
 
   role UserRole @relation(fields: [roleId], references: [id])
 
@@ -45,7 +47,7 @@ model UserProfile {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userUid  String  @unique
+  userUid   String  @unique
   user      User    @relation(fields: [userUid], references: [uid])
   addressId Int
   address   Address @relation(fields: [addressId], references: [id])
@@ -93,7 +95,7 @@ model Product {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  categoryId     Int
+  categoryId      Int
   productCategory ProductCategory @relation(fields: [categoryId], references: [id])
   ProductImage    ProductImage[]
   StokProduct     StokProduct[]
