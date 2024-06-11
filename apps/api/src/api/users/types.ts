@@ -6,3 +6,9 @@ export interface ICreateUser {
   lastName?: string;
   phoneNumber?: string;
 }
+
+export interface ICreateUserProfile {
+  profile_image: string;
+  fullname: string;
+  birthdate: Date;
+}

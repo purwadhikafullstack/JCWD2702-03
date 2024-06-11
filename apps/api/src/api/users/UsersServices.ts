@@ -18,3 +18,21 @@ export const findUsersByEmailServices = async({email}: {email: string}) => {
     }
   })
 }
+
+export const CreateUserServiceWithGoogle = async({email, fullname, uid,}: {email: string, fullname: string, uid: string}) => {
+await prisma.user.create({
+    data:{
+      email,
+      verify: 'VERFIY',
+      uid: uid,
+      googleAuth: 'TRUE'
+    }
+  })
+
+  return await prisma.userProfile.create({
+    data: {
+     fullname: fullname,
+     userUid: uid
+    }
+  })
+}

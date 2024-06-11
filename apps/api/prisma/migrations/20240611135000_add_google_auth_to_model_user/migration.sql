@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `users` ADD COLUMN `googleAuth` ENUM('TRUE', 'FALSE') NOT NULL DEFAULT 'FALSE';

@@ -28,3 +28,18 @@ export const useAuthCreateUserMutation = ({ onSuccess, onError }: any) => {
     mutate,
   };
 };
+
+export const useAuthCreateUserWithGoogleMutation = ({ onSuccess, onError }: any) =>{
+  const {mutate} = useMutation({
+    mutationFn: async({email, fullname, uid}: {email: string, fullname: string, uid: string}) => {
+      return  await axios.post('http://localhost:8000/register/google', { email, fullname, uid })
+    },
+
+    onSuccess,
+    onError,
+  })
+
+  return{
+    mutate
+  }
+}

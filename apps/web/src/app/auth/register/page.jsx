@@ -1,11 +1,27 @@
 'use client';
-import { useAuthCreateUser } from '@/features/auth/hooks/useAuthCreateUser';
+import { useAuthCreateUser, useAuthCreateUserWithGoogle } from '@/features/auth/hooks/useAuthCreateUser';
 import { registrationSchema } from '@/supports/schema/registrationSchema';
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import Link from 'next/link';
+import { FcGoogle } from "react-icons/fc";
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase';
 
 export default function RegisterPage() {
+  const { mutationCreateUserWithGoogle } = useAuthCreateUserWithGoogle()
   const { mutationCreateUser } = useAuthCreateUser();
+
+  const signUpWithGoogle = async () => {
+    signInWithPopup(auth, provider).then(async (result) => {
+      console.log(result);
+      if(result.user){
+        mutationCreateUserWithGoogle({
+          email: result.user.email,
+          fullname: result.user.displayName,
+          uid: result.user.uid
+        })}
+    })
+  }
   return (
     <Formik
       initialValues={{
@@ -102,6 +118,16 @@ export default function RegisterPage() {
                   >
                     Submit
                   </button>
+                  <div className="flex justify-center space-x-4 pt-4">
+                    <button
+                      type="button"
+                      className="flex justify-center block w-[50vh] p-3 rounded-lg text-gray-50 bg-black hover:bg-gray-200 hover:text-black"
+                      onClick={signUpWithGoogle}
+                    >
+                      Sign Up with{' '}
+                      <FcGoogle className="w-5 h-5 fill-current ml-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

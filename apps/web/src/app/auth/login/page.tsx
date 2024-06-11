@@ -7,7 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const { mutationAuthLogin } = useAuthLogin();
-
+  
   return (
     <Formik
       initialValues={{

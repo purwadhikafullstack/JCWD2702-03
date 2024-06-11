@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { ComparePassword } from '@/helpers/Hashing';
 import { IReqAccessToken, createToken } from '@/helpers/Token';
 import { findUsersByEmail, findUsersByUid } from './LoginServices';
-import { error } from 'console';
-
 
 export const loginUsers = async (
   req: Request,
@@ -12,18 +10,25 @@ export const loginUsers = async (
 ) => {
   try {
     const { email, password } = req.body;
-
     const findUsersByEmailResult = await findUsersByEmail({ email });
 
     if (!findUsersByEmailResult) throw new Error('User not found!');
     if(findUsersByEmailResult.verify !== 'VERFIY') throw new Error('Please Verify Your Email First!')
+
+    const accessToken = await createToken({ uid: findUsersByEmailResult.uid });
+
+    // if(findUsersByEmailResult.googleAuth === 'TRUE') {
+      
+    //   })
+    // }
+    
 
     const comparePasswordResult = await ComparePassword({
       passwordFromClient: password, passwordFromDatabase: findUsersByEmailResult?.password!})
 
     if (!comparePasswordResult) throw new Error('Password not match!');
     
-    const accessToken = await createToken({ uid: findUsersByEmailResult.uid });
+    
 
     res.status(200).send({
       error: false,

@@ -11,7 +11,6 @@ export const useAuthLogin = () => {
   const router = useRouter();
   const { mutate: mutationAuthLogin } = useAuthMutation({
     onSuccess: (res: any) => {
-      // toast.success(res.data.message);
       toast.success(res.data.message, {
         position: 'top-center',
         autoClose: 2000,

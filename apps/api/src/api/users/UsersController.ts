@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateUserServices, findUsersByEmailServices } from './UsersServices';
+import { CreateUserServiceWithGoogle, CreateUserServices, findUsersByEmailServices } from './UsersServices';
 import { ComparePassword, HashPassword } from '../../helpers/Hashing';
 import { emailVerificationToken } from '@/helpers/Token';
 import fs from 'fs';
@@ -90,3 +90,27 @@ export const passwordVerification = async (
     next(error);
   }
 };
+
+export const registerUserWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, fullname, uid } = req.body
+
+    const findEmailResult = await findUsersByEmailServices({ email })
+    if(findEmailResult) throw new Error('Email Already Exist!')
+
+    const createNewDataUserWithGoogle = await  CreateUserServiceWithGoogle({
+      email,
+      fullname,
+      uid
+    })
+
+    res.status(200).send({
+      error: false,
+      message: 'Create Account Success!',
+      data: createNewDataUserWithGoogle
+    })
+
+  } catch (error) {
+    next(error)
+  }
+}
