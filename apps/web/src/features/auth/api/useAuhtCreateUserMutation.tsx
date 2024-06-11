@@ -29,9 +29,15 @@ export const useAuthCreateUserMutation = ({ onSuccess, onError }: any) => {
   };
 };
 
+interface ICreateUserWithGoogle{
+  email?: string ,
+  fullname?: string ,
+  uid: string
+}
+
 export const useAuthCreateUserWithGoogleMutation = ({ onSuccess, onError }: any) =>{
   const {mutate} = useMutation({
-    mutationFn: async({email, fullname, uid}: {email: string, fullname: string, uid: string}) => {
+    mutationFn: async({email, fullname, uid}: ICreateUserWithGoogle) => {
       return  await axios.post('http://localhost:8000/register/google', { email, fullname, uid })
     },
 

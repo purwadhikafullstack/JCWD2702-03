@@ -1,7 +1,10 @@
 import { useAuthCreateUserMutation, useAuthCreateUserWithGoogleMutation } from "@/features/auth/api/useAuhtCreateUserMutation"
+import { setCookie } from "@/utils/cookieHelper";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
+import { useContext } from 'react'
+import { UserContext } from "@/supports/context/userContext";
 
 
 export const useAuthCreateUser = () =>{
@@ -22,6 +25,7 @@ export const useAuthCreateUser = () =>{
 }
 
 export const useAuthCreateUserWithGoogle = () =>{
+  const { dataUser, setDataUser }: any = useContext(UserContext)
   const router = useRouter()
   const { mutate: mutationCreateUserWithGoogle } = useAuthCreateUserWithGoogleMutation({
     onSuccess: (res: any) =>{
@@ -36,10 +40,16 @@ export const useAuthCreateUserWithGoogle = () =>{
         theme: 'dark',
         transition: Bounce,
       });
-      router.push('/auth/login')
+      setCookie(res.data.data.accessToken);
+      setDataUser({
+        firstName: res.data.data.firstName,
+        lastName: res.data.data.lastName,
+        email: res.data.data.email,
+        roleId: res.data.data.roleId,
+      })
+      router.push('/')
     },
     onError: (err: any) =>{
-      
       toast.error(err.response.data.message);
     }
   })

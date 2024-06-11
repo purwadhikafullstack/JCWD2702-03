@@ -4,9 +4,26 @@ import { loginSchema } from '@/supports/schema/loginSchema';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
+import { useAuthCreateUserWithGoogle } from '../../../features/auth/hooks/useAuthCreateUser';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase';
 
 export default function LoginPage() {
   const { mutationAuthLogin } = useAuthLogin();
+  const { mutationCreateUserWithGoogle} = useAuthCreateUserWithGoogle();
+
+  const signUpWithGoogle = async () => {
+    signInWithPopup(auth, provider).then(async (result) => {
+      console.log(result);
+      
+      if(result.user){
+        mutationCreateUserWithGoogle({
+          email: result.user.email as any,
+          fullname: result.user.displayName as any,
+          uid: result.user.uid
+        })}
+    })
+  }
   
   return (
     <Formik
@@ -81,12 +98,12 @@ export default function LoginPage() {
               <div className="flex-1 h-px sm:w-16 bg-gray-300"></div>
             </div>
             <div className="flex justify-center space-x-4">
-            <button
-                type="submit"
-                className=" flex justify-center block w-full p-3 rounded-sm text-gray-50 bg-black hover:bg-gray-200 hover:text-black"
+            <div
+                onClick={signUpWithGoogle}
+                className="flex justify-center block w-full p-3 rounded-sm text-gray-50 bg-black hover:bg-gray-200 hover:text-black"
               >
                 Sign in with <FcGoogle className="w-5 h-5 fill-current ml-4"/>
-              </button>
+              </div>
             </div>
             <p className="text-xs text-center sm:px-6 text-gray-600">
               Don't have an account?

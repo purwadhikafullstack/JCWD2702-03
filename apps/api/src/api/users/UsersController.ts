@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateUserServiceWithGoogle, CreateUserServices, findUsersByEmailServices } from './UsersServices';
+import {
+  CreateUserServiceWithGoogle,
+  CreateUserServices,
+  findUsersByEmailServices,
+} from './UsersServices';
 import { ComparePassword, HashPassword } from '../../helpers/Hashing';
-import { emailVerificationToken } from '@/helpers/Token';
+import { createToken, emailVerificationToken } from '@/helpers/Token';
 import fs from 'fs';
 import { TransporterNodeMailer } from '@/helpers/TransporterMailer';
 import Handlebars from 'handlebars';
@@ -67,50 +71,81 @@ export const passwordVerification = async (
     const reqPayload = req as IReqAccessToken;
     const { uid } = reqPayload.payload;
     const { password, confirmPassword } = req.body;
-    
+
     if (password != confirmPassword) throw new Error('Password not match!');
 
     const hashedPassword = await HashPassword({ password });
     await prisma.user.update({
-      where:{
+      where: {
         uid,
       },
-      data:{
+      data: {
         password: hashedPassword,
-        verify: "VERFIY"
-      }
-    })
+        verify: 'VERFIY',
+      },
+    });
 
     res.status(200).send({
       error: false,
       message: 'Verify Account Success!',
       data: null,
-    })
+    });
   } catch (error) {
     next(error);
   }
 };
 
-export const registerUserWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
+export const registerUserWithGoogle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const { email, fullname, uid } = req.body
+    const { email, fullname, uid } = req.body;
 
-    const findEmailResult = await findUsersByEmailServices({ email })
-    if(findEmailResult) throw new Error('Email Already Exist!')
+    const splitFullname = fullname.split(' ');
 
-    const createNewDataUserWithGoogle = await  CreateUserServiceWithGoogle({
-      email,
-      fullname,
-      uid
-    })
+    const findEmailResult = await findUsersByEmailServices({ email });
+    if(findEmailResult?.googleAuth === 'FALSE') throw new Error('Please Login with Email!');
 
-    res.status(200).send({
+    if (!findEmailResult) {
+      const { createUserWithGoogle, createProfile } =
+        await CreateUserServiceWithGoogle({
+          email,
+          fullname,
+          uid,
+          firstName: splitFullname[0],
+          lastName: splitFullname[1],
+        });
+      const accesstoken = await createToken({ uid: createUserWithGoogle.uid });
+
+      return res.status(200).send({
+        error: false,
+        message: 'Login Success!',
+        data: {
+          accesstoken,
+          email: createUserWithGoogle.email,
+          firstName: createUserWithGoogle.firstName,
+          lastName: createUserWithGoogle.lastName,
+          roleId: createUserWithGoogle.roleId,
+        },
+      });
+    }
+
+    const accesstoken = await createToken({ uid: findEmailResult.uid });
+
+    return res.status(200).send({
       error: false,
       message: 'Create Account Success!',
-      data: createNewDataUserWithGoogle
-    })
-
+      data: {
+        accesstoken,
+        email: findEmailResult.email,
+        firstName: findEmailResult.firstName,
+        lastName: findEmailResult.lastName,
+        roleId: findEmailResult.roleId,
+      },
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
