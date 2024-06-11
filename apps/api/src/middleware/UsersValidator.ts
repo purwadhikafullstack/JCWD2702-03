@@ -1,7 +1,16 @@
-import { body } from "express-validator";
+import { body } from 'express-validator';
 
 export const validatorCreateUsers = [
-  body(['email', 'password']).notEmpty().withMessage('Data Must Be Completed!'),
+  body(['email', 'firstName', 'lastName', ])
+    .notEmpty()
+    .withMessage('Data Must Be Completed!'),
+  body(['firstName'])
+    .isString()
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Firstname Required!'),
+  body(['lastName'])
+    .isString()
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Lastname Required!'),
   body(['email']).isString().isEmail().withMessage('Email Must Be Valid!'),
-  body(['password']).isString().isLength({ min: 6, max: 12 }).withMessage('Password Must Be Min 5 Character and Max 12 Character!'),
-]
+];

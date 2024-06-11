@@ -1,10 +1,12 @@
 -- CreateTable
 CREATE TABLE `users` (
     `uid` VARCHAR(191) NOT NULL,
+    `firstName` VARCHAR(191) NULL,
+    `lastName` VARCHAR(191) NULL,
     `verify` ENUM('UNVERIFY', 'VERFIY') NOT NULL DEFAULT 'UNVERIFY',
     `roleId` INTEGER NOT NULL DEFAULT 3,
     `email` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -156,12 +158,15 @@ CREATE TABLE `shipping` (
 -- CreateTable
 CREATE TABLE `carts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `quantity` INTEGER NOT NULL,
+    `status` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `deletedAt` DATETIME(3) NULL,
     `userUid` VARCHAR(191) NOT NULL,
     `productId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `carts_userUid_productId_key`(`userUid`, `productId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
