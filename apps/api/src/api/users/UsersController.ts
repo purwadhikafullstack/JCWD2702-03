@@ -4,7 +4,7 @@ import {
   CreateUserServices,
   findUsersByEmailServices,
 } from './UsersServices';
-import { ComparePassword, HashPassword } from '../../helpers/Hashing';
+import { HashPassword } from '../../helpers/Hashing';
 import { createToken, emailVerificationToken } from '@/helpers/Token';
 import fs from 'fs';
 import { TransporterNodeMailer } from '@/helpers/TransporterMailer';
@@ -149,3 +149,11 @@ export const registerUserWithGoogle = async (
     next(error);
   }
 };
+
+export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    
+  } catch (error) {
+    next(error)
+  }
+}

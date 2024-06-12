@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../supports/context/userContext';
 import { useState } from 'react';
+import ReduxProvider from '@/providers/ReduxProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,12 +22,14 @@ export default function RootLayout({
     <UserContext.Provider value={{ dataUser, setDataUser }}>
       <html lang="en">
         <body className={inter.className}>
-          <TanstackProvider>
-            <ToastContainer />
-            <Header />
-            {children}
-            <Footer />
-          </TanstackProvider>
+          <ReduxProvider>
+            <TanstackProvider>
+              <ToastContainer />
+              <Header />
+              {children}
+              <Footer />
+            </TanstackProvider>
+          </ReduxProvider>
         </body>
       </html>
     </UserContext.Provider>

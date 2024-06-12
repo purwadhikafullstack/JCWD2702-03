@@ -12,3 +12,11 @@ export interface ICreateUserProfile {
   fullname: string;
   birthdate: Date;
 }
+
+export interface ICreateUserWithGoogle {
+  email: string;
+  fullname: string;
+  uid: string;
+  firstName: string;
+  lastName: string;
+}

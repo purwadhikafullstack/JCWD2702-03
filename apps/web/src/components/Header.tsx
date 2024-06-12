@@ -11,12 +11,14 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 export const Header = () => {
-  const { mutationKeepLogin }: any = useAuthKeepLogin();
+  const { mutationKeepLogin, isPending }: any = useAuthKeepLogin();
   const { dataUser, setDataUser }: any = useContext(UserContext);
   const [isLogin, setIsLogin]: any = useState(false);
   const router = useRouter();
+  const stateUser = useSelector((state: any) => state.user);
 
   const handleLogout = async () => {
     await removeCookie();
@@ -47,6 +49,13 @@ export const Header = () => {
     handleKeepLogin();
     setIsLogin(true);
   }, []);
+
+  if (isPending)
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <span className="loading loading-spinner loading-lg "></span>
+      </div>
+    );
 
   return (
     <div>
@@ -79,7 +88,7 @@ export const Header = () => {
             <Image src="/logo.png" alt="logo" width={100} height={100} />
           </div>
           <div className="flex items-center md:space-x-4">
-            <div className="relative border rounded-lg">
+            <div className="relative border rounded-lg hidden">
               <span className="absolute inset-y-0 left-0 flex items-center pl-2">
                 <button
                   type="submit"
@@ -143,7 +152,7 @@ export const Header = () => {
                   Login
                 </Link>
                 <Link
-                  href={'/auth/register '}
+                  href={'/auth/register'}
                   className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white bg-black"
                 >
                   Sign Up

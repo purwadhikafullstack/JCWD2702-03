@@ -13,8 +13,7 @@ export default function LoginPage() {
   const { mutationCreateUserWithGoogle} = useAuthCreateUserWithGoogle();
 
   const signUpWithGoogle = async () => {
-    signInWithPopup(auth, provider).then(async (result) => {
-      console.log(result);
+    signInWithPopup(auth, provider).then(async (result) => {;
       
       if(result.user){
         mutationCreateUserWithGoogle({
