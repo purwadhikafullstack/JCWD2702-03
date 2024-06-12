@@ -40,9 +40,7 @@ export default function FormCategoryPage({ categoryData }: any) {
                   <td></td>
                   <td></td>
                   <td className="p-3 text-center flex gap-2">
-                    <Link
-                      href={`/admin/category/${category.id}/update-category`}
-                    >
+                    <Link href={`/admin/category/update/${category.id}`}>
                       <button className="btn btn-success btn-sm text-xs w-14 text-white">
                         Edit
                       </button>

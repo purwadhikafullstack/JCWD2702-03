@@ -3,7 +3,7 @@ import { deletedUploadFile } from '../../helpers/DeletedFile';
 import {
   createProductServices,
   deletedProductServices,
-  findAllProductServices,
+  findAllAndFilterProductServices,
   findProductByIdServices,
 } from './ProductServices';
 import { updateProductServices } from './ProductServices';
@@ -58,13 +58,15 @@ export const updateProductController = async (
   }
 };
 
-export const findAllProductController = async (
+export const findAllAndFilterProductController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  const productName = req.query.productName as string | undefined;
+  // const page = req.query.page as any;
   try {
-    const result = await findAllProductServices();
+    const result = await findAllAndFilterProductServices(productName);
     res.status(200).send({
       error: false,
       message: 'Find Product Success!',

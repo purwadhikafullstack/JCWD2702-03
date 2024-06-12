@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   createProductController,
   deletedProductController,
-  findAllProductController,
+  findAllAndFilterProductController,
   updateProductController,
   findProductByIdController,
 } from './ProductController';
@@ -12,7 +12,7 @@ const router = Router();
 
 router.post('/', uploader, createProductController);
 router.put('/:id', uploader, updateProductController);
-router.get('/', findAllProductController);
+router.get('/', findAllAndFilterProductController);
 router.get('/:id', findProductByIdController);
 router.delete('/:id', deletedProductController);
 export default router;

@@ -94,7 +94,25 @@ export const updateProductServices = async (
   });
 };
 
-export const findAllProductServices = async () => {
+export const findAllAndFilterProductServices = async (
+  productName?: string,
+  // page?: string,
+) => {
+  if (productName) {
+    return await prisma.product.findMany({
+      where: {
+        name: {
+          contains: productName,
+        },
+      },
+      include: {
+        productCategory: true,
+        ProductImage: true,
+      },
+      // skip: (Number(page) - 1) * Number(6) || 0,
+      // take: 5,
+    });
+  }
   return await prisma.product.findMany({
     include: {
       productCategory: true,
@@ -121,7 +139,7 @@ export const deletedProductServices = async (id: string) => {
       id: Number(id),
     },
     data: {
-      deleted: true,
+      deletedAt: new Date(),
     },
   });
 };

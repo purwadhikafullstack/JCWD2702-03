@@ -33,6 +33,7 @@ export const UpdateCategoryController = async (
   const { id } = req.params;
   const { name } = req.body;
   try {
+    console.log(name);
     const result = await UpdateCategoryServices(id, name);
     res.status(201).send({
       error: false,
@@ -66,9 +67,9 @@ export const FindCategoryByIdController = async (
   res: Response,
   next: NextFunction,
 ) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    const result = FindCategoryByIdServices(id);
+    const result = await FindCategoryByIdServices(id);
     res.status(200).send({
       error: false,
       message: 'Find Category Success!',

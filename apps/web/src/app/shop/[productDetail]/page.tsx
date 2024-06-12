@@ -1,6 +1,6 @@
 'use client';
 import { useGetProductById } from '@/features/product/hooks/useGetProductById';
-import ProductDetailPageAdmin from '../../../../components/productDetailAdmin/index';
+import ProductDetailPage from '@/components/productDetail';
 export default function ProductDetail(params: any) {
   const { data } = useGetProductById(params.params.productDetail);
 
@@ -13,8 +13,8 @@ export default function ProductDetail(params: any) {
     );
   return (
     <div className="min-h-screen overflow-hidden">
-      <div>
-        <ProductDetailPageAdmin
+      <div className="flex items-center justify-center">
+        <ProductDetailPage
           productId={data?.data?.data.id}
           name={data?.data?.data.name}
           price={data?.data?.data.price}

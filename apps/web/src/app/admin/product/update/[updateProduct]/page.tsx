@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 export default function ModalUpdateProductPage(params: any) {
   const [upload, setUpload]: any = useState([]);
-  const { data } = useGetProductById(params.params.productDetail);
+  const { data } = useGetProductById(params.params.updateProduct);
   const { dataCategory }: any = useGetCategory();
 
   const nav = useRouter();
@@ -64,7 +64,7 @@ export default function ModalUpdateProductPage(params: any) {
               upload.forEach((file: any) => {
                 fd.append('product_images', file);
               });
-              updateProduct({ productID: params.params.productDetail, fd: fd });
+              updateProduct({ productID: params.params.updateProduct, fd: fd });
               resetForm();
             }}
           >

@@ -1,6 +1,6 @@
 import { useDeletedProductMutation } from '../api/useDeletedProductMutation';
 
-export const useDeletedProduct = (id: string) => {
+export const useDeletedProduct = () => {
   const { mutate: deleteProduct } = useDeletedProductMutation({
     onSuccess: (res: any) => {
       console.log(res);

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-export default function ProductDetailPage({
+export default function ProductDetailPageAdmin({
   productId,
   name,
   price,

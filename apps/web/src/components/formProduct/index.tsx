@@ -4,8 +4,8 @@ import { useDeletedProduct } from '@/features/product/hooks/useDeletedProduct';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function FormProduct({ productData, id }: any) {
-  const { deleteProduct } = useDeletedProduct(id);
+export default function FormProduct({ productData }: any) {
+  const { deleteProduct } = useDeletedProduct();
   const nav = useRouter();
   return (
     <div className="text-gray-800 h-full w-full">
@@ -75,7 +75,7 @@ export default function FormProduct({ productData, id }: any) {
                       View
                     </button>
                   </Link>
-                  <Link href={`/admin/product/${product.id}/update-product`}>
+                  <Link href={`/admin/product/update/${product.id}`}>
                     <button className="btn btn-success btn-sm text-xs w-14 text-white">
                       Edit
                     </button>

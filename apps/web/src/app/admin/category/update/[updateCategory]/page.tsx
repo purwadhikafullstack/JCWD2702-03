@@ -6,7 +6,7 @@ import { useGetCategoryById } from '@/features/category/hooks/useGetCategoryById
 import { useRouter } from 'next/navigation';
 
 export default function UpdateCategoryPage(params: any) {
-  const { dataCategoryById } = useGetCategoryById(params.params.categoryId);
+  const { dataCategoryById } = useGetCategoryById(params.params.updateCategory);
   const { updateCategory } = useUpdateCategory();
 
   const nav = useRouter();
@@ -23,7 +23,7 @@ export default function UpdateCategoryPage(params: any) {
             onSubmit={(values, { resetForm }) => {
               updateCategory({
                 name: values.name,
-                categoryId: params.params.categoryId,
+                categoryId: params.params.updateCategory,
               });
               resetForm();
             }}

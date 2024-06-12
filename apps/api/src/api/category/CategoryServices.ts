@@ -20,17 +20,19 @@ export const CreateCategorySevices = async (name: string) => {
 
 export const UpdateCategoryServices = async (id: string, name: string) => {
   return await prisma.$transaction(async (tx) => {
-    const findCategory = await tx.productCategory.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
-    if (!findCategory) throw new Error('Category Product Not Found!');
+    // const findCategory = await tx.productCategory.findUnique({
+    //   where: {
+    //     id: Number(id),
+    //   },
+    // });
+    // if (!findCategory) throw new Error('Category Product Not Found!');
     const exitingCategory = await tx.productCategory.findFirst({
       where: {
         name: name,
       },
     });
+    console.log(name);
+    console.log(exitingCategory);
     if (exitingCategory) {
       throw new Error('Category Product Already Exist!');
     }

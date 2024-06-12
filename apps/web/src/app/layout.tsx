@@ -27,7 +27,7 @@ export default function RootLayout({
           {path.includes(admin) ? null : <Header />}
           <ToastContainer />
           {children}
-          {path.includes(admin) ? null : <Header />}
+          {path.includes(admin) ? null : <Footer />}
         </TanstackProvider>
       </body>
     </html>
