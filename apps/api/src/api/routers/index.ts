@@ -7,7 +7,8 @@ import AuthRouters from '../auth/AuthRouters';
 
 const router = Router();
 router.use(express.json());
-router.use('*/image', express.static('src/public/image'));
+router.use('*/image_product', express.static('src/public/image_product'));
+router.use('*/image_category', express.static('src/public/image_category'));
 
 router.use('/product', ProductRouter);
 router.use('/category', CategoryRouter);

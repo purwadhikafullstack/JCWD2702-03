@@ -1,7 +1,7 @@
 import multer from 'multer';
 import fs from 'fs';
 
-const defaultDirectory = 'src/public';
+const defaultDirectory = 'src/public/image_product';
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
@@ -39,7 +39,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
   }
 };
 
-export const multerUpload = multer({
+export const multerUploadProduct = multer({
   storage: storage,
   fileFilter: fileFilter,
 });

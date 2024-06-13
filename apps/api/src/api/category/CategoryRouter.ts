@@ -1,18 +1,19 @@
 import { Router } from 'express';
 import {
-  CreateCategoryController,
-  DeletedCategoryController,
-  FindAllCategoryController,
-  FindCategoryByIdController,
-  UpdateCategoryController,
+  CreateCategory,
+  DeletedCategory,
+  FindAllCategory,
+  FindCategoryById,
+  UpdateCategory,
 } from './CategoryController';
+import { uploaderCategory } from '@/middleware/Uploader/UploaderCategory';
 
 const router = Router();
 
-router.post('/', CreateCategoryController);
-router.put('/:id', UpdateCategoryController);
-router.get('/', FindAllCategoryController);
-router.get('/:id', FindCategoryByIdController);
-router.delete('/', DeletedCategoryController);
+router.post('/', uploaderCategory, CreateCategory);
+router.put('/:id', uploaderCategory, UpdateCategory);
+router.get('/', FindAllCategory);
+router.get('/:id', FindCategoryById);
+router.delete('/', DeletedCategory);
 
 export default router;

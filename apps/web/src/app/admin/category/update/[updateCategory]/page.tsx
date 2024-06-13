@@ -6,9 +6,31 @@ import { useGetCategoryById } from '@/features/category/hooks/useGetCategoryById
 import { useRouter } from 'next/navigation';
 
 export default function UpdateCategoryPage(params: any) {
+  const [upload, setUpload]: any = useState([]);
   const { dataCategoryById } = useGetCategoryById(params.params.updateCategory);
   const { updateCategory } = useUpdateCategory();
-
+  const onSetFile = (event: any) => {
+    try {
+      const acceptedFormat = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+      const files = [...event.target.files];
+      files.forEach((file: any) => {
+        if (
+          !acceptedFormat.includes(
+            file.name.split('.')[file.name.split('.').length - 1],
+          )
+        ) {
+          throw { message: `${file.name} Format Not Acceptable` };
+        }
+        if (file.size > 100000) {
+          throw { message: `${file.name} is too Large!` };
+        }
+      });
+      if (files.length > 3) throw { message: `Selected File More Than 3` };
+      setUpload(files);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const nav = useRouter();
   return (
     <div className="min-h-screen">
@@ -20,10 +42,20 @@ export default function UpdateCategoryPage(params: any) {
             initialValues={{
               name: dataCategoryById?.name,
             }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(value, { resetForm }) => {
+              const fd = new FormData();
+              fd.append(
+                'data',
+                JSON.stringify({
+                  name: value.name,
+                }),
+              );
+              upload.forEach((file: any) => {
+                fd.append('image_category', file);
+              });
               updateCategory({
-                name: values.name,
                 categoryId: params.params.updateCategory,
+                fd: fd,
               });
               resetForm();
             }}
@@ -45,6 +77,23 @@ export default function UpdateCategoryPage(params: any) {
                         />
                       </label>
                     </div>
+                    <fieldset className="w-full pb-4">
+                      <label className="form-control ">
+                        <div className="label">
+                          <span className="label-text">
+                            Upload Category Image
+                          </span>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(event) => onSetFile(event)}
+                          multiple
+                          placeholder="Upload Product Image"
+                          className="px-8 py-10 border-2 border-dashed rounded-md border-gray-300 text-gray-600 bg-gray-100"
+                        />
+                      </label>
+                    </fieldset>
                     <button
                       disabled={!(dirty && isValid)}
                       onClick={() => {

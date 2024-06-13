@@ -8,18 +8,24 @@ import Link from 'next/link';
 
 export default function ProductAdminPage() {
   const [getName, setName] = useState('');
-  // const [isDebouncing, setIsDebouncing] = useState(false);
+  const [getCategory, setCategory] = useState('');
+  const [isDebouncing, setIsDebouncing] = useState(false);
 
-  const productName: any = useDebounce(getName, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName);
+  const [productName] = useDebounce(getName, 1000);
+  const [category] = useDebounce(getCategory, 1000);
+  const { dataProduct, isLoading } = useGetProduct(productName, category);
 
-  // useEffect(() => {
-  //   setIsDebouncing(true);
-  //   const timeout = setTimeout(() => {
-  //     setIsDebouncing(false);
-  //   }, 2000);
-  //   return () => clearTimeout(timeout);
-  // }, [productName]);
+  useEffect(() => {
+    setIsDebouncing(true);
+    const timeout = setTimeout(() => {
+      setIsDebouncing(false);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [productName, category]);
+
+  const resetData = () => {
+    window.location.reload();
+  };
 
   if (isLoading)
     return (
@@ -48,12 +54,23 @@ export default function ProductAdminPage() {
             />
           </label>
         </div>
-        <div className="flex items-end justify-end">
+        <div className="flex items-center justify-between py-5">
+          <button
+            onClick={resetData}
+            className="btn bg-gray-800 text-white hover:bg-gray-800"
+            type="reset"
+          >
+            Reset
+          </button>
           <ModalCreateProduct />
         </div>
-        <div className="divider w-full"></div>
         <div className="h-full w-full overflow-x-auto">
-          {dataProduct.length === 0 ? (
+          {isDebouncing ? (
+            <div className="flex flex-col items-center justify-center">
+              <span className="loading loading-bars loading-lg h-[50px]"></span>
+              <div>Finding Product</div>
+            </div>
+          ) : dataProduct.length === 0 ? (
             <div className="text-center">Product Not Found</div>
           ) : (
             <FormProduct productData={dataProduct} />

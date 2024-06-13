@@ -1,9 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { multerUpload } from '@/helpers/Multer';
+import { multerUploadProduct } from '@/helpers/product/MulterProduct';
 import { rmSync } from 'fs';
 
-export const uploader = (req: Request, res: Response, next: NextFunction) => {
-  const upload = multerUpload.fields([{ name: 'product_images', maxCount: 3 }]);
+export const uploaderProduct = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const upload = multerUploadProduct.fields([
+    { name: 'image_product', maxCount: 3 },
+  ]);
 
   upload(req, res, function (err) {
     try {
@@ -12,7 +18,7 @@ export const uploader = (req: Request, res: Response, next: NextFunction) => {
       if (req.files) {
         const uploadFiles = Array.isArray(req.files)
           ? req.files
-          : req.files['product_images'];
+          : req.files['image_product'];
 
         if (Array.isArray(uploadFiles)) {
           uploadFiles?.forEach((item) => {
@@ -27,7 +33,7 @@ export const uploader = (req: Request, res: Response, next: NextFunction) => {
       if (req.files) {
         const uploadFiles = Array.isArray(req.files)
           ? req.files
-          : req.files['product_images'];
+          : req.files['image_product'];
 
         if (Array.isArray(uploadFiles)) {
           uploadFiles?.forEach((item) => {

@@ -127,9 +127,25 @@ model ProductCategory {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  Product   Product[]
+
+  Product              Product[]
+  ProductCategoryImage ProductCategoryImage[]
 
   @@map("products_category")
+}
+
+model ProductCategoryImage {
+  id          Int    @id @default(autoincrement())
+  categoryUrl String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  productCategoryId Int
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+
+  @@map("product_category_image")
 }
 
 model StokProduct {

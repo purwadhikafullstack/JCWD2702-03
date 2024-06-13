@@ -1,57 +1,71 @@
 import { Response, Request, NextFunction } from 'express';
 import {
-  CreateCategorySevices,
-  DeletedCategoryServices,
-  FindAllCategoryServices,
-  FindCategoryByIdServices,
-  UpdateCategoryServices,
+  CreateCategoryQuery,
+  DeletedCategoryQuery,
+  FindAllCategoryQuery,
+  FindCategoryByIdQuery,
+  UpdateCategoryQuery,
 } from './CategoryServices';
+import { deletedUploadFileCategory } from '@/helpers/category/DeletedFileCategory';
 
-export const CreateCategoryController = async (
+export const CreateCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { name } = req.body;
+  const data = JSON.parse(req.body.data);
+  let result;
   try {
-    const result = await CreateCategorySevices(name);
+    if (req.files) {
+      const uploadFile = Array.isArray(req.files)
+        ? req.files
+        : req.files['image_category'];
+      result = await CreateCategoryQuery(data, uploadFile);
+    }
+
     res.status(201).send({
       error: false,
       message: 'Create Category Success!',
       data: result,
     });
   } catch (error) {
+    deletedUploadFileCategory(req.files);
     next(error);
   }
 };
 
-export const UpdateCategoryController = async (
+export const UpdateCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const data = JSON.parse(req.body.data);
   try {
-    console.log(name);
-    const result = await UpdateCategoryServices(id, name);
+    if (req.files) {
+      const uploadFile = Array.isArray(req.files)
+        ? req.files
+        : req.files['image_category'];
+      const result = await UpdateCategoryQuery(data, uploadFile, id);
+      deletedUploadFileCategory({ image_category: result });
+    }
     res.status(201).send({
       error: false,
       message: 'Update Category Success',
-      data: result,
+      data: null,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const FindAllCategoryController = async (
+export const FindAllCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await FindAllCategoryServices();
+    const result = await FindAllCategoryQuery();
     res.status(200).send({
       error: false,
       message: 'Find Category Success!',
@@ -62,14 +76,14 @@ export const FindAllCategoryController = async (
   }
 };
 
-export const FindCategoryByIdController = async (
+export const FindCategoryById = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.params;
   try {
-    const result = await FindCategoryByIdServices(id);
+    const result = await FindCategoryByIdQuery(id);
     res.status(200).send({
       error: false,
       message: 'Find Category Success!',
@@ -80,14 +94,14 @@ export const FindCategoryByIdController = async (
   }
 };
 
-export const DeletedCategoryController = async (
+export const DeletedCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.body;
   try {
-    await DeletedCategoryServices(id);
+    await DeletedCategoryQuery(id);
     res.status(201).send({
       error: false,
       message: 'Deleted Category Success!',

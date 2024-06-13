@@ -27,7 +27,7 @@ export default function FormProduct({ productData }: any) {
               <th className="p-3">Name Product</th>
               <th className="p-3">Price</th>
               <th className="p-3">Description</th>
-              <th className="p-3">Image</th>
+              <th className="p-3">Category</th>
               <th className="p-3">Stock</th>
               <th className="p-3 text-center">Action</th>
             </tr>
@@ -53,18 +53,7 @@ export default function FormProduct({ productData }: any) {
                   <p>{product.description}</p>
                 </td>
                 <td className="p-3">
-                  <Image
-                    src={
-                      'http://localhost:8000/' +
-                      product.ProductImage[0].productImage
-                    }
-                    alt="gambar product"
-                    width={10000}
-                    height={10000}
-                    priority={true}
-                    quality={100}
-                    className="w-[50px] h-[50px]"
-                  />
+                  <p>{product.productCategory.name}</p>
                 </td>
                 <td className="p-3">
                   <p>Stok</p>
