@@ -5,11 +5,12 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { UserContext } from '../../../supports/context/userContext';
 import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { setUser } from '../../../redux/slice/userSlice';
 
 export const useAuthLogin = () => {
-  const dispatch = useDispatch()
+  const { dataUser, setDataUser }: any = useContext(UserContext);
+  // const dispatch = useDispatch()
   const router = useRouter();
   const { mutate: mutationAuthLogin } = useAuthMutation({
     onSuccess: (res: any) => {
@@ -24,12 +25,12 @@ export const useAuthLogin = () => {
         theme: 'dark',
         transition: Bounce,
       });
-      dispatch(setUser({
+      setDataUser({
         firstName: res.data.data.firstName,
         lastName: res.data.data.lastName,
         email: res.data.data.email,
-        roleId: res.data.data.roleId
-      }))
+        roleId: res.data.data.roleId,
+      });
       setCookie(res.data.data.accessToken);
       
       router.push('/');

@@ -11,14 +11,15 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 export const Header = () => {
   const { mutationKeepLogin, isPending }: any = useAuthKeepLogin();
   const { dataUser, setDataUser }: any = useContext(UserContext);
   const [isLogin, setIsLogin]: any = useState(false);
   const router = useRouter();
-  const stateUser = useSelector((state: any) => state.user);
+  // const stateUser = useSelector((state: any) => state.user);
+  
 
   const handleLogout = async () => {
     await removeCookie();

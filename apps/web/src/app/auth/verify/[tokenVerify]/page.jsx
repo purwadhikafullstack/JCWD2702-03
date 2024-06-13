@@ -3,7 +3,7 @@ import { useAuthPassword } from '@/features/auth/hooks/useAuthPassword';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { passwordSchema } from '@/supports/schema/passwordSchema';
 
-export default function LoginPage(params) {
+export default function SetPasswordPage(params) {
   const { mutatePassword } = useAuthPassword();
 
   return (
@@ -12,7 +12,7 @@ export default function LoginPage(params) {
         password: '',
         confirmPassword: '',
       }}
-      // validationSchema={passwordSchema}
+      validationSchema={passwordSchema}
       onSubmit={(values) => {
         mutatePassword({
           accesstoken: params.params.tokenVerify,

@@ -9,7 +9,7 @@ export const createToken = ({uid}: {uid: string}) => {
   })
 }
 
-export const emailVerificationToken = ({uid}: {uid: string}) => {
+export const createVerificationToken = ({uid}: {uid: string}) => {
   return jwt.sign({uid}, process.env.JWT_SECRET_KEY as string, {
     expiresIn: '1h'
   })
