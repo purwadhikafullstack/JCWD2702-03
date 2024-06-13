@@ -48,15 +48,15 @@ export const cartsSlice = createSlice({
 	},
 });
 
-export const fetchCartAsync = (token) => async (dispatchEvent) => {
+export const fetchCartAsync = (token:any) => async (dispatchEvent:any) => {
 	try {
 		const selectedProducts = await axiosInstance(token).get(
 			`checkouts/selected-products`
 		);
 
 		const sumWeight = selectedProducts?.data?.data
-			?.map((item) => item?.quantity * item?.product?.weight)
-			.reduce((a, b) => a + b, 0);
+			?.map((item:any) => item?.quantity * item?.product?.weight)
+			.reduce((a:any, b:any) => a + b, 0);
 
 		const { data } = await axiosInstance(token).get(`carts`);
 
@@ -70,7 +70,7 @@ export const fetchCartAsync = (token) => async (dispatchEvent) => {
 	}
 };
 
-export const setOrderSummary = (user_id) => async (dispatchEvent) => {
+export const setOrderSummary = (user_id:any) => async (dispatchEvent:any) => {
 	try {
 		let totalItems = 0;
 		let subtotal = 0;
@@ -79,7 +79,7 @@ export const setOrderSummary = (user_id) => async (dispatchEvent) => {
 
 		const carts = data.data;
 
-		carts.map((v) => {
+		carts.map((v:any) => {
 			totalItems += Number(v.quantity);
 
 			subtotal += Number(
@@ -100,7 +100,7 @@ export const setOrderSummary = (user_id) => async (dispatchEvent) => {
 	}
 };
 
-export const changeQuantity = (token, id, change) => async (dispatchEvent) => {
+export const changeQuantity = (token:any, id:any, change:any) => async (dispatchEvent:any) => {
 	try {
 		await axiosInstance(token).patch(`carts/${id}?change=${change}`);
 
@@ -114,7 +114,7 @@ export const changeQuantity = (token, id, change) => async (dispatchEvent) => {
 	}
 };
 
-export const deleteOrder = (token, id) => async (dispatchEvent) => {
+export const deleteOrder = (token:any, id:any) => async (dispatchEvent:any) => {
 	try {
 		await axiosInstance(token).delete(`carts/${id}`);
 		const { data } = await axiosInstance(token).get(`carts`);
@@ -129,7 +129,7 @@ export const deleteOrder = (token, id) => async (dispatchEvent) => {
 };
 
 export const addToCart =
-	(token, product_id, quantity, total_stocks) => async (dispatchEvent) => {
+	(token:any, product_id:any, quantity:any, total_stocks:any) => async (dispatchEvent:any) => {
 		try {
 			const dataToSend = {
 				product_id: Number(product_id),
@@ -147,7 +147,7 @@ export const addToCart =
 			dispatchEvent(setTotalPrice(data.data.totalPrice));
 
 			return true;
-		} catch (error) {
+		} catch (error:any) {
 			console.log(error);
 			toast.error(error.response.data.message, {
 				style: {
@@ -159,7 +159,7 @@ export const addToCart =
 	};
 
 export const selectProductCart =
-	(token, cart_id, type) => async (dispatchEvent) => {
+	(token:any, cart_id:any, type:any) => async (dispatchEvent:any) => {
 		try {
 			await axiosInstance(token).patch(`carts/select/${cart_id}`, {
 				type,
@@ -170,8 +170,8 @@ export const selectProductCart =
 			);
 
 			const sumWeight = selectedProducts?.data?.data
-				?.map((item) => item?.quantity * item?.product?.weight)
-				.reduce((a, b) => a + b, 0);
+				?.map((item:any) => item?.quantity * item?.product?.weight)
+				.reduce((a:any, b:any) => a + b, 0);
 
 			const { data } = await axiosInstance(token).get(`carts`);
 

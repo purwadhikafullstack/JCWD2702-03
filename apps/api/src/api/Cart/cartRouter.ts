@@ -9,6 +9,7 @@ const { verify } = require("./../lib/jwt");
 
 Router.get("/", verify, cartsController.getCart);
 Router.post("/", verify, cartsController.addToCart);
+//Router.post ("/",verify)
 Router.patch("/:cart_id", verify, cartsController.updateProductCart);
 Router.patch("/select/:cart_id", verify, cartsController.selectProductCart);
 Router.delete("/:cart_id", verify, cartsController.deleteProductCart);

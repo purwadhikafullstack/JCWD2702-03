@@ -1,6 +1,7 @@
 'use client';
 
 import type { Metadata } from 'next';
+import ReduxProvider from '@/providers/ReduxProvider'
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Layout/Header';
@@ -12,8 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../supports/context/userContext';
 import { useState } from 'react';
 
-
 const inter = Inter({ subsets: ['latin'] });
+
 
 export default function RootLayout({
   children,
@@ -26,17 +27,20 @@ export default function RootLayout({
 
   return (
     <UserContext.Provider value={{ dataUser, setDataUser }}>
-    <html lang="en">
-      <body className={inter.className}>
-        <TanstackProvider>
-          {path.includes(admin) ? null : <Header />}
-          <ToastContainer />
-          {children}
-          <Footer />
-        </TanstackProvider>
-      </body>
-    </html>
+      
+        <html lang="en">
+          <body className={inter.className}>
+            <ReduxProvider>
+            <TanstackProvider>
+              {path.includes(admin) ? null : <Header />}
+              <ToastContainer />
+              {children}
+              <Footer />
+            </TanstackProvider>
+            </ReduxProvider>
+          </body>
+        </html>
+      
     </UserContext.Provider>
-  
   );
 }
