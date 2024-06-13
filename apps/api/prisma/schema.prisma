@@ -11,11 +11,13 @@ datasource db {
 }
 
 model User {
-  uid      String          @id @default(cuid())
-  verify   EmailUserVerify @default(UNVERIFY)
-  roleId   Int             @default(3)
-  email    String
-  password String
+  uid             String          @id @default(cuid())
+  firstName       String?
+  lastName        String?
+  verify          EmailUserVerify @default(UNVERIFY)
+  roleId          Int             @default(3)
+  email           String
+  password        String?
 
   role UserRole @relation(fields: [roleId], references: [id])
 
