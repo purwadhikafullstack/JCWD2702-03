@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { multerUpload } from '@/helpers/Multer';
+import { multerUpload } from '@/helpers/UserProfile/MulterProfile';
 import { rmSync } from 'fs';
 
 export const uploader = (req: Request, res: Response, next: NextFunction) => {

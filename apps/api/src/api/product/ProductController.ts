@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { deletedUploadFile } from '../../helpers/DeletedFile';
+import { deletedUploadFile } from '../../helpers/UserProfile/DeletedProfileFile';
 import {
   createProductServices,
   deletedProductServices,
