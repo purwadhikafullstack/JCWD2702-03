@@ -4,19 +4,22 @@ const prisma = new PrismaClient();
 
 const main = async () => {
   await prisma.$transaction(async (tx) => {
-    await tx.productCategory.createMany({
-      data: [
-        {
-          name: 'Rempah - Rempah',
-        },
-        {
-          name: 'Sayur',
-        },
-        {
-          name: 'Buah',
-        },
-      ],
-    });
+    // await tx.productCategory.createMany({
+    //   data: [
+    //     {
+    //       name: 'Rempah - Rempah',
+    //     },
+    //     {
+    //       name: 'Makanan dan Minuman',
+    //     },
+    //     {
+    //       name: 'Kebutuhan Dapur',
+    //     },
+    //     {
+    //       name: 'Lainnya',
+    //     },
+    //   ],
+    // });
 
     await tx.userRole.createMany({
       data: [
@@ -31,6 +34,16 @@ const main = async () => {
         },
       ],
     });
+    // await tx.product.createMany({
+    //   data: [
+    //     {
+    //       name: 'Jahe',
+    //       price: parseInt('5000'),
+    //       description: 'Jahe alami sehat untuk tubuh',
+    //       categoryId: 1,
+    //     },
+    //   ],
+    // });
   });
 };
 

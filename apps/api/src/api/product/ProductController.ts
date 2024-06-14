@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { deletedUploadFile } from '../../helpers/DeletedFile';
+import { deletedUploadFileProduct } from '@/helpers/product/DeletedFileProduct';
 import {
-  createProductServices,
-  deletedProductServices,
-  findAllProductServices,
-  findProductByIdServices,
+  createProductQuery,
+  deletedProductQuery,
+  findAllAndFilterProductQuery,
+  findProductByIdQuery,
+  updateProductQuery,
 } from './ProductServices';
-import { updateProductServices } from './ProductServices';
 
-export const createProductController = async (
+export const createProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -18,8 +18,8 @@ export const createProductController = async (
     if (req.files) {
       const uploadFile = Array.isArray(req.files)
         ? req.files
-        : req.files['product_images'];
-      await createProductServices(data, uploadFile);
+        : req.files['image_product'];
+      await createProductQuery(data, uploadFile);
     }
     res.status(201).send({
       error: false,
@@ -27,12 +27,12 @@ export const createProductController = async (
       data: null,
     });
   } catch (error) {
-    deletedUploadFile(req.files);
+    deletedUploadFileProduct(req.files);
     next(error);
   }
 };
 
-export const updateProductController = async (
+export const updateProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -43,9 +43,9 @@ export const updateProductController = async (
     if (req.files) {
       const uploadFile = Array.isArray(req.files)
         ? req.files
-        : req.files['product_images'];
-      const resultProduct = await updateProductServices(data, uploadFile, id);
-      deletedUploadFile({ product_images: resultProduct });
+        : req.files['image_product'];
+      const resultProduct = await updateProductQuery(data, uploadFile, id);
+      deletedUploadFileProduct({ image_product: resultProduct });
     }
     res.status(201).send({
       error: false,
@@ -57,13 +57,16 @@ export const updateProductController = async (
   }
 };
 
-export const findAllProductController = async (
+export const findAllAndFilterProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  const productName = req.query.productName as string | undefined;
+  const category = req.query.category as string | undefined;
+  // const page = req.query.page as any;
   try {
-    const result = await findAllProductServices();
+    const result = await findAllAndFilterProductQuery(productName, category);
     res.status(200).send({
       error: false,
       message: 'Find Product Success!',
@@ -74,14 +77,14 @@ export const findAllProductController = async (
   }
 };
 
-export const findProductByIdController = async (
+export const findProductById = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.params;
   try {
-    const result = await findProductByIdServices(id);
+    const result = await findProductByIdQuery(id);
     res.status(200).send({
       error: false,
       message: 'Find Product Success!',
@@ -92,18 +95,19 @@ export const findProductByIdController = async (
   }
 };
 
-export const deletedProductController = async (
+export const deletedProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
-    await deletedProductServices(id);
+    const result = await deletedProductQuery(id);
 
     res.status(201).send({
       error: false,
       message: 'Deleted Product Success!',
+      data: result,
     });
   } catch (error) {
     next(error);

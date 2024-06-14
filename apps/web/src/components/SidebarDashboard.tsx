@@ -15,7 +15,7 @@ import { FaStoreAlt } from 'react-icons/fa';
 
 export const SidebarDashboard = () => {
   return (
-    <div className="h-full p-2 space-y-2 w-60 bg-gray-800 text-white">
+    <div className="min-h-screen p-2 space-y-2 w-60 bg-gray-800 text-white">
       <Link href={'/'}>
         <div className="flex items-center justify-center">
           <Image

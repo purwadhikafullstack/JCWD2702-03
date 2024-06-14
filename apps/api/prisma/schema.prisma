@@ -86,10 +86,11 @@ model UserRole {
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   price       Int
-  description String @db.LongText
+  description String  @db.LongText
+  deleted     Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -107,8 +108,9 @@ model Product {
 }
 
 model ProductImage {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   productImage String
+  deleted      Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -127,9 +129,25 @@ model ProductCategory {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  Product   Product[]
+
+  Product              Product[]
+  ProductCategoryImage ProductCategoryImage[]
 
   @@map("products_category")
+}
+
+model ProductCategoryImage {
+  id          Int    @id @default(autoincrement())
+  categoryUrl String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  productCategoryId Int
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+
+  @@map("product_category_image")
 }
 
 model StokProduct {

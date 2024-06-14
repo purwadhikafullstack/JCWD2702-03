@@ -1,8 +1,8 @@
 import { rmSync } from 'fs';
 
-export const deletedUploadFile = (files: any) => {
+export const deletedUploadFileCategory = (files: any) => {
   if (files) {
-    const uploadFiles = Array.isArray(files) ? files : files['images'];
+    const uploadFiles = Array.isArray(files) ? files : files['image_category'];
 
     if (Array.isArray(uploadFiles)) {
       uploadFiles?.forEach((item) => {
