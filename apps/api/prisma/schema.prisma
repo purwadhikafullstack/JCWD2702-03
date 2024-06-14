@@ -97,7 +97,7 @@ model Product {
   categoryId      Int
   productCategory ProductCategory @relation(fields: [categoryId], references: [id])
   ProductImage    ProductImage[]
-  StokProduct     StokProduct[]
+  StockProduct    StockProduct[]
   Transaction     Transaction[]
   Cart            Cart[]
   Discount        Discount[]
@@ -148,9 +148,9 @@ model ProductCategoryImage {
   @@map("product_category_image")
 }
 
-model StokProduct {
-  id   Int @id @default(autoincrement())
-  stok Int
+model StockProduct {
+  id    Int @id @default(autoincrement())
+  stock Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -161,21 +161,24 @@ model StokProduct {
   productId Int
   product   Product @relation(fields: [productId], references: [id])
 
-  @@map("stok_products")
+  @@map("stock_products")
 }
 
 model Store {
-  id       Int    @id @default(autoincrement())
-  name     String
-  province String
-  city     String
-  address  String @db.MediumText
-  zip_code String
+  id        Int    @id @default(autoincrement())
+  name      String
+  province  String
+  city      String
+  address   String @db.MediumText
+  zip_code  String
+  latitude  Float  @default(0)
+  longitude Float  @default(0)
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  deletedAt   DateTime?
-  StokProduct StokProduct[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  StockProduct StockProduct[]
 
   @@map("stores")
 }

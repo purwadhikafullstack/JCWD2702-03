@@ -83,6 +83,9 @@ export const UpdateCategoryQuery = async (
 
 export const FindAllCategoryQuery = async () => {
   return await prisma.productCategory.findMany({
+    where: {
+      deletedAt: null,
+    },
     include: {
       ProductCategoryImage: true,
     },
@@ -93,6 +96,7 @@ export const FindCategoryByIdQuery = async (id: string) => {
   return await prisma.productCategory.findUnique({
     where: {
       id: Number(id),
+      deletedAt: null,
     },
   });
 };
@@ -107,9 +111,12 @@ export const DeletedCategoryQuery = async (id: string) => {
     if (!findCategory)
       throw new Error('Category Not Found or Already Deleted!');
 
-    await tx.productCategory.delete({
+    await tx.productCategory.update({
       where: {
         id: Number(id),
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
   });

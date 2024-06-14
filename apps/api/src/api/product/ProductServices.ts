@@ -130,9 +130,17 @@ export const findAllAndFilterProductQuery = async (
     });
   }
   return await prisma.product.findMany({
+    where: {
+      deletedAt: null,
+    },
     include: {
       productCategory: true,
       ProductImage: true,
+      StockProduct: {
+        include: {
+          store: true,
+        },
+      },
     },
   });
 };
@@ -141,10 +149,16 @@ export const findProductByIdQuery = async (id: string) => {
   return await prisma.product.findUnique({
     where: {
       id: Number(id),
+      deletedAt: null,
     },
     include: {
       productCategory: true,
       ProductImage: true,
+      StockProduct: {
+        include: {
+          store: true,
+        },
+      },
     },
   });
 };

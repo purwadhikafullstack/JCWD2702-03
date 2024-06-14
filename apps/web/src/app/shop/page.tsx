@@ -15,6 +15,15 @@ export default function ShopPage() {
   const [productName] = useDebounce(getName, 1000);
   const [category] = useDebounce(getCategory, 1000);
   const { dataProduct, isLoading } = useGetProduct(productName, category);
+  const [isDebouncing, setIsDebouncing] = useState(false);
+
+  useEffect(() => {
+    setIsDebouncing(true);
+    const timeout = setTimeout(() => {
+      setIsDebouncing(false);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [productName, category]);
 
   if (isLoading)
     return (
@@ -79,7 +88,12 @@ export default function ShopPage() {
             </select>
           </div>
           <div className="grid grid-cols-3 gap-10">
-            {dataProduct.length === 0 ? (
+            {isDebouncing ? (
+              <div className="flex flex-col items-center justify-center">
+                <span className="loading loading-bars loading-lg h-[50px]"></span>
+                <div>Finding Product</div>
+              </div>
+            ) : dataProduct.length === 0 ? (
               <div className="text-center">Product Not Found</div>
             ) : (
               dataProduct.map((product: any, i: number) => {

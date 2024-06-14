@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `stores` ADD COLUMN `latitude` DOUBLE NOT NULL DEFAULT 0,
+    ADD COLUMN `longitude` DOUBLE NOT NULL DEFAULT 0;
