@@ -3,7 +3,7 @@ import { useAuthPassword } from '@/features/auth/hooks/useAuthPassword';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { passwordSchema } from '@/supports/schema/passwordSchema';
 
-export default function SetPasswordPage(params) {
+export default function UpdatePasswordPage(params) {
   const { mutatePassword } = useAuthPassword();
 
   return (
@@ -27,7 +27,7 @@ export default function SetPasswordPage(params) {
             <div className="flex justify-center items-center min-h-screen">
               <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 border">
                 <h1 className="text-2xl font-bold text-center">
-                  Verify Your Account!
+                  Reset Password!
                 </h1>
                 <div className="space-y-6">
                   <div className="space-y-1 text-sm">

@@ -7,7 +7,7 @@ export const useAuthPassword = () => {
   const { mutate: mutatePassword } = useAuthPasswordVerify({
     onSuccess: (res: any) => {
       toast.success(res.data.message);
-      router.push('/auth/login')
+      router.push('/')
     },
     onError: (err: any) =>{
       toast.error(err.response.data.message);

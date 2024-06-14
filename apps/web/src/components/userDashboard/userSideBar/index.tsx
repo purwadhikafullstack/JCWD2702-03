@@ -1,9 +1,11 @@
+'use client'
 import { MdAccountCircle } from 'react-icons/md';
 import { FaCartShopping } from 'react-icons/fa6';
 import { CiHeart, CiLocationOn } from 'react-icons/ci';
-import Link from 'next/link';
+import Link from 'next/link'
 
 export default function UserSideBar() {
+
   return (
     <div className="bg-downriver border-downriver flex min-h-screen w-[20%] flex-col items-start justify-start gap-4 rounded-md border-2 p-10 text-black">
       <Link

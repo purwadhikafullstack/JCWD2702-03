@@ -1,13 +1,26 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> cd8008a6c4c38056e1c2139b97ff56298293824b
 import { Request, Response, NextFunction } from 'express';
-import { CreateUserServices, findUsersByEmailServices } from './UsersServices';
-import { ComparePassword, HashPassword } from '../../helpers/Hashing';
-import { emailVerificationToken } from '@/helpers/Token';
+import {
+  CreateUserServiceWithGoogle,
+  CreateUserServices,
+  createResetPasswordService,
+  findResetPassword,
+  findUsersByEmailServices,
+  passwordService,
+  udpateResetPasswordService,
+} from './UsersServices';
+import { HashPassword } from '../../helpers/Hashing';
+import { createToken, createVerificationToken } from '@/helpers/Token';
 import fs from 'fs';
 import { TransporterNodeMailer } from '@/helpers/TransporterMailer';
 import Handlebars from 'handlebars';
 import { IReqAccessToken } from '@/helpers/Token';
 import prisma from '@/prisma';
+import { findUsersByUid } from '../auth/login/LoginServices';
+import { defaultResetPassword } from '@/helpers/DefaultExpiredAt';
 
 export const registerUsers = async (
   req: Request,
@@ -26,7 +39,7 @@ export const registerUsers = async (
       lastName,
     });
 
-    const accessToken = await emailVerificationToken({
+    const accessToken = await createVerificationToken({
       uid: createdNewDataUsers.uid,
     });
     const activationLink = `http://localhost:3000/auth/verify/${accessToken}`;
@@ -68,26 +81,142 @@ export const passwordVerification = async (
     const reqPayload = req as IReqAccessToken;
     const { uid } = reqPayload.payload;
     const { password, confirmPassword } = req.body;
-    
+
     if (password != confirmPassword) throw new Error('Password not match!');
 
     const hashedPassword = await HashPassword({ password });
-    await prisma.user.update({
-      where:{
-        uid,
-      },
-      data:{
-        password: hashedPassword,
-        verify: "VERFIY"
-      }
-    })
+    await passwordService({
+      uid,
+      password: hashedPassword,
+    });
+
+    await udpateResetPasswordService({
+      uid,
+    });
 
     res.status(200).send({
       error: false,
-      message: 'Verify Account Success!',
+      message: 'Verify Password Account Success!',
       data: null,
-    })
+    });
   } catch (error) {
     next(error);
   }
 };
+<<<<<<< HEAD
+=======
+
+export const registerUserWithGoogle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email, fullname, uid } = req.body;
+
+    const splitFullname = fullname.split(' ');
+
+    const findEmailResult = await findUsersByEmailServices({ email });
+    if (findEmailResult?.googleAuth === 'FALSE')
+      throw new Error('Please Login with Email!');
+
+    if (!findEmailResult) {
+      const { createUserWithGoogle, createProfile } =
+        await CreateUserServiceWithGoogle({
+          email,
+          fullname,
+          uid,
+          firstName: splitFullname[0],
+          lastName: splitFullname[1],
+        });
+      const accesstoken = await createToken({ uid: createUserWithGoogle.uid });
+
+      return res.status(200).send({
+        error: false,
+        message: 'Create Account Success!',
+        data: {
+          accesstoken,
+          email: createUserWithGoogle.email,
+          firstName: createUserWithGoogle.firstName,
+          lastName: createUserWithGoogle.lastName,
+          roleId: createUserWithGoogle.roleId,
+        },
+      });
+    }
+
+    const accesstoken = await createToken({ uid: findEmailResult.uid });
+
+    return res.status(200).send({
+      error: false,
+      message: 'Login Success!',
+      data: {
+        accesstoken,
+        email: findEmailResult.email,
+        firstName: findEmailResult.firstName,
+        lastName: findEmailResult.lastName,
+        roleId: findEmailResult.roleId,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPasswordVerification = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const reqPayload = req as IReqAccessToken;
+    const { uid } = reqPayload.payload;
+    const findUserByUidResult = await findUsersByUid({ uid });
+    const expiredHours = defaultResetPassword(1);
+    const currentTime = defaultResetPassword(0);
+    const findResetPasswordResult = await findResetPassword({ uid });
+
+    if (findResetPasswordResult) {
+      if (
+        currentTime <= findResetPasswordResult.expiredAt &&
+        findResetPasswordResult.status !== 'DONE'
+      )
+        throw new Error('Your Link Have Already Sent!');
+    }
+
+    const accessToken = await createVerificationToken({
+      uid: findUserByUidResult?.uid!,
+    });
+
+    const activationLink = `http://localhost:3000/auth/resetPasswordVerify/${accessToken}`;
+    const verificationHTML = fs.readFileSync(
+      'src/template/ResetPasswordVerification.html',
+      'utf-8',
+    );
+    let verificationHTMLCompailed: any =
+      await Handlebars.compile(verificationHTML);
+    verificationHTMLCompailed = verificationHTMLCompailed({
+      link: activationLink,
+    });
+
+    TransporterNodeMailer.sendMail({
+      from: 'VOC-Mart',
+      to: findUserByUidResult?.email,
+      subject: 'Reset Password Verification',
+      html: verificationHTMLCompailed,
+    });
+
+    await createResetPasswordService({
+      uid,
+      date: expiredHours.toISOString(),
+    });
+
+    res.status(200).send({
+      error: false,
+      message: 'Link Reset Password has been Sent!',
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+>>>>>>> cd8008a6c4c38056e1c2139b97ff56298293824b
