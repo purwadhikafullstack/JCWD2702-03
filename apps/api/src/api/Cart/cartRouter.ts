@@ -1,17 +1,12 @@
-const express = require("express");
-const Router = express.Router();
+// server/routes/cartRoutes.ts
+import { Router } from 'express';
+import * as cartController from './cartController'; // Pastikan path ini sesuai dengan struktur proyek Anda
 
-//* Import Controller
-const { cartsController } = require("../controllers"); 
+const router = Router();
 
-//* Import Middleware
-const { verify } = require("./../lib/jwt");
+router.get('/:userId', cartController.getUserCartProducts); // Updated route to fetch user's cart products
+router.post('/add', cartController.addToCart);
+router.put('/:cartId', cartController.updateCartQuantity);
+router.delete('/:cartId', cartController.removeFromCart);
 
-Router.get("/", verify, cartsController.getCart);
-Router.post("/", verify, cartsController.addToCart);
-//Router.post ("/",verify)
-Router.patch("/:cart_id", verify, cartsController.updateProductCart);
-Router.patch("/select/:cart_id", verify, cartsController.selectProductCart);
-Router.delete("/:cart_id", verify, cartsController.deleteProductCart);
-
-module.exports = Router; 
+export default router;

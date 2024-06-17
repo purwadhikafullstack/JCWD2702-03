@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> cd8008a6c4c38056e1c2139b97ff56298293824b
 import { Request, Response, NextFunction } from 'express';
 import {
   CreateUserServiceWithGoogle,
@@ -103,8 +99,6 @@ export const passwordVerification = async (
     next(error);
   }
 };
-<<<<<<< HEAD
-=======
 
 export const registerUserWithGoogle = async (
   req: Request,
@@ -219,4 +213,3 @@ export const resetPasswordVerification = async (
     next(error);
   }
 };
->>>>>>> cd8008a6c4c38056e1c2139b97ff56298293824b
