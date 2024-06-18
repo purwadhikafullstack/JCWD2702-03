@@ -1,4 +1,4 @@
-import { useCart } from "@/context/cart/cart.context";
+import { CartContext,useCart } from "@/supports/context/cartContext";
 import { useFavorite } from "@/context/favorite/favorite.context";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";

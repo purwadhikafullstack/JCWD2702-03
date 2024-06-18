@@ -7,6 +7,7 @@ import { useAuthKeepLogin } from '@/features/auth/hooks/useAuthKeepLogin';
 import { useEffect, useState, useContext } from 'react';
 import { removeCookie } from '@/utils/cookieHelper';
 import { UserContext } from '@/supports/context/userContext';
+import  cartContext from '@/supports/context/cartContext';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
