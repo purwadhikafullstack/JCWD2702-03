@@ -6,6 +6,7 @@ export default function ProductDetailPageAdmin({
   image,
   description,
   category,
+  stock,
 }: any) {
   return (
     <div className="min-h-screen">
@@ -37,9 +38,20 @@ export default function ProductDetailPageAdmin({
               <h1 className="py-2">
                 <span className="font-semibold">Category</span> : {category}
               </h1>
-              <h1 className="pb-5">
-                <span className="font-semibold">Available Stok</span> : 50
-              </h1>
+              {stock?.map((values: any) => {
+                return (
+                  <div className="flex gap-5">
+                    <div>
+                      <span className="font-semibold">Available Stock </span> :{' '}
+                      {values.stock}
+                    </div>
+                    <div>
+                      <span className="font-semibold">Available Store </span> :{' '}
+                      {values.store.name}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             <h1 className="font-semibold pb-2">Description</h1>
             <div className="text-justify">

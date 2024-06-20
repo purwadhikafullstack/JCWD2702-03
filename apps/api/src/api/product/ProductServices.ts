@@ -109,6 +109,11 @@ export const findAllAndFilterProductQuery = async (
       include: {
         productCategory: true,
         ProductImage: true,
+        StockProduct: {
+          include: {
+            store: true,
+          },
+        },
       },
       // skip: (Number(page) - 1) * Number(6) || 0,
       // take: 5,
@@ -124,6 +129,11 @@ export const findAllAndFilterProductQuery = async (
       include: {
         productCategory: true,
         ProductImage: true,
+        StockProduct: {
+          include: {
+            store: true,
+          },
+        },
       },
       // skip: (Number(page) - 1) * Number(6) || 0,
       // take: 5,

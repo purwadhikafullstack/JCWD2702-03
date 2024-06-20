@@ -105,6 +105,7 @@ export default function ShopPage() {
                       price={product.price}
                       image={product.ProductImage[0].productImage}
                       category={product.productCategory.name}
+                      stock={product.StockProduct[0]}
                     />
                   </div>
                 );

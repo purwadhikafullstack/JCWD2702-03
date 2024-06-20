@@ -6,6 +6,7 @@ export default function ProductCard({
   price,
   category,
   image,
+  stock,
 }: any) {
   return (
     <div>
@@ -32,8 +33,22 @@ export default function ProductCard({
               currency: 'IDR',
             })}
           </p>
+          <div>
+            <span className="font-semibold">Stock</span> :{' '}
+            <span>
+              {stock ? (
+                stock.stock
+              ) : (
+                <span className="text-red-500">Out of Stock</span>
+              )}
+            </span>
+          </div>
+
           <div className="card-actions justify-end">
-            <button className="btn bg-softed hover:bg-softed text-white w-full">
+            <button
+              disabled={stock === 0}
+              className="btn bg-softed hover:bg-softed text-white w-full"
+            >
               Add Cart
             </button>
           </div>

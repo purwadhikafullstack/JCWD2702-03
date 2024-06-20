@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 export default function ProductDetailPage({
   productId,
@@ -8,14 +8,25 @@ export default function ProductDetailPage({
   image,
   description,
   category,
+  stock,
 }: any) {
   const [quantity, setQuantity] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(price);
+
+  useEffect(() => {
+    setTotalPrice(price * quantity);
+  }, [quantity, price]);
+
   const increment = () => {
-    setQuantity((e) => e + 1);
+    if (quantity < stock) {
+      setQuantity((prevQuantity) => prevQuantity + 1);
+    }
   };
 
   const decrement = () => {
-    setQuantity((f) => f - 1);
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
   };
   return (
     <div className="min-h-screen">
@@ -35,19 +46,16 @@ export default function ProductDetailPage({
             <div className="pb-4">
               <h1 className="text-2xl font-semibold pb-5">{name}</h1>
               <h1 className="pb-6 text-2xl font-semibold text-softed">
-                {price.toLocaleString('ID', {
+                {totalPrice.toLocaleString('ID', {
                   style: 'currency',
                   currency: 'IDR',
                 })}
               </h1>
-              {/* <h1>
-                <span className="font-semibold">Product ID</span> : {productId}
-              </h1> */}
               <h1 className="py-2">
                 <span className="font-semibold">Category</span> : {category}
               </h1>
               <h1 className="">
-                <span className="font-semibold">Available Stok</span> : 50
+                <span className="font-semibold">Available Stok</span> : {stock}
               </h1>
             </div>
             <div className="flex items-center justify-start py-5">
@@ -62,12 +70,15 @@ export default function ProductDetailPage({
               <button
                 className="btn w-[5vw] bg-softed text-white"
                 onClick={increment}
-                // disabled={selectedSize?.stock === quantity ? true : false}
+                disabled={stock === quantity ? true : false}
               >
                 +
               </button>
             </div>
-            <button className="btn w-[16vw] bg-softed text-white ext-[15px] tracking-wide hover:bg-softed">
+            <button
+              disabled={stock === 0}
+              className="btn w-[16vw] bg-softed text-white ext-[15px] tracking-wide hover:bg-softed"
+            >
               ADD TO CART
             </button>
             <h1 className="font-semibold py-5">Description</h1>

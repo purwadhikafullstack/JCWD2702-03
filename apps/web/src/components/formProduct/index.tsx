@@ -28,7 +28,7 @@ export default function FormProduct({ productData }: any) {
               <th className="p-3">Price</th>
               <th className="p-3">Description</th>
               <th className="p-3">Category</th>
-              <th className="p-3">Stock</th>
+              <th className="p-3"></th>
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -56,7 +56,13 @@ export default function FormProduct({ productData }: any) {
                   <p>{product.productCategory.name}</p>
                 </td>
                 <td className="p-3">
-                  <p>Stok</p>
+                  {/* {product.StockProduct[0] === null ? (
+                    <p className="text-red-500">Out of Stock</p>
+                  ) : (
+                    <p className="text-green-500">
+                      {product.StockProduct[0].stock}
+                    </p>
+                  )} */}
                 </td>
                 <td className="p-3 text-center flex gap-2">
                   <Link href={`/admin/product/${product.id}`}>

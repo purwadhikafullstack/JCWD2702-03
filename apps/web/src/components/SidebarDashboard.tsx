@@ -95,7 +95,7 @@ export const SidebarDashboard = () => {
                 </Link>
                 <Link
                   rel="noopener noreferrer"
-                  href={'/admin/stok'}
+                  href={'/admin/stock'}
                   className="flex items-center p-2 space-x-3 rounded-md"
                 >
                   <MdAppRegistration className="w-5 h-5 fill-current" />
