@@ -42,7 +42,7 @@ export default function RegisterPage() {
         return (
           <Form>
             <div className="flex min-h-screen flex items-center justify-center">
-              <div className="w-[30vw] h-[60vh] border rounded-lg">
+              <div className="w-[30vw] h-[90vh] border rounded-lg">
                 <p className="text-center text-2xl font-semibold py-4">
                   Register Account
                 </p>

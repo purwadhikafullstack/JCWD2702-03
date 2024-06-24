@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { multerUpload } from '@/helpers/Multer';
+import { multerUpload } from '../../helpers/UserProfile/MulterProfile';
 import { rmSync } from 'fs';
 
 export const uploader = (req: Request, res: Response, next: NextFunction) => {
-  const upload = multerUpload.fields([{ name: 'profile_image', maxCount: 3 }]);
+  const upload = multerUpload.fields([{ name: 'profile_images', maxCount: 1 }]);
 
   upload(req, res, function (err) {
     try {
@@ -12,11 +12,11 @@ export const uploader = (req: Request, res: Response, next: NextFunction) => {
       if (req.files) {
         const uploadFiles = Array.isArray(req.files)
           ? req.files
-          : req.files['profile_image'];
+          : req.files['profile_images'];
 
         if (Array.isArray(uploadFiles)) {
           uploadFiles?.forEach((item) => {
-            if (item.size > 1000000) {
+            if (item.size > 10000000) {
               throw { message: `${item.originalname} is to Large` };
             }
           });
@@ -27,7 +27,7 @@ export const uploader = (req: Request, res: Response, next: NextFunction) => {
       if (req.files) {
         const uploadFiles = Array.isArray(req.files)
           ? req.files
-          : req.files['profile_image'];
+          : req.files['profile_images'];
 
         if (Array.isArray(uploadFiles)) {
           uploadFiles?.forEach((item) => {

@@ -3,8 +3,9 @@ import {
   CreateUserServiceWithGoogle,
   CreateUserServices,
   createResetPasswordService,
-  findResetPassword,
+  findResetPasswordServices,
   findUsersByEmailServices,
+  getUserUidService,
   passwordService,
   udpateResetPasswordService,
 } from './UsersServices';
@@ -14,7 +15,6 @@ import fs from 'fs';
 import { TransporterNodeMailer } from '@/helpers/TransporterMailer';
 import Handlebars from 'handlebars';
 import { IReqAccessToken } from '@/helpers/Token';
-import prisma from '@/prisma';
 import { findUsersByUid } from '../auth/login/LoginServices';
 import { defaultResetPassword } from '@/helpers/DefaultExpiredAt';
 
@@ -86,9 +86,9 @@ export const passwordVerification = async (
       password: hashedPassword,
     });
 
-    await udpateResetPasswordService({
-      uid,
-    });
+    // await udpateResetPasswordService({
+    //   uid,
+    // });
 
     res.status(200).send({
       error: false,
@@ -115,7 +115,7 @@ export const registerUserWithGoogle = async (
       throw new Error('Please Login with Email!');
 
     if (!findEmailResult) {
-      const { createUserWithGoogle, createProfile } =
+      const { createUserWithGoogle } =
         await CreateUserServiceWithGoogle({
           email,
           fullname,
@@ -124,7 +124,6 @@ export const registerUserWithGoogle = async (
           lastName: splitFullname[1],
         });
       const accesstoken = await createToken({ uid: createUserWithGoogle.uid });
-
       return res.status(200).send({
         error: false,
         message: 'Create Account Success!',
@@ -138,8 +137,8 @@ export const registerUserWithGoogle = async (
       });
     }
 
-    const accesstoken = await createToken({ uid: findEmailResult.uid });
-
+    const accesstoken = await createToken({ uid: findEmailResult.uid });;
+    
     return res.status(200).send({
       error: false,
       message: 'Login Success!',
@@ -167,7 +166,7 @@ export const resetPasswordVerification = async (
     const findUserByUidResult = await findUsersByUid({ uid });
     const expiredHours = defaultResetPassword(1);
     const currentTime = defaultResetPassword(0);
-    const findResetPasswordResult = await findResetPassword({ uid });
+    const findResetPasswordResult = await findResetPasswordServices({ uid });
 
     if (findResetPasswordResult) {
       if (
@@ -203,7 +202,7 @@ export const resetPasswordVerification = async (
       uid,
       date: expiredHours.toISOString(),
     });
-
+    
     res.status(200).send({
       error: false,
       message: 'Link Reset Password has been Sent!',
@@ -213,3 +212,20 @@ export const resetPasswordVerification = async (
     next(error);
   }
 };
+
+export const getUserUid = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reqPayload = req as IReqAccessToken;
+    const { uid } = reqPayload.payload;
+
+    const getUserUidResult = await getUserUidService({ uid });
+
+    res.status(200).send({
+      error: false,
+      message: "Get User Success!",
+      data: getUserUidResult
+    })
+  } catch (error) {
+    next(error)
+  }
+}

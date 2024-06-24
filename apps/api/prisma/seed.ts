@@ -31,16 +31,16 @@ const main = async () => {
         },
       ],
     });
-    await tx.product.createMany({
-      data: [
-        {
-          name: 'Jahe',
-          price: parseInt('5000'),
-          description: 'Jahe alami sehat untuk tubuh',
-          categoryId: 1,
-        },
-      ],
-    });
+    // await tx.product.createMany({
+    //   data: [
+    //     {
+    //       name: 'Jahe',
+    //       price: parseInt('5000'),
+    //       description: 'Jahe alami sehat untuk tubuh',
+    //       categoryId: 1,
+    //     },
+    //   ],
+    // });
   });
 };
 

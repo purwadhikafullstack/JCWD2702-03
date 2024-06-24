@@ -1,6 +1,5 @@
 import prisma from '@/prisma';
 import { ICreateUser, ICreateUserWithGoogle } from './types';
-import { defaultResetPassword } from '@/helpers/DefaultExpiredAt';
 
 export const CreateUserServices = async ({
   email,
@@ -118,26 +117,27 @@ export const createResetPasswordService = async ({
       id: 'desc',
     },
   });
-  if (findResetPassword?.status !== "DONE") {
-    await prisma.resetPassword.update({
-      where: {
-        id: findResetPassword?.id,
-      },
+
+  if (findResetPassword?.status !== 'DONE') {
+    await prisma.resetPassword.create({
       data: {
-        status: 'EXPIRED',
+        expiredAt: date,
+        userUid: uid,
       },
     });
   }
 
-  return await prisma.resetPassword.create({
+  return await prisma.resetPassword.update({
+    where: {
+      id: findResetPassword?.id,
+    },
     data: {
-      expiredAt: date,
-      userUid: uid,
+      status: 'EXPIRED',
     },
   });
 };
 
-export const findResetPassword = async ({ uid }: { uid: string }) => {
+export const findResetPasswordServices = async ({ uid }: { uid: string }) => {
   return await prisma.resetPassword.findFirst({
     where: {
       userUid: uid,
@@ -148,17 +148,18 @@ export const findResetPassword = async ({ uid }: { uid: string }) => {
   });
 };
 
-export const createUserAndImagesProfileService = async (
-  data: any,
-  images: any,
-  uid: any,
-) => {
-  return await prisma.userProfile.create({
-    data: {
-      profile_image: data.profile_image,
-      fullname: data.fullname,
-      birthDate: new Date(data.birthDate),
-      userUid: uid,
+export const getUserUidService = async ({ uid }: { uid: string }) => {
+  return await prisma.user.findUnique({
+    where: {
+      uid,
+    },
+    include: {
+      userProfile: {
+        include: {
+          address: true,
+          UserImagesProfile: true,
+        },
+      },
     },
   });
 };

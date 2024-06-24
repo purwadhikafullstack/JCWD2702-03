@@ -1,5 +1,5 @@
 'use client';
-import { useAuthPassword } from '@/features/auth/hooks/useAuthPassword';
+import { useAuthPassword } from '../../../../features/auth/hooks/useAuthPassword';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { passwordSchema } from '@/supports/schema/passwordSchema';
 

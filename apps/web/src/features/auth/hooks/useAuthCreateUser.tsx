@@ -40,7 +40,7 @@ export const useAuthCreateUserWithGoogle = () =>{
         theme: 'dark',
         transition: Bounce,
       });
-      setCookie(res.data.data.accessToken);
+      setCookie(res.data.data.accesstoken);
       setDataUser({
         firstName: res.data.data.firstName,
         lastName: res.data.data.lastName,

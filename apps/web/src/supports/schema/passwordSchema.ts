@@ -6,6 +6,5 @@ export const passwordSchema = Yup.object().shape({
     .max(12, 'Password must be at most 12 characters')
     .required('Password is required!'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Confirm Password is required!'),
 });

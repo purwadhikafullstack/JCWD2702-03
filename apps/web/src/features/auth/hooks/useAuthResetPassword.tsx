@@ -8,7 +8,7 @@ export const useAuthResetPasswordRequest = () => {
     toast.success(res.data.message);
     },
     onError: (err: any) => {
-      toast.error(err.response.data.message);
+      console.log(err.response.data.message);
     },
   });
 

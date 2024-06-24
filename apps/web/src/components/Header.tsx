@@ -19,7 +19,6 @@ export const Header = () => {
   const [isLogin, setIsLogin]: any = useState(false);
   const router = useRouter();
   // const stateUser = useSelector((state: any) => state.user);
-  
 
   const handleLogout = async () => {
     await removeCookie();
@@ -62,6 +61,9 @@ export const Header = () => {
     <div>
       <header className="p-4 bg-[#28b293] text-gray-800">
         <div className="container flex justify-between h-16 mx-auto">
+          <div className="flex items-center space-x-3">
+            <Image src="/logo.png" alt="logo" width={150} height={150} />
+          </div>
           <ul className="items-stretch hidden space-x-3 lg:flex">
             <li className="flex">
               <Link href={'/'}>
@@ -85,9 +87,7 @@ export const Header = () => {
               </Link>
             </li>
           </ul>
-          <div className="flex items-center space-x-3">
-            <Image src="/logo.png" alt="logo" width={100} height={100} />
-          </div>
+
           <div className="flex items-center md:space-x-4">
             <div className="relative border rounded-lg hidden">
               <span className="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -116,14 +116,14 @@ export const Header = () => {
                   <div
                     tabIndex={0}
                     role="button"
-                    className="btn m-1 bg-black text-white"
+                    className="btn m-1 bg-transparent text-white"
                   >
                     {dataUser.firstName} {dataUser.lastName}{' '}
                     <IoMdArrowDropdown />
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52"
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52 rounded-box"
                   >
                     <li>
                       <Link
@@ -148,13 +148,13 @@ export const Header = () => {
               <div className="flex gap-4">
                 <Link
                   href={'/auth/login'}
-                  className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white bg-black"
+                  className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white "
                 >
                   Login
                 </Link>
                 <Link
                   href={'/auth/register'}
-                  className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white bg-black"
+                  className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white border"
                 >
                   Sign Up
                 </Link>

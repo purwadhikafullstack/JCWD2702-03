@@ -57,7 +57,7 @@ export default function SetPasswordPage(params) {
                       className="w-full px-4 py-3 rounded-md border-gray-300 bg-gray-50 text-gray-800 focus:border-blue-600 border"
                     />
                     <ErrorMessage
-                      name="password"
+                      name="confirmPassword"
                       component="div"
                       className="text-red-500"
                     />

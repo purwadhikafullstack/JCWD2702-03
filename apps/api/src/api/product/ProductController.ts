@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { deletedUploadFile } from '../../helpers/DeletedFile';
+import { deletedUploadedFiles } from '@/helpers/DeletedUploadedFile';
 import {
   createProductServices,
   deletedProductServices,
@@ -28,7 +28,7 @@ export const createProductController = async (
     });
   } catch (error) {
     console.log(error);
-    deletedUploadFile(req.files);
+    deletedUploadedFiles(req.files);
     next(error);
   }
 };
@@ -46,7 +46,7 @@ export const updateProductController = async (
         ? req.files
         : req.files['product_images'];
       const resultProduct = await updateProductServices(data, uploadFile, id);
-      deletedUploadFile({ product_images: resultProduct });
+      deletedUploadedFiles({ product_images: resultProduct });
     }
     res.status(201).send({
       error: false,

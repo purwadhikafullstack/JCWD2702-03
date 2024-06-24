@@ -14,7 +14,7 @@ router.use('*/image', express.static('src/public/image'));
 router.use('/product', ProductRouter);
 router.use('/category', CategoryRouter);
 router.use('/role', RoleRouters);
-router.use('/register', UsersRouters);
+router.use('/users', UsersRouters);
 router.use('/auth', AuthRouters);
 
 export default router;

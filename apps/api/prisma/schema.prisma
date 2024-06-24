@@ -45,21 +45,35 @@ enum EmailUserVerify {
 }
 
 model UserProfile {
-  id            Int       @id @default(autoincrement())
-  profile_image String?
-  fullname      String
-  birthDate     DateTime? @db.Date
+  id        Int       @id @default(autoincrement())
+  fullname  String?
+  birthDate DateTime? @db.Date
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userUid   String   @unique
-  user      User     @relation(fields: [userUid], references: [uid])
-  addressId Int?
-  address   Address? @relation(fields: [addressId], references: [id])
+  userUid           String              @unique
+  user              User                @relation(fields: [userUid], references: [uid])
+  addressId         Int?
+  address           Address?            @relation(fields: [addressId], references: [id])
+  UserImagesProfile UserImagesProfile[]
 
   @@map("user_profiles")
+}
+
+model UserImagesProfile {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userProfileId Int
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+
+  @@map("user_images_profiles")
 }
 
 model ResetPassword {

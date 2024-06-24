@@ -1,6 +1,5 @@
 'use client';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance';
 
 export const useAuthCreateUserMutation = ({ onSuccess, onError }: any) => {
@@ -14,10 +13,10 @@ export const useAuthCreateUserMutation = ({ onSuccess, onError }: any) => {
       firstName: string;
       lastName: string;
     }) => {
-      return await axiosInstance.post('/register', {
+      return await axiosInstance.post('/users/register', {
         email,
         firstName,
-        lastName
+        lastName,
       });
     },
 
@@ -30,23 +29,30 @@ export const useAuthCreateUserMutation = ({ onSuccess, onError }: any) => {
   };
 };
 
-interface ICreateUserWithGoogle{
-  email?: string ,
-  fullname?: string ,
-  uid: string
+interface ICreateUserWithGoogle {
+  email?: string;
+  fullname?: string;
+  uid: string;
 }
 
-export const useAuthCreateUserWithGoogleMutation = ({ onSuccess, onError }: any) =>{
-  const {mutate} = useMutation({
-    mutationFn: async({email, fullname, uid}: ICreateUserWithGoogle) => {
-      return  await axiosInstance.post('/register/google', { email, fullname, uid })
+export const useAuthCreateUserWithGoogleMutation = ({
+  onSuccess,
+  onError,
+}: any) => {
+  const { mutate } = useMutation({
+    mutationFn: async ({ email, fullname, uid }: ICreateUserWithGoogle) => {
+      return await axiosInstance.post('/users/google', {
+        email,
+        fullname,
+        uid,
+      });
     },
 
     onSuccess,
     onError,
-  })
+  });
 
-  return{
-    mutate
-  }
-}
+  return {
+    mutate,
+  };
+};
