@@ -6,6 +6,7 @@ import RoleRouters from '../role/RoleRouters';
 import AuthRouters from '../auth/AuthRouters';
 import StoreRouter from '../store/StoreRouter';
 import StockRouter from '../stock/StockRouter';
+import DiscountRouter from '../discount/DiscountRouter';
 
 const router = Router();
 router.use(express.json());
@@ -16,6 +17,7 @@ router.use('/product', ProductRouter);
 router.use('/category', CategoryRouter);
 router.use('/store', StoreRouter);
 router.use('/stock', StockRouter);
+router.use('/discount', DiscountRouter);
 router.use('/role', RoleRouters);
 router.use('/register', UsersRouters);
 router.use('/auth', AuthRouters);

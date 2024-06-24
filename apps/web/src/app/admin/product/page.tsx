@@ -5,15 +5,17 @@ import { useGetProduct } from '@/features/product/hooks/useGetProduct';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Link from 'next/link';
+import { Pagination } from 'antd';
 
 export default function ProductAdminPage() {
   const [getName, setName] = useState('');
   const [getCategory, setCategory] = useState('');
+  const [page, setPage] = useState(1);
   const [isDebouncing, setIsDebouncing] = useState(false);
 
   const [productName] = useDebounce(getName, 1000);
   const [category] = useDebounce(getCategory, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName, category);
+  const { dataProduct, isLoading } = useGetProduct(productName, category, page);
 
   useEffect(() => {
     setIsDebouncing(true);
@@ -21,7 +23,7 @@ export default function ProductAdminPage() {
       setIsDebouncing(false);
     }, 5000);
     return () => clearTimeout(timeout);
-  }, [productName, category]);
+  }, [productName, category, page]);
 
   const resetData = () => {
     window.location.reload();
@@ -34,6 +36,7 @@ export default function ProductAdminPage() {
         <div>Finding Product</div>
       </div>
     );
+
   return (
     <div className="min-h-screen">
       <div className="p-10">
@@ -77,6 +80,13 @@ export default function ProductAdminPage() {
           )}
         </div>
       </div>
+      <Pagination
+        className="flex justify-center pb-[10px]"
+        current={page}
+        pageSize={5}
+        total={dataProduct?.count}
+        onChange={(page) => setPage(page)}
+      />
     </div>
   );
 }

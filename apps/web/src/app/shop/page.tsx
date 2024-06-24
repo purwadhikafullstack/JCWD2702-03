@@ -11,10 +11,11 @@ export default function ShopPage() {
   const [getName, setName] = useState('');
   const [getCategory, setCategory] = useState('');
   const { dataCategory } = useGetCategory();
+  const [page, setPage] = useState(1);
 
   const [productName] = useDebounce(getName, 1000);
   const [category] = useDebounce(getCategory, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName, category);
+  const { dataProduct, isLoading } = useGetProduct(productName, category, page);
   const [isDebouncing, setIsDebouncing] = useState(false);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function ShopPage() {
       setIsDebouncing(false);
     }, 5000);
     return () => clearTimeout(timeout);
-  }, [productName, category]);
+  }, [productName, category, page]);
 
   if (isLoading)
     return (

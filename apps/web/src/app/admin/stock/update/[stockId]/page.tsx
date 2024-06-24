@@ -13,7 +13,8 @@ export default function UpdateStockPage(params: any) {
   const { dataStore } = useGetStore();
   const productName = '';
   const category = '';
-  const { dataProduct } = useGetProduct(productName, category);
+  const page = 0;
+  const { dataProduct } = useGetProduct(productName, category, page);
   const nav = useRouter();
   return (
     <div className="min-h-screen">
@@ -69,6 +70,7 @@ export default function UpdateStockPage(params: any) {
                           id="productId"
                           name="productId"
                           className="select select-bordered"
+                          disabled
                         >
                           <option>Choose Product</option>
                           {dataProduct?.map((product: any, index: number) => {

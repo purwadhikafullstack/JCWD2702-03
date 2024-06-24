@@ -49,21 +49,13 @@ export default function FormProduct({ productData }: any) {
                     })}
                   </p>
                 </td>
-                <td className="p-3">
+                <td className="p-3 whitespace-nowrap truncate max-w-xs">
                   <p>{product.description}</p>
                 </td>
                 <td className="p-3">
                   <p>{product.productCategory.name}</p>
                 </td>
-                <td className="p-3">
-                  {/* {product.StockProduct[0] === null ? (
-                    <p className="text-red-500">Out of Stock</p>
-                  ) : (
-                    <p className="text-green-500">
-                      {product.StockProduct[0].stock}
-                    </p>
-                  )} */}
-                </td>
+                <td className="p-3"></td>
                 <td className="p-3 text-center flex gap-2">
                   <Link href={`/admin/product/${product.id}`}>
                     <button className="btn btn-info btn-sm text-xs w-14 text-white">

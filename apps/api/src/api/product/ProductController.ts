@@ -7,6 +7,7 @@ import {
   findProductByIdQuery,
   updateProductQuery,
 } from './ProductServices';
+import prisma from '@/prisma';
 
 export const createProduct = async (
   req: Request,
@@ -62,12 +63,22 @@ export const findAllAndFilterProduct = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const productName = req.query.productName as string | undefined;
-  const category = req.query.category as string | undefined;
-  // const page = req.query.page as any;
   try {
-    const result = await findAllAndFilterProductQuery(productName, category);
+    const productName = req.query.productName as string | undefined;
+    const category = req.query.category as string | undefined;
+    const page = req.query.page as any;
+    const result = await findAllAndFilterProductQuery(
+      productName,
+      category,
+      // page,
+    );
+    const productCount = await prisma.product.count({
+      where: {
+        deletedAt: null,
+      },
+    });
     res.status(200).send({
+      count: productCount,
       error: false,
       message: 'Find Product Success!',
       data: result,

@@ -10,7 +10,8 @@ export default function ModalCreateStock() {
   const { dataStore } = useGetStore();
   const productName = '';
   const category = '';
-  const { dataProduct } = useGetProduct(productName, category);
+  const page = '';
+  const { dataProduct } = useGetProduct(productName, category, page);
   return (
     <div>
       <label

@@ -96,7 +96,7 @@ export const updateProductQuery = async (
 
 export const findAllAndFilterProductQuery = async (
   productName?: string,
-  // page?: string,
+  // page?: any,
   category?: string,
 ) => {
   if (productName) {
@@ -115,8 +115,6 @@ export const findAllAndFilterProductQuery = async (
           },
         },
       },
-      // skip: (Number(page) - 1) * Number(6) || 0,
-      // take: 5,
     });
   }
   if (category) {
@@ -135,8 +133,6 @@ export const findAllAndFilterProductQuery = async (
           },
         },
       },
-      // skip: (Number(page) - 1) * Number(6) || 0,
-      // take: 5,
     });
   }
   return await prisma.product.findMany({
@@ -152,8 +148,17 @@ export const findAllAndFilterProductQuery = async (
         },
       },
     },
+    // skip: (Number(page) - 1) * Number(6) || 0,
+    // take: 6,
+    // orderBy: {
+    //   name: 'asc',
+    // },
   });
 };
+
+// export const filterProductQuery = async (productName?: string, category?: string, ) => {
+
+// }
 
 export const findProductByIdQuery = async (id: string) => {
   return await prisma.product.findUnique({
@@ -174,12 +179,14 @@ export const findProductByIdQuery = async (id: string) => {
 };
 
 export const deletedProductQuery = async (id: string) => {
-  return await prisma.product.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      deletedAt: new Date(),
-    },
+  return await prisma.$transaction(async (tx) => {
+    await tx.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
   });
 };
