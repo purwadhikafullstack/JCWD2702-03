@@ -94,7 +94,25 @@ export const updateProductServices = async (
   });
 };
 
-export const findAllProductServices = async () => {
+export const findAllAndFilterProductServices = async (
+  productName?: string,
+  // page?: string,
+) => {
+  if (productName) {
+    return await prisma.product.findMany({
+      where: {
+        name: {
+          contains: productName,
+        },
+      },
+      include: {
+        productCategory: true,
+        ProductImage: true,
+      },
+      // skip: (Number(page) - 1) * Number(6) || 0,
+      // take: 5,
+    });
+  }
   return await prisma.product.findMany({
     include: {
       productCategory: true,
@@ -116,18 +134,12 @@ export const findProductByIdServices = async (id: string) => {
 };
 
 export const deletedProductServices = async (id: string) => {
-  return await prisma.$transaction(async (tx) => {
-    const findProduct = await tx.product.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
-    if (!findProduct) throw new Error('Product Not Found or Already Deleted!');
-
-    await tx.product.delete({
-      where: {
-        id: Number(id),
-      },
-    });
+  return await prisma.product.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      deletedAt: new Date(),
+    },
   });
 };

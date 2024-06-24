@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { deletedUploadFile } from '../../helpers/DeletedFile';
+import { deletedUploadedFiles } from '@/helpers/DeletedUploadedFile';
 import {
   createProductServices,
   deletedProductServices,
-  findAllProductServices,
+  findAllAndFilterProductServices,
   findProductByIdServices,
 } from './ProductServices';
 import { updateProductServices } from './ProductServices';
@@ -27,7 +27,8 @@ export const createProductController = async (
       data: null,
     });
   } catch (error) {
-    deletedUploadFile(req.files);
+    console.log(error);
+    deletedUploadedFiles(req.files);
     next(error);
   }
 };
@@ -45,7 +46,7 @@ export const updateProductController = async (
         ? req.files
         : req.files['product_images'];
       const resultProduct = await updateProductServices(data, uploadFile, id);
-      deletedUploadFile({ product_images: resultProduct });
+      deletedUploadedFiles({ product_images: resultProduct });
     }
     res.status(201).send({
       error: false,
@@ -57,13 +58,15 @@ export const updateProductController = async (
   }
 };
 
-export const findAllProductController = async (
+export const findAllAndFilterProductController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  const productName = req.query.productName as string | undefined;
+  // const page = req.query.page as any;
   try {
-    const result = await findAllProductServices();
+    const result = await findAllAndFilterProductServices(productName);
     res.status(200).send({
       error: false,
       message: 'Find Product Success!',
@@ -97,13 +100,14 @@ export const deletedProductController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
-    await deletedProductServices(id);
+    const result = await deletedProductServices(id);
 
     res.status(201).send({
       error: false,
       message: 'Deleted Product Success!',
+      data: result,
     });
   } catch (error) {
     next(error);

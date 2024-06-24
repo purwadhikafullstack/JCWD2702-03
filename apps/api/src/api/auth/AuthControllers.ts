@@ -32,3 +32,13 @@ export const loginUsers = async (
     next(error);
   }
 };
+
+
+export const keepLogin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { accesstoken } = req.headers;
+    
+  }catch(error){
+    next(error)
+  }
+}

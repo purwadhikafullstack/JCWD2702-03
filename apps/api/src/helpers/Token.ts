@@ -5,6 +5,12 @@ dotenv.config();
 
 export const createToken = ({uid}: {uid: string}) => {
   return jwt.sign({uid}, process.env.JWT_SECRET_KEY as string, {
+    expiresIn: '1d'
+  })
+}
+
+export const createVerificationToken = ({uid}: {uid: string}) => {
+  return jwt.sign({uid}, process.env.JWT_SECRET_KEY as string, {
     expiresIn: '1h'
   })
 }
@@ -20,7 +26,7 @@ export const tokenVerify = (req: Request, res: Response, next: NextFunction) => 
   try {
     const reqToken = req as IReqAccessToken
     const { accesstoken } = reqToken.headers;
-
+    
     if(!accesstoken) throw new Error('Token must Provided!')
 
     const decodePayload = jwt.verify(accesstoken as string, process.env.JWT_SECRET_KEY as string)

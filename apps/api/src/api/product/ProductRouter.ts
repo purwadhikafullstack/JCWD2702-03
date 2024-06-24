@@ -2,15 +2,17 @@ import { Router } from 'express';
 import {
   createProductController,
   deletedProductController,
-  findAllProductController,
+  findAllAndFilterProductController,
   updateProductController,
+  findProductByIdController,
 } from './ProductController';
-import { uploader } from '@/middleware/Uploader';
+import { uploader } from '@/middleware/Uploader/UploaderProfile';
 
 const router = Router();
 
 router.post('/', uploader, createProductController);
 router.put('/:id', uploader, updateProductController);
-router.get('/', findAllProductController);
-router.delete('/', deletedProductController);
+router.get('/', findAllAndFilterProductController);
+router.get('/:id', findProductByIdController);
+router.delete('/:id', deletedProductController);
 export default router;
