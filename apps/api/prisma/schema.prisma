@@ -140,10 +140,9 @@ model Product {
   categoryId      Int
   productCategory ProductCategory @relation(fields: [categoryId], references: [id])
   ProductImage    ProductImage[]
-  StokProduct     StokProduct[]
+  StockProduct    StockProduct[]
   Transaction     Transaction[]
   Cart            Cart[]
-  Discount        Discount[]
 
   @@map("products")
 }
@@ -170,14 +169,30 @@ model ProductCategory {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  Product   Product[]
+
+  Product              Product[]
+  ProductCategoryImage ProductCategoryImage[]
 
   @@map("products_category")
 }
 
-model StokProduct {
-  id   Int @id @default(autoincrement())
-  stok Int
+model ProductCategoryImage {
+  id          Int    @id @default(autoincrement())
+  categoryUrl String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  productCategoryId Int
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+
+  @@map("product_category_image")
+}
+
+model StockProduct {
+  id    Int @id @default(autoincrement())
+  stock Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -188,21 +203,24 @@ model StokProduct {
   productId Int
   product   Product @relation(fields: [productId], references: [id])
 
-  @@map("stok_products")
+  @@map("stock_products")
 }
 
 model Store {
-  id       Int    @id @default(autoincrement())
-  name     String
-  province String
-  city     String
-  address  String @db.MediumText
-  zip_code String
+  id        Int    @id @default(autoincrement())
+  name      String
+  province  String
+  city      String
+  address   String @db.MediumText
+  zip_code  String
+  latitude  Float  @default(0)
+  longitude Float  @default(0)
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  deletedAt   DateTime?
-  StokProduct StokProduct[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  StockProduct StockProduct[]
 
   @@map("stores")
 }
@@ -279,17 +297,15 @@ model Payment {
 }
 
 model Discount {
-  id               Int      @id @default(autoincrement())
-  code_voucher     String
-  discount_voucher String
-  expired          DateTime @db.Date
+  id      Int      @id @default(autoincrement())
+  code    String
+  pieces  Int      @default(0)
+  expired DateTime @db.Date
+  min_pay Int?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
 
   @@map("discounts")
 }

@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+
 export default function FormCategoryPage({ categoryData }: any) {
   return (
     <div>
@@ -20,7 +22,7 @@ export default function FormCategoryPage({ categoryData }: any) {
               <tr className="text-left">
                 <th className="p-3">Name Category</th>
                 <th className="p-3"></th>
-                <th className="p-3"></th>
+                <th className="p-3">Image</th>
                 <th className="p-3"></th>
                 <th className="p-3"></th>
                 <th className="p-3 text-center">Action</th>
@@ -36,7 +38,20 @@ export default function FormCategoryPage({ categoryData }: any) {
                     <p>{category.name}</p>
                   </td>
                   <td></td>
-                  <td></td>
+                  <td>
+                    <Image
+                      src={
+                        'http://localhost:8000/' +
+                        category.ProductCategoryImage[0].categoryUrl
+                      }
+                      alt={category.name}
+                      width={10000}
+                      height={10000}
+                      priority={true}
+                      quality={100}
+                      className="w-[50px] h-[50px]"
+                    />
+                  </td>
                   <td></td>
                   <td></td>
                   <td className="p-3 text-center flex gap-2">

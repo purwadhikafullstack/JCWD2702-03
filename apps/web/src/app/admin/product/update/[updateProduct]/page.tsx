@@ -62,7 +62,7 @@ export default function ModalUpdateProductPage(params: any) {
                 }),
               );
               upload.forEach((file: any) => {
-                fd.append('product_images', file);
+                fd.append('image_product', file);
               });
               updateProduct({ productID: params.params.updateProduct, fd: fd });
               resetForm();

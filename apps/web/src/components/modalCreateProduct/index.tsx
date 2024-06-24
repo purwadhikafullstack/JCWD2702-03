@@ -62,7 +62,7 @@ export default function ModalCreateProduct() {
             }),
           );
           upload.forEach((file: any) => {
-            fd.append('product_images', file);
+            fd.append('image_product', file);
           });
           createProduct(fd);
           resetForm();

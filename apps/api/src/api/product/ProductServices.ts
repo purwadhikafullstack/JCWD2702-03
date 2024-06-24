@@ -1,6 +1,6 @@
 import prisma from '@/prisma';
 
-export const createProductServices = async (data: any, product_images: any) => {
+export const createProductQuery = async (data: any, image_product: any) => {
   return await prisma.$transaction(async (tx) => {
     const existingProduct = await tx.product.findFirst({
       where: {
@@ -21,7 +21,7 @@ export const createProductServices = async (data: any, product_images: any) => {
       },
     });
     const imageToCreate: any = [];
-    product_images.forEach((item: any) => {
+    image_product.forEach((item: any) => {
       imageToCreate.push({
         productImage: item.path,
         productId: createProduct.id,
@@ -33,9 +33,9 @@ export const createProductServices = async (data: any, product_images: any) => {
   });
 };
 
-export const updateProductServices = async (
+export const updateProductQuery = async (
   data: any,
-  product_images: any,
+  image_product: any,
   id: string,
 ) => {
   return await prisma.$transaction(async (tx) => {
@@ -81,7 +81,7 @@ export const updateProductServices = async (
     });
 
     const imageToCreate: any = [];
-    product_images.forEach((item: any) => {
+    image_product.forEach((item: any) => {
       imageToCreate.push({
         productImage: item.path,
         productId: findProduct.id,
@@ -94,9 +94,10 @@ export const updateProductServices = async (
   });
 };
 
-export const findAllAndFilterProductServices = async (
+export const findAllAndFilterProductQuery = async (
   productName?: string,
-  // page?: string,
+  // page?: any,
+  category?: string,
 ) => {
   if (productName) {
     return await prisma.product.findMany({
@@ -108,38 +109,84 @@ export const findAllAndFilterProductServices = async (
       include: {
         productCategory: true,
         ProductImage: true,
+        StockProduct: {
+          include: {
+            store: true,
+          },
+        },
       },
-      // skip: (Number(page) - 1) * Number(6) || 0,
-      // take: 5,
+    });
+  }
+  if (category) {
+    return await prisma.product.findMany({
+      where: {
+        productCategory: {
+          id: Number(category),
+        },
+      },
+      include: {
+        productCategory: true,
+        ProductImage: true,
+        StockProduct: {
+          include: {
+            store: true,
+          },
+        },
+      },
     });
   }
   return await prisma.product.findMany({
+    where: {
+      deletedAt: null,
+    },
     include: {
       productCategory: true,
       ProductImage: true,
+      StockProduct: {
+        include: {
+          store: true,
+        },
+      },
     },
+    // skip: (Number(page) - 1) * Number(6) || 0,
+    // take: 6,
+    // orderBy: {
+    //   name: 'asc',
+    // },
   });
 };
 
-export const findProductByIdServices = async (id: string) => {
+// export const filterProductQuery = async (productName?: string, category?: string, ) => {
+
+// }
+
+export const findProductByIdQuery = async (id: string) => {
   return await prisma.product.findUnique({
     where: {
       id: Number(id),
+      deletedAt: null,
     },
     include: {
       productCategory: true,
       ProductImage: true,
+      StockProduct: {
+        include: {
+          store: true,
+        },
+      },
     },
   });
 };
 
-export const deletedProductServices = async (id: string) => {
-  return await prisma.product.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      deletedAt: new Date(),
-    },
+export const deletedProductQuery = async (id: string) => {
+  return await prisma.$transaction(async (tx) => {
+    await tx.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
   });
 };

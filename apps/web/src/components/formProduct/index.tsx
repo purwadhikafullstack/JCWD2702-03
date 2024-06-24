@@ -27,8 +27,8 @@ export default function FormProduct({ productData }: any) {
               <th className="p-3">Name Product</th>
               <th className="p-3">Price</th>
               <th className="p-3">Description</th>
-              <th className="p-3">Image</th>
-              <th className="p-3">Stock</th>
+              <th className="p-3">Category</th>
+              <th className="p-3"></th>
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -49,26 +49,13 @@ export default function FormProduct({ productData }: any) {
                     })}
                   </p>
                 </td>
-                <td className="p-3">
+                <td className="p-3 whitespace-nowrap truncate max-w-xs">
                   <p>{product.description}</p>
                 </td>
                 <td className="p-3">
-                  <Image
-                    src={
-                      'http://localhost:8000/' +
-                      product.ProductImage[0].productImage
-                    }
-                    alt="gambar product"
-                    width={10000}
-                    height={10000}
-                    priority={true}
-                    quality={100}
-                    className="w-[50px] h-[50px]"
-                  />
+                  <p>{product.productCategory.name}</p>
                 </td>
-                <td className="p-3">
-                  <p>Stok</p>
-                </td>
+                <td className="p-3"></td>
                 <td className="p-3 text-center flex gap-2">
                   <Link href={`/admin/product/${product.id}`}>
                     <button className="btn btn-info btn-sm text-xs w-14 text-white">

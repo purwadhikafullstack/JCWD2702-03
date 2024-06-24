@@ -19,8 +19,9 @@ export default function ProductDetail(params: any) {
           name={data?.data?.data.name}
           price={data?.data?.data.price}
           description={data?.data?.data.description}
-          image={data?.data?.data.ProductImage[0].productImage}
+          images={data?.data?.data.ProductImage}
           category={data?.data?.data.productCategory.name}
+          stock={data?.data?.data.StockProduct}
         />
       </div>
     </div>

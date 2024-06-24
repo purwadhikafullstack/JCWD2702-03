@@ -1,38 +1,50 @@
 import prisma from '@/prisma';
 
-export const CreateCategorySevices = async (name: string) => {
+export const CreateCategoryQuery = async (data: any, image_category: any) => {
   return await prisma.$transaction(async (tx) => {
     const exitingCategory = await tx.productCategory.findFirst({
       where: {
-        name: name,
+        name: data.name,
       },
     });
     if (exitingCategory) {
       throw new Error('Category Product Already Exist!');
     }
-    return await tx.productCategory.create({
+    const createCategory = await tx.productCategory.create({
       data: {
-        name,
+        name: data.name,
       },
+    });
+    const imageToCreate: any = [];
+    image_category.forEach((item: any) => {
+      imageToCreate.push({
+        categoryUrl: item.path,
+        productCategoryId: createCategory.id,
+      });
+    });
+    await tx.productCategoryImage.createMany({
+      data: [...imageToCreate],
     });
   });
 };
 
-export const UpdateCategoryServices = async (id: string, name: string) => {
+export const UpdateCategoryQuery = async (
+  data: any,
+  image_category: any,
+  id: string,
+) => {
   return await prisma.$transaction(async (tx) => {
-    // const findCategory = await tx.productCategory.findUnique({
-    //   where: {
-    //     id: Number(id),
-    //   },
-    // });
-    // if (!findCategory) throw new Error('Category Product Not Found!');
-    const exitingCategory = await tx.productCategory.findFirst({
+    const findCategory = await tx.productCategory.findUnique({
       where: {
-        name: name,
+        id: Number(id),
       },
     });
-    console.log(name);
-    console.log(exitingCategory);
+    if (!findCategory) throw new Error('Category Product Not Found!');
+    const exitingCategory = await tx.productCategory.findFirst({
+      where: {
+        name: data.name,
+      },
+    });
     if (exitingCategory) {
       throw new Error('Category Product Already Exist!');
     }
@@ -42,25 +54,54 @@ export const UpdateCategoryServices = async (id: string, name: string) => {
         id: Number(id),
       },
       data: {
-        name,
+        name: data.name,
       },
     });
+    const findCategoryImage = await tx.productCategoryImage.findMany({
+      where: {
+        productCategoryId: findCategory.id,
+      },
+    });
+    await tx.productCategoryImage.deleteMany({
+      where: {
+        productCategoryId: findCategory.id,
+      },
+    });
+    const imageToCreate: any = [];
+    image_category.forEach((item: any) => {
+      imageToCreate.push({
+        categoryUrl: item.path,
+        productCategoryId: findCategory.id,
+      });
+    });
+    await tx.productCategoryImage.createMany({
+      data: [...imageToCreate],
+    });
+    return findCategoryImage;
   });
 };
 
-export const FindAllCategoryServices = async () => {
-  return await prisma.productCategory.findMany();
-};
-
-export const FindCategoryByIdServices = async (id: string) => {
-  return await prisma.productCategory.findUnique({
+export const FindAllCategoryQuery = async () => {
+  return await prisma.productCategory.findMany({
     where: {
-      id: Number(id),
+      deletedAt: null,
+    },
+    include: {
+      ProductCategoryImage: true,
     },
   });
 };
 
-export const DeletedCategoryServices = async (id: string) => {
+export const FindCategoryByIdQuery = async (id: string) => {
+  return await prisma.productCategory.findUnique({
+    where: {
+      id: Number(id),
+      deletedAt: null,
+    },
+  });
+};
+
+export const DeletedCategoryQuery = async (id: string) => {
   return await prisma.$transaction(async (tx) => {
     const findCategory = await tx.productCategory.findUnique({
       where: {
@@ -70,9 +111,12 @@ export const DeletedCategoryServices = async (id: string) => {
     if (!findCategory)
       throw new Error('Category Not Found or Already Deleted!');
 
-    await tx.productCategory.delete({
+    await tx.productCategory.update({
       where: {
         id: Number(id),
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
   });
