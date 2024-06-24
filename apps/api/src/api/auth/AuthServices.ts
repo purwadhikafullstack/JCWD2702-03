@@ -18,3 +18,11 @@ export const findUsersByUid = async ({uid}: {uid:string}) =>{
     }
   })
 }
+
+export const keepLoginServices = async ({uid}: {uid: string}) => {
+  return await prisma.user.findUnique({
+    where: {
+      uid
+    }
+  })
+} 

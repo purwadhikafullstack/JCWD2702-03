@@ -55,6 +55,7 @@ const main = async () => {
         },
       ],
     });
+<<<<<<< HEAD
     await tx.product.createMany({
       data: [
         {
@@ -389,6 +390,18 @@ const main = async () => {
         },
       ],
     });
+=======
+    // await tx.product.createMany({
+    //   data: [
+    //     {
+    //       name: 'Jahe',
+    //       price: parseInt('5000'),
+    //       description: 'Jahe alami sehat untuk tubuh',
+    //       categoryId: 1,
+    //     },
+    //   ],
+    // });
+>>>>>>> b1e391518a9bb7ecef79d7cfd728a37bd6e7d8ee
   });
 };
 

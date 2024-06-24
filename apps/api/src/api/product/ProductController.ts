@@ -48,11 +48,6 @@ export const updateProduct = async (
       const resultProduct = await updateProductQuery(data, uploadFile, id);
       deletedUploadFileProduct({ image_product: resultProduct });
     }
-    res.status(201).send({
-      error: false,
-      message: 'Update Product Success!',
-      data: null,
-    });
   } catch (error) {
     next(error);
   }
