@@ -11,10 +11,8 @@ export default function UpdateStockPage(params: any) {
   const { dataStockById } = useGetStockById(params.params.stockId);
   const { updateStock } = useUpdateStock();
   const { dataStore } = useGetStore();
-  const productName = '';
-  const category = '';
-  const page = 0;
-  const { dataProduct } = useGetProduct(productName, category, page);
+
+  const { dataProduct } = useGetProduct();
   const nav = useRouter();
   return (
     <div className="min-h-screen">
@@ -29,13 +27,17 @@ export default function UpdateStockPage(params: any) {
             }}
             validationSchema={ValidasiCreateStock}
             onSubmit={(value, { resetForm }) => {
-              updateStock({
-                stockId: params.params.stockId,
-                stock: parseInt(value.stock),
-                productId: parseInt(value.productId),
-                storeId: parseInt(value.storeId),
-              });
-              resetForm();
+              try {
+                updateStock({
+                  stockId: params.params.stockId,
+                  stock: parseInt(value.stock),
+                  productId: parseInt(value.productId),
+                  storeId: parseInt(value.storeId),
+                });
+                resetForm();
+              } catch (error) {
+                console.log('Error', error);
+              }
             }}
           >
             {({ dirty, isValid }) => {
@@ -118,7 +120,13 @@ export default function UpdateStockPage(params: any) {
                     <button
                       type="submit"
                       onClick={() => {
-                        nav.push('/admin/stock');
+                        if (
+                          window.confirm(
+                            'Are you sure you want to save the changes?',
+                          )
+                        ) {
+                          nav.push('/admin/stock');
+                        }
                       }}
                       disabled={!(dirty && isValid)}
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"

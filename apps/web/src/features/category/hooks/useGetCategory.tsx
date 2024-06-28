@@ -1,10 +1,11 @@
 import { useGetCategoryQuery } from '../api/useGetCategoryQuery';
 
 export const useGetCategory = () => {
-  const { data, isLoading } = useGetCategoryQuery();
+  const { data, isLoading, refetch } = useGetCategoryQuery();
 
   return {
-    dataCategory: data?.data?.data,
+    dataCategory: data?.data,
     isLoading,
+    refetch,
   };
 };

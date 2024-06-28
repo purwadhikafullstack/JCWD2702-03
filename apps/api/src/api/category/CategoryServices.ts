@@ -81,7 +81,7 @@ export const UpdateCategoryQuery = async (
   });
 };
 
-export const FindAllCategoryQuery = async () => {
+export const FindCategoryQuery = async () => {
   return await prisma.productCategory.findMany({
     where: {
       deletedAt: null,
@@ -89,6 +89,19 @@ export const FindAllCategoryQuery = async () => {
     include: {
       ProductCategoryImage: true,
     },
+  });
+};
+
+export const FilterCategoryQuery = async (page?: any) => {
+  return await prisma.productCategory.findMany({
+    where: {
+      deletedAt: null,
+    },
+    include: {
+      ProductCategoryImage: true,
+    },
+    skip: (Number(page) - 1) * Number(5) || 0,
+    take: 5,
   });
 };
 

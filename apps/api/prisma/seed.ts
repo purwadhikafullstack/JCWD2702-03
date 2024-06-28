@@ -1,9 +1,49 @@
 import { PrismaClient } from '@prisma/client';
+import { HashPassword } from '../src/helpers/Hashing';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
   await prisma.$transaction(async (tx) => {
+    await tx.userRole.createMany({
+      data: [
+        {
+          role: 'Super Admin',
+        },
+        {
+          role: 'Store Admin',
+        },
+        {
+          role: 'User',
+        },
+      ],
+    });
+    await tx.user.createMany({
+      data: [
+        {
+          firstName: 'Super Admin',
+          verify: 'VERFIY',
+          email: 'superadmin@me.com',
+          roleId: 1,
+          password: await HashPassword({ password: 'superadmin' }),
+        },
+        {
+          firstName: 'Store Admin',
+          verify: 'VERFIY',
+          email: 'storeadmin@me.com',
+          roleId: 2,
+          password: await HashPassword({ password: 'admin' }),
+        },
+        {
+          firstName: 'Mustofa',
+          verify: 'VERFIY',
+          email: 'mustofawho12@gmail.com',
+          password: await HashPassword({ password: '123456' }),
+          googleAuth: 'TRUE',
+        },
+      ],
+    });
+
     await tx.productCategory.createMany({
       data: [
         {
@@ -41,21 +81,6 @@ const main = async () => {
         },
       ],
     });
-
-    await tx.userRole.createMany({
-      data: [
-        {
-          role: 'Super Admin',
-        },
-        {
-          role: 'Store Admin',
-        },
-        {
-          role: 'User',
-        },
-      ],
-    });
-<<<<<<< HEAD
     await tx.product.createMany({
       data: [
         {
@@ -390,18 +415,6 @@ const main = async () => {
         },
       ],
     });
-=======
-    // await tx.product.createMany({
-    //   data: [
-    //     {
-    //       name: 'Jahe',
-    //       price: parseInt('5000'),
-    //       description: 'Jahe alami sehat untuk tubuh',
-    //       categoryId: 1,
-    //     },
-    //   ],
-    // });
->>>>>>> b1e391518a9bb7ecef79d7cfd728a37bd6e7d8ee
   });
 };
 

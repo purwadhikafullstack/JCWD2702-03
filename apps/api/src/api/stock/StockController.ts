@@ -2,10 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import {
   createStockQuery,
   deleteStockQuery,
-  findAllStockQuery,
+  findStockQuery,
   findStockByIdQuery,
   updateStockQuery,
+  filterStockQuery,
 } from './StockServices';
+import prisma from '@/prisma';
 
 export const createStock = async (
   req: Request,
@@ -62,16 +64,47 @@ export const findStockById = async (
   }
 };
 
-export const findAllStock = async (
+export const findStock = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await findAllStockQuery();
+    const result = await findStockQuery();
+    const stockCount = await prisma.stockProduct.count({
+      where: {
+        deletedAt: null,
+      },
+    });
     res.status(200).send({
+      count: stockCount,
       error: false,
-      message: 'Find All Stock Success!',
+      message: 'Find Stock Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const filterStok = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const asc = req.query.asc as string | undefined;
+  const desc = req.query.desc as string | undefined;
+  const page = req.query.page as any;
+  try {
+    const result = await filterStockQuery(asc, desc, page);
+    const stockCount = await prisma.stockProduct.count({
+      where: {
+        deletedAt: null,
+      },
+    });
+    res.status(200).send({
+      count: stockCount,
+      error: false,
+      message: 'Filter Stock Success!',
       data: result,
     });
   } catch (error) {

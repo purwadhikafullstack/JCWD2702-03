@@ -8,10 +8,7 @@ import { useGetStore } from '@/features/store/hooks/useGetStore';
 export default function ModalCreateStock() {
   const { createStock } = useCreateStock();
   const { dataStore } = useGetStore();
-  const productName = '';
-  const category = '';
-  const page = '';
-  const { dataProduct } = useGetProduct(productName, category, page);
+  const { dataProduct } = useGetProduct();
   return (
     <div>
       <label
@@ -28,12 +25,16 @@ export default function ModalCreateStock() {
         }}
         validationSchema={ValidasiCreateStock}
         onSubmit={(values, { resetForm }) => {
-          createStock({
-            stock: parseInt(values.stock),
-            productId: parseInt(values.productId),
-            storeId: parseInt(values.storeId),
-          });
-          resetForm();
+          try {
+            createStock({
+              stock: parseInt(values.stock),
+              productId: parseInt(values.productId),
+              storeId: parseInt(values.storeId),
+            });
+            resetForm();
+          } catch (error) {
+            console.log('Error', error);
+          }
         }}
       >
         {({ dirty, isValid }) => {
@@ -107,7 +108,7 @@ export default function ModalCreateStock() {
                           className="select select-bordered"
                         >
                           <option>Choose Store</option>
-                          {dataStore?.map((store: any, index: number) => {
+                          {dataStore?.data.map((store: any, index: number) => {
                             return (
                               <option value={store.id} key={index}>
                                 {store.name}

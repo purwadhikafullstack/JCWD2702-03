@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const useCreateStockMutation = ({ onSuccess, onError }: any) => {
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: ['createStock'],
     mutationFn: async ({
       stock,
@@ -24,6 +24,6 @@ export const useCreateStockMutation = ({ onSuccess, onError }: any) => {
     onError,
   });
   return {
-    mutate,
+    mutateAsync,
   };
 };

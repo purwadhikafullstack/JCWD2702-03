@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Link from 'next/link';
 import { Pagination } from 'antd';
+import { useFilterProduct } from '@/features/product/hooks/useFilterProduct';
 
 export default function ProductAdminPage() {
   const [getName, setName] = useState('');
@@ -15,7 +16,11 @@ export default function ProductAdminPage() {
 
   const [productName] = useDebounce(getName, 1000);
   const [category] = useDebounce(getCategory, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName, category, page);
+  const { filterProduct, isLoading } = useFilterProduct(
+    productName,
+    category,
+    page,
+  );
 
   useEffect(() => {
     setIsDebouncing(true);
@@ -39,7 +44,7 @@ export default function ProductAdminPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="p-10">
+      <div className="p-5">
         <Link href="/admin/product">
           <h1 className="text-3xl font-semibold pb-5">PRODUCT</h1>
         </Link>
@@ -73,18 +78,18 @@ export default function ProductAdminPage() {
               <span className="loading loading-bars loading-lg h-[50px]"></span>
               <div>Finding Product</div>
             </div>
-          ) : dataProduct.length === 0 ? (
+          ) : filterProduct.length === 0 ? (
             <div className="text-center">Product Not Found</div>
           ) : (
-            <FormProduct productData={dataProduct} />
+            <FormProduct productData={filterProduct} />
           )}
         </div>
       </div>
       <Pagination
-        className="flex justify-center pb-[10px]"
+        className="flex justify-center"
         current={page}
         pageSize={5}
-        total={dataProduct?.count}
+        total={filterProduct.count}
         onChange={(page) => setPage(page)}
       />
     </div>

@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 export default function ModalUpdateProductPage(params: any) {
   const [upload, setUpload]: any = useState([]);
-  const { data } = useGetProductById(params.params.updateProduct);
+  const { data, refetch } = useGetProductById(params.params.updateProduct);
   const { dataCategory }: any = useGetCategory();
 
   const nav = useRouter();
@@ -51,21 +51,28 @@ export default function ModalUpdateProductPage(params: any) {
             }}
             validationSchema={ValidasiCreateProduct}
             onSubmit={(value, { resetForm }) => {
-              const fd = new FormData();
-              fd.append(
-                'data',
-                JSON.stringify({
-                  name: value.name,
-                  price: parseInt(value.price),
-                  description: value.description,
-                  categoryId: parseInt(value.categoryId),
-                }),
-              );
-              upload.forEach((file: any) => {
-                fd.append('image_product', file);
-              });
-              updateProduct({ productID: params.params.updateProduct, fd: fd });
-              resetForm();
+              try {
+                const fd = new FormData();
+                fd.append(
+                  'data',
+                  JSON.stringify({
+                    name: value.name,
+                    price: parseInt(value.price),
+                    description: value.description,
+                    categoryId: parseInt(value.categoryId),
+                  }),
+                );
+                upload.forEach((file: any) => {
+                  fd.append('image_product', file);
+                });
+                updateProduct({
+                  productID: params.params.updateProduct,
+                  fd: fd,
+                });
+                resetForm();
+              } catch (error) {
+                console.log('Error', error);
+              }
             }}
           >
             {({ dirty, isValid }) => {
@@ -102,13 +109,15 @@ export default function ModalUpdateProductPage(params: any) {
                           className="select select-bordered"
                         >
                           <option>Choose Category</option>
-                          {dataCategory?.map((category: any, index: number) => {
-                            return (
-                              <option value={category.id} key={index}>
-                                {category.name}
-                              </option>
-                            );
-                          })}
+                          {dataCategory?.data.map(
+                            (category: any, index: number) => {
+                              return (
+                                <option value={category.id} key={index}>
+                                  {category.name}
+                                </option>
+                              );
+                            },
+                          )}
                         </Field>
                         <ErrorMessage
                           name="categoryId"
@@ -176,7 +185,13 @@ export default function ModalUpdateProductPage(params: any) {
                     <button
                       type="submit"
                       onClick={() => {
-                        nav.push('/admin/product');
+                        if (
+                          window.confirm(
+                            'Are you sure you want to save the changes?',
+                          )
+                        ) {
+                          nav.push('/admin/product');
+                        }
                       }}
                       disabled={!(dirty && isValid)}
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"

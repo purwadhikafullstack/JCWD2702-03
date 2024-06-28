@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const useGetProductByIdQuery = (productID: string) => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['productById', productID],
     queryFn: async () => {
       return await axios.get(`http://localhost:8000/product/${productID}`);
@@ -11,5 +11,6 @@ export const useGetProductByIdQuery = (productID: string) => {
   });
   return {
     data,
+    refetch,
   };
 };

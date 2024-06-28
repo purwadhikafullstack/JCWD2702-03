@@ -7,7 +7,9 @@ import { useRouter } from 'next/navigation';
 
 export default function UpdateCategoryPage(params: any) {
   const [upload, setUpload]: any = useState([]);
-  const { dataCategoryById } = useGetCategoryById(params.params.updateCategory);
+  const { dataCategoryById, refetch } = useGetCategoryById(
+    params.params.updateCategory,
+  );
   const { updateCategory } = useUpdateCategory();
   const onSetFile = (event: any) => {
     try {
@@ -43,21 +45,25 @@ export default function UpdateCategoryPage(params: any) {
               name: dataCategoryById?.name,
             }}
             onSubmit={(value, { resetForm }) => {
-              const fd = new FormData();
-              fd.append(
-                'data',
-                JSON.stringify({
-                  name: value.name,
-                }),
-              );
-              upload.forEach((file: any) => {
-                fd.append('image_category', file);
-              });
-              updateCategory({
-                categoryId: params.params.updateCategory,
-                fd: fd,
-              });
-              resetForm();
+              try {
+                const fd = new FormData();
+                fd.append(
+                  'data',
+                  JSON.stringify({
+                    name: value.name,
+                  }),
+                );
+                upload.forEach((file: any) => {
+                  fd.append('image_category', file);
+                });
+                updateCategory({
+                  categoryId: params.params.updateCategory,
+                  fd: fd,
+                });
+                resetForm();
+              } catch (error) {
+                console.log('Error', error);
+              }
             }}
           >
             {({ dirty, isValid }) => {
@@ -97,7 +103,13 @@ export default function UpdateCategoryPage(params: any) {
                     <button
                       disabled={!(dirty && isValid)}
                       onClick={() => {
-                        nav.push('/admin/category');
+                        if (
+                          window.confirm(
+                            'Are you sure you want to save the changes?',
+                          )
+                        ) {
+                          nav.push('/admin/category');
+                        }
                       }}
                       type="submit"
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"

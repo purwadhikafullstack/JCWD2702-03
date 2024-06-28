@@ -94,10 +94,28 @@ export const updateProductQuery = async (
   });
 };
 
-export const findAllAndFilterProductQuery = async (
+export const findProductQuery = async () => {
+  return await prisma.product.findMany({
+    where: {
+      deletedAt: null,
+    },
+    include: {
+      DiscountProduct: true,
+      productCategory: true,
+      ProductImage: true,
+      StockProduct: {
+        include: {
+          store: true,
+        },
+      },
+    },
+  });
+};
+
+export const filterProductQuery = async (
   productName?: string,
-  // page?: any,
   category?: string,
+  page?: any,
 ) => {
   if (productName) {
     return await prisma.product.findMany({
@@ -107,6 +125,7 @@ export const findAllAndFilterProductQuery = async (
         },
       },
       include: {
+        DiscountProduct: true,
         productCategory: true,
         ProductImage: true,
         StockProduct: {
@@ -125,6 +144,7 @@ export const findAllAndFilterProductQuery = async (
         },
       },
       include: {
+        DiscountProduct: true,
         productCategory: true,
         ProductImage: true,
         StockProduct: {
@@ -140,6 +160,7 @@ export const findAllAndFilterProductQuery = async (
       deletedAt: null,
     },
     include: {
+      DiscountProduct: true,
       productCategory: true,
       ProductImage: true,
       StockProduct: {
@@ -148,17 +169,10 @@ export const findAllAndFilterProductQuery = async (
         },
       },
     },
-    // skip: (Number(page) - 1) * Number(6) || 0,
-    // take: 6,
-    // orderBy: {
-    //   name: 'asc',
-    // },
+    skip: (Number(page) - 1) * Number(5) || 0,
+    take: 5,
   });
 };
-
-// export const filterProductQuery = async (productName?: string, category?: string, ) => {
-
-// }
 
 export const findProductByIdQuery = async (id: string) => {
   return await prisma.product.findUnique({
@@ -167,6 +181,7 @@ export const findProductByIdQuery = async (id: string) => {
       deletedAt: null,
     },
     include: {
+      DiscountProduct: true,
       productCategory: true,
       ProductImage: true,
       StockProduct: {
@@ -174,6 +189,24 @@ export const findProductByIdQuery = async (id: string) => {
           store: true,
         },
       },
+    },
+  });
+};
+
+export const updateProductDiscountQuery = async ({
+  productId,
+  pieces,
+  expired,
+}: {
+  productId: number;
+  pieces: number;
+  expired: string;
+}) => {
+  return await prisma.discountProduct.create({
+    data: {
+      productId: productId,
+      pieces: pieces,
+      expired: new Date(expired),
     },
   });
 };

@@ -24,16 +24,20 @@ export default function ModalCreateStore() {
         }}
         validationSchema={ValidasiCreateStore}
         onSubmit={(values, { resetForm }) => {
-          createStore({
-            name: values.name,
-            province: values.province,
-            city: values.city,
-            address: values.address,
-            zip_code: values.zip_code,
-            latitude: parseFloat(values.latitude),
-            longitude: parseFloat(values.longitude),
-          });
-          resetForm();
+          try {
+            createStore({
+              name: values.name,
+              province: values.province,
+              city: values.city,
+              address: values.address,
+              zip_code: values.zip_code,
+              latitude: parseFloat(values.latitude),
+              longitude: parseFloat(values.longitude),
+            });
+            resetForm();
+          } catch (error) {
+            console.log('Error', error);
+          }
         }}
       >
         {({ dirty, isValid }) => {

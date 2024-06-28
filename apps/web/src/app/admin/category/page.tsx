@@ -2,9 +2,13 @@
 import ModalCreateCategory from '@/components/modalCreateCategory';
 import FormCategoryPage from '@/components/formCategory';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
-
+import { Pagination } from 'antd';
+import { useState } from 'react';
+import { useGetFilterCategory } from '@/features/category/hooks/useGetFilterCategory';
 export default function ProductAdminPage() {
-  const { dataCategory, isLoading } = useGetCategory();
+  const [page, setPage] = useState(1);
+  const { filterCategory, isLoading, refetch } = useGetFilterCategory(page);
+  const { dataCategory } = useGetCategory();
 
   if (isLoading)
     return (
@@ -21,9 +25,16 @@ export default function ProductAdminPage() {
           <ModalCreateCategory />
         </div>
         <div>
-          <FormCategoryPage categoryData={dataCategory} />
+          <FormCategoryPage categoryData={filterCategory} />
         </div>
       </div>
+      <Pagination
+        className="flex justify-center"
+        current={page}
+        pageSize={5}
+        total={filterCategory.count}
+        onChange={(page) => setPage(page)}
+      />
     </div>
   );
 }

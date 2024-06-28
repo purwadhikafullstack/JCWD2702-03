@@ -2,11 +2,13 @@ import { Response, Request, NextFunction } from 'express';
 import {
   CreateCategoryQuery,
   DeletedCategoryQuery,
-  FindAllCategoryQuery,
+  FindCategoryQuery,
   FindCategoryByIdQuery,
   UpdateCategoryQuery,
+  FilterCategoryQuery,
 } from './CategoryServices';
 import { deletedUploadFileCategory } from '@/helpers/category/DeletedFileCategory';
+import prisma from '@/prisma';
 
 export const CreateCategory = async (
   req: Request,
@@ -59,16 +61,46 @@ export const UpdateCategory = async (
   }
 };
 
-export const FindAllCategory = async (
+export const FindCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await FindAllCategoryQuery();
+    const result = await FindCategoryQuery();
+    const categoryCount = await prisma.productCategory.count({
+      where: {
+        deletedAt: null,
+      },
+    });
     res.status(200).send({
+      count: categoryCount,
       error: false,
       message: 'Find Category Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const FilterCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const page = req.query.page as any;
+  try {
+    const result = await FilterCategoryQuery(page);
+    const categoryCount = await prisma.productCategory.count({
+      where: {
+        deletedAt: null,
+      },
+    });
+    res.status(200).send({
+      count: categoryCount,
+      error: false,
+      message: 'Filter Category Success!',
       data: result,
     });
   } catch (error) {
@@ -99,7 +131,7 @@ export const DeletedCategory = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     await DeletedCategoryQuery(id);
     res.status(201).send({

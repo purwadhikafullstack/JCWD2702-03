@@ -33,7 +33,7 @@ export default function FormProduct({ productData }: any) {
             </tr>
           </thead>
           <tbody>
-            {productData.map((product: any, i: number) => (
+            {productData?.data.map((product: any, i: number) => (
               <tr
                 key={i}
                 className="border-b border-opacity-20 border-gray-300 bg-gray-50"

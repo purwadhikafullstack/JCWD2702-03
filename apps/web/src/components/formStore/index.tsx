@@ -28,7 +28,7 @@ export default function FormStorePage({ storeData }: any) {
               </tr>
             </thead>
             <tbody>
-              {storeData?.map((store: any, i: number) => (
+              {storeData?.data.map((store: any, i: number) => (
                 <tr
                   key={i}
                   className="border-b border-opacity-20 border-gray-300 bg-gray-50"

@@ -138,11 +138,12 @@ model Product {
   deletedAt DateTime?
 
   categoryId      Int
-  productCategory ProductCategory @relation(fields: [categoryId], references: [id])
+  productCategory ProductCategory   @relation(fields: [categoryId], references: [id])
   ProductImage    ProductImage[]
   StockProduct    StockProduct[]
   Transaction     Transaction[]
   Cart            Cart[]
+  DiscountProduct DiscountProduct[]
 
   @@map("products")
 }
@@ -308,4 +309,17 @@ model Discount {
   deletedAt DateTime?
 
   @@map("discounts")
+}
+
+model DiscountProduct {
+  id      Int      @id @default(autoincrement())
+  pieces  Int      @default(0)
+  expired DateTime @db.Date
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 }

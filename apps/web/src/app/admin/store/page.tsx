@@ -3,9 +3,13 @@
 import { useGetStore } from '@/features/store/hooks/useGetStore';
 import ModalCreateStore from '@/components/modalCreateStore';
 import FormStorePage from '@/components/formStore';
-
+import { useState } from 'react';
+import { Pagination } from 'antd';
+import { useGetFilterStore } from '@/features/store/hooks/useGetFilterStore';
 export default function StorePage() {
-  const { dataStore, isLoading } = useGetStore();
+  const [page, setPage] = useState(1);
+  const { filterStore, isLoading } = useGetFilterStore(page);
+  const { dataStore } = useGetStore();
 
   if (isLoading)
     return (
@@ -22,9 +26,16 @@ export default function StorePage() {
           <ModalCreateStore />
         </div>
         <div>
-          <FormStorePage storeData={dataStore} />
+          <FormStorePage storeData={filterStore} />
         </div>
       </div>
+      <Pagination
+        className="flex justify-center"
+        current={page}
+        pageSize={5}
+        total={filterStore.count}
+        onChange={(page) => setPage(page)}
+      />
     </div>
   );
 }

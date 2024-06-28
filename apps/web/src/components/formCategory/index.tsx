@@ -29,7 +29,7 @@ export default function FormCategoryPage({ categoryData }: any) {
               </tr>
             </thead>
             <tbody>
-              {categoryData?.map((category: any, i: number) => (
+              {categoryData?.data.map((category: any, i: number) => (
                 <tr
                   key={i}
                   className="border-b border-opacity-20 border-gray-300 bg-gray-50"
