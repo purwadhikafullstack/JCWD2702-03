@@ -8,13 +8,15 @@ export const useAuthPasswordVerify = ({ onSuccess, onError }: any) => {
       accesstoken,
       password,
       confirmPassword,
+      // details
     }: {
       accesstoken: string;
       password: string;
       confirmPassword: string;
+      // details?: string | undefined
     }) => {
       return await axiosInstance.post(
-        '/users/verification',
+        `/users/verification`,
         {
           password,
           confirmPassword,

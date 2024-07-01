@@ -40,6 +40,7 @@ export const useAuthCreateUserWithGoogleMutation = ({
   onError,
 }: any) => {
   const { mutate } = useMutation({
+
     mutationFn: async ({ email, fullname, uid }: ICreateUserWithGoogle) => {
       return await axiosInstance.post('/users/google', {
         email,

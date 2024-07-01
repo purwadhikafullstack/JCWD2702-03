@@ -56,7 +56,7 @@ export default function BiodataUser({
           <span className="pt-4 font-semibold"> Tanggal Lahir </span>{' '}
           {birthdate?.slice(0, 10)}
           <div className="flex pt-4 gap-4">
-            <ModalCreateProfile />
+            {/* <ModalCreateProfile /> */}
             <FormUpdateUser />
           </div>
         </div>

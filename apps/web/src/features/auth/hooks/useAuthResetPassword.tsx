@@ -5,10 +5,10 @@ import { useAuthResetPasswordMutation } from '../api/useAuthRequestPasswordMutat
 export const useAuthResetPasswordRequest = () => {
   const { mutate: mutateResetPassword } = useAuthResetPasswordMutation({
     onSuccess: (res: any) => {
-    toast.success(res.data.message);
+      toast.success(res.data.message);
     },
     onError: (err: any) => {
-      console.log(err.response.data.message);
+      toast.error(err.response.data.message);
     },
   });
 

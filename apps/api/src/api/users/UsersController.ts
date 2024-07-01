@@ -124,6 +124,7 @@ export const passwordVerification = async (
     const reqPayload = req as IReqAccessToken;
     const { uid } = reqPayload.payload;
     const { password, confirmPassword } = req.body;
+    // const { details } = req.query;
 
     if (password != confirmPassword) throw new Error('Password not match!');
 
@@ -132,6 +133,14 @@ export const passwordVerification = async (
       uid,
       password: hashedPassword,
     });
+    console.log(uid);
+    
+    await udpateResetPasswordService({ uid });
+
+    // if(details == "reset-password"){
+    //   await udpateResetPasswordService({
+    //     uid})
+    // }
 
     res.status(200).send({
       error: false,

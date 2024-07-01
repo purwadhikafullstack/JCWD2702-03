@@ -51,6 +51,8 @@ export const useAuthCreateUserWithGoogle = () =>{
     },
     onError: (err: any) =>{
       toast.error(err.response.data.message);
+      console.log(err);
+      
     }
   })
 

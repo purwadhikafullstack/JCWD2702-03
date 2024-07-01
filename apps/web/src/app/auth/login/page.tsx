@@ -14,6 +14,7 @@ export default function LoginPage() {
 
   const signUpWithGoogle = async () => {
     signInWithPopup(auth, provider).then(async (result) => {
+      console.log(result);
       if (result.user) {
         mutationCreateUserWithGoogle({
           email: result.user.email as any,

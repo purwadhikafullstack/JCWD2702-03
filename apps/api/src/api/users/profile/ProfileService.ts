@@ -5,7 +5,6 @@ export const createProfileAndImagesProfileServices = async (
   profile_images: any,
   uid: string,
 ) => {
-
     const createUserProfile = await prisma.userProfile.create({
       data: {
         fullname: data.fullname,

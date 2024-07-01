@@ -6,13 +6,21 @@ export const CreateUserServices = async ({
   firstName,
   lastName,
 }: ICreateUser) => {
-  return await prisma.user.create({
+  const createUser = await prisma.user.create({
     data: {
       email: email!,
       firstName: firstName,
       lastName: lastName,
     },
   });
+
+  await prisma.userProfile.create({
+    data: {
+      fullname: `${firstName} ${lastName}`,
+      userUid: createUser.uid,
+    },
+  });
+  return createUser
 };
 
 export const findUsersByEmailServices = async ({
@@ -46,7 +54,6 @@ export const CreateUserServiceWithGoogle = async ({
     data: {
       email: email,
       verify: 'VERFIY',
-      uid: uid,
       googleAuth: 'TRUE',
       firstName: firstName,
       lastName: lastName,
@@ -56,7 +63,7 @@ export const CreateUserServiceWithGoogle = async ({
   const createProfile = await prisma.userProfile.create({
     data: {
       fullname: fullname,
-      userUid: uid,
+      userUid: createUserWithGoogle.uid,
     },
   });
   return {
@@ -92,9 +99,10 @@ export const udpateResetPasswordService = async ({ uid }: { uid: string }) => {
       id: 'desc',
     },
   });
+  if(!findResetPassword) return;
   return await prisma.resetPassword.update({
     where: {
-      id: findResetPassword?.id,
+      id: findResetPassword.id,
     },
     data: {
       status: 'DONE',
@@ -109,32 +117,34 @@ export const createResetPasswordService = async ({
   uid: string;
   date: string;
 }) => {
-  // const findResetPassword = await prisma.resetPassword.findFirst({
-  //   where: {
-  //     userUid: uid,
-  //   },
-  //   orderBy: {
-  //     id: 'desc',
-  //   },
-  // });
+  const findResetPassword = await prisma.resetPassword.findFirst({
+    where: {
+      userUid: uid,
+    },
+    orderBy: {
+      id: 'desc',
+    },
+  });
 
-  // if (findResetPassword?.status !== 'DONE') {
+  if (findResetPassword?.status === 'PENDING') {
+    await prisma.resetPassword.update({
+      where: {
+        id: findResetPassword.id,
+      },
+      data: {
+        status: 'EXPIRED',
+      },
+    });
+  }
+
+  if (findResetPassword?.status !== 'DONE') {
     await prisma.resetPassword.create({
       data: {
         expiredAt: date,
         userUid: uid,
       },
     });
-  // }
-
-  // return await prisma.resetPassword.update({
-  //   where: {
-  //     id: findResetPassword?.id,
-  //   },
-  //   data: {
-  //     status: 'EXPIRED',
-  //   },
-  // });
+  }
 };
 
 export const findResetPasswordServices = async ({ uid }: { uid: string }) => {
@@ -147,7 +157,6 @@ export const findResetPasswordServices = async ({ uid }: { uid: string }) => {
     },
   });
 };
-
 
 export const getUserUidService = async ({ uid }: { uid: string }) => {
   return await prisma.user.findUnique({
