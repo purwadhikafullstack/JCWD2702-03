@@ -68,6 +68,53 @@ export const registerUsers = async (
   }
 };
 
+export const resendEmailVerification = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email } = req.body;
+
+    const findEmailResult = await findUsersByEmailServices({ email });
+
+    if (!findEmailResult) throw new Error('Email Not Found!');
+    if (findEmailResult?.verify === 'VERFIY')
+      throw new Error('Email Already Verified!');
+
+    const accesstoken = await createVerificationToken({
+      uid: findEmailResult?.uid,
+    });
+    const activationLink = `http://localhost:3000/auth/verify/${accesstoken}`;
+
+    const verificationHTML = fs.readFileSync(
+      'src/template/Verification.html',
+      'utf-8',
+    );
+    let verificationHTMLCompailed: any =
+      await Handlebars.compile(verificationHTML);
+    verificationHTMLCompailed = verificationHTMLCompailed({
+      username: findEmailResult?.firstName + ' ' + findEmailResult?.lastName,
+      link: activationLink,
+    });
+
+    TransporterNodeMailer.sendMail({
+      from: 'VOC-Mart',
+      to: email,
+      subject: 'Activate Your Account!',
+      html: verificationHTMLCompailed,
+    });
+
+    res.status(200).send({
+      error: false,
+      message: 'Resend Verification Email has been sent!',
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const passwordVerification = async (
   req: Request,
   res: Response,
@@ -85,10 +132,6 @@ export const passwordVerification = async (
       uid,
       password: hashedPassword,
     });
-
-    // await udpateResetPasswordService({
-    //   uid,
-    // });
 
     res.status(200).send({
       error: false,
@@ -115,14 +158,13 @@ export const registerUserWithGoogle = async (
       throw new Error('Please Login with Email!');
 
     if (!findEmailResult) {
-      const { createUserWithGoogle } =
-        await CreateUserServiceWithGoogle({
-          email,
-          fullname,
-          uid,
-          firstName: splitFullname[0],
-          lastName: splitFullname[1],
-        });
+      const { createUserWithGoogle } = await CreateUserServiceWithGoogle({
+        email,
+        fullname,
+        uid,
+        firstName: splitFullname[0],
+        lastName: splitFullname[1],
+      });
       const accesstoken = await createToken({ uid: createUserWithGoogle.uid });
       return res.status(200).send({
         error: false,
@@ -137,8 +179,8 @@ export const registerUserWithGoogle = async (
       });
     }
 
-    const accesstoken = await createToken({ uid: findEmailResult.uid });;
-    
+    const accesstoken = await createToken({ uid: findEmailResult.uid });
+
     return res.status(200).send({
       error: false,
       message: 'Login Success!',
@@ -202,7 +244,7 @@ export const resetPasswordVerification = async (
       uid,
       date: expiredHours.toISOString(),
     });
-    
+
     res.status(200).send({
       error: false,
       message: 'Link Reset Password has been Sent!',
@@ -213,7 +255,11 @@ export const resetPasswordVerification = async (
   }
 };
 
-export const getUserUid = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserUid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const reqPayload = req as IReqAccessToken;
     const { uid } = reqPayload.payload;
@@ -222,10 +268,53 @@ export const getUserUid = async (req: Request, res: Response, next: NextFunction
 
     res.status(200).send({
       error: false,
-      message: "Get User Success!",
-      data: getUserUidResult
-    })
+      message: 'Get User Success!',
+      data: getUserUidResult,
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email } = req.body;
+    const findEmailResult = await findUsersByEmailServices({ email });
+    if (!findEmailResult) throw new Error('Email Not Found!');
+
+    const accesstoken = await createVerificationToken({
+      uid: findEmailResult?.uid,
+    });
+    const activationLink = `http://localhost:3000/auth/resetPasswordVerify/${accesstoken}`;
+    const verificationHTML = fs.readFileSync(
+      'src/template/ResetPasswordVerification.html',
+      'utf-8',
+    );
+
+    let verificationHTMLCompailed: any =
+      await Handlebars.compile(verificationHTML);
+    verificationHTMLCompailed = verificationHTMLCompailed({
+      username: findEmailResult?.firstName + ' ' + findEmailResult?.lastName,
+      link: activationLink,
+    });
+
+    TransporterNodeMailer.sendMail({
+      from: 'VOC-Mart',
+      to: email,
+      subject: 'Click Below to Update Your Password',
+      html: verificationHTMLCompailed,
+    });
+
+    res.status(200).send({
+      error: false,
+      message: 'Reset Password verification has been sent to your email!',
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

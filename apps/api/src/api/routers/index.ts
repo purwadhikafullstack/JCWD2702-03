@@ -14,6 +14,8 @@ const router = Router();
 router.use(express.json());
 router.use('*/image_product', express.static('src/public/image_product'));
 router.use('*/image_category', express.static('src/public/image_category'));
+router.use('*/profile_images', express.static('src/public/profile_images'));
+
 
 router.use('/product', ProductRouter);
 router.use('/category', CategoryRouter);

@@ -1,7 +1,7 @@
 import multer from 'multer';
 import fs from 'fs';
 
-const defaultDirectory = 'src/public';
+const defaultDirectory = 'src/public/profile_images';
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
