@@ -11,7 +11,7 @@ export default function Home() {
   const [getName, setName] = useState('');
   const { dataCategory } = useGetCategory();
   const productName: any = useDebounce(getName, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName);
+  const { dataProduct, isLoading } = useGetProduct();
 
   if (isLoading)
     return (

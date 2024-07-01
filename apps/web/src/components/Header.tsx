@@ -62,7 +62,9 @@ export const Header = () => {
       <header className="p-4 bg-[#28b293] text-gray-800">
         <div className="container flex justify-between h-16 mx-auto">
           <div className="flex items-center space-x-3">
+            <Link href={'/'}> 
             <Image src="/logo.png" alt="logo" width={150} height={150} />
+            </Link>
           </div>
           <ul className="items-stretch hidden space-x-3 lg:flex">
             <li className="flex">
@@ -130,7 +132,7 @@ export const Header = () => {
                         href={'/dashboard/user'}
                         className=" bg-regent_gray font-bold text-white hover:bg-bombay"
                       >
-                        <p className="text-black">Profile</p>
+                        <p className="text-black">Profil</p>
                       </Link>
                     </li>
                     <li>
@@ -138,7 +140,7 @@ export const Header = () => {
                         onClick={handleLogout}
                         className="font-bold text-black hover:border-hover_eggplant hover:bg-hover_eggplant"
                       >
-                        Logout
+                        Keluar
                       </button>
                     </li>
                   </ul>
@@ -150,13 +152,13 @@ export const Header = () => {
                   href={'/auth/login'}
                   className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white "
                 >
-                  Login
+                  Masuk
                 </Link>
                 <Link
                   href={'/auth/register'}
                   className="flex h-[40px] w-[100px] items-center justify-center rounded-md font-bold text-white border"
                 >
-                  Sign Up
+                  Daftar
                 </Link>
               </div>
             )}

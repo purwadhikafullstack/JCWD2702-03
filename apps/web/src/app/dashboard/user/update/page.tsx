@@ -1,11 +1,12 @@
 'use client';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useUpdateUserProfile } from '@/features/user/hooks/useUpdateUser';
+import { Formik, Form, Field } from 'formik';
 import { useState } from 'react';
-import { useCreateProfile } from '@/features/user/hooks/useCreateUserProfile';
-
-export default function ModalCreateProfile() {
+import { useGetUserProfileResult } from '@/features/user/hooks/useGetUserProfile';
+export default function UpdateUser() {
+  const { mutationUpdateUser } = useUpdateUserProfile();
   const [upload, setUpload]: any = useState([]);
-  const { mutationCreateUserProfile }= useCreateProfile()
+  const { dataUser } = useGetUserProfileResult();
 
   const onSetFile = (event: any) => {
     try {
@@ -29,53 +30,43 @@ export default function ModalCreateProfile() {
       console.log(error);
     }
   };
+
   return (
-    <div>
-      <label
-        htmlFor="my_modal_7"
-        className="btn bg-gray-400 text-white hover:bg-gray-800 w-[300px]"
-      >
-        Create Profile
-      </label>
-      <Formik
-        initialValues={{
-          fullname: '',
-          birthDate: '',
-        }}
-        onSubmit={(values, { resetForm }) => {
-          const fd = new FormData();
-          fd.append(
-            'data',
-            JSON.stringify({
-              fullname: values.fullname,
-              birthDate: new Date(values.birthDate),
-            }),
-          );
-          upload.forEach((file: any) => {
-            fd.append('profile_images', file);
-          });
-          mutationCreateUserProfile(fd);
-          resetForm();
-        }}
-      >
-        {({ dirty, isValid }) => {
-          return (
-            <>
-              <Form>
-                <input
-                  type="checkbox"
-                  id="my_modal_7"
-                  className="modal-toggle"
-                />
-                <div className="modal" role="dialog">
-                  <div className="modal-box w-[50vw]">
-                    <h3 className="text-lg font-semibold text-center">
-                      CREATE USER PROFILE
-                    </h3>
+    <div className="pt-4 min-h-screen w-full flex items-center justify-center">
+      {dataUser ? (
+        <Formik
+          initialValues={{
+            fullname: dataUser?.userProfile?.fullname,
+            birthDate: dataUser?.userProfile?.birthDate,
+          }}
+          onSubmit={(values, { resetForm }) => {
+            const fd = new FormData();
+            fd.append(
+              'data',
+              JSON.stringify({
+                fullname: values.fullname,
+                birthDate: new Date(values.birthDate),
+              }),
+            );
+            upload.forEach((file: any) => {
+              fd.append('profile_images', file);
+            });
+            mutationUpdateUser(fd);
+            resetForm();
+          }}
+        >
+          {({ dirty, isValid }) => {
+            return (
+              <>
+                <Form>
+                  <div className="flex flex-col justify-center px-5 border h-[70vh] rounded-lg">
+                    <div className="text-center font-bold">
+                      <p>UPDATE USER PROFILE</p>
+                    </div>
                     <div className="">
                       <label className="form-control">
                         <div className="label">
-                          <span className="label-text">Fullname</span>
+                          <span className="label-text">Update Fullname</span>
                         </div>
                         <Field
                           type="text"
@@ -90,11 +81,11 @@ export default function ModalCreateProfile() {
                         /> */}
                       </label>
                     </div>
-                    
+
                     <div className="">
                       <label className="form-control">
                         <div className="label">
-                          <span className="label-text">Birth Date</span>
+                          <span className="label-text">Update Birth Date</span>
                         </div>
                         <Field
                           type="date"
@@ -109,7 +100,7 @@ export default function ModalCreateProfile() {
                         /> */}
                       </label>
                     </div>
-                    
+
                     <fieldset className="w-full pb-4">
                       <label className="form-control ">
                         <div className="label">
@@ -130,20 +121,19 @@ export default function ModalCreateProfile() {
                     <button
                       type="submit"
                       disabled={!(dirty && isValid)}
-                      className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"
+                      className="btn bg-[#28b293] text-white hover:bg-gray-800 w-full"
                     >
                       Submit
                     </button>
                   </div>
-                  <label className="modal-backdrop" htmlFor="my_modal_7">
-                    Close
-                  </label>
-                </div>
-              </Form>
-            </>
-          );
-        }}
-      </Formik>
+                </Form>
+              </>
+            );
+          }}
+        </Formik>
+      ) : (
+        <div> Loading...</div>
+      )}
     </div>
   );
 }

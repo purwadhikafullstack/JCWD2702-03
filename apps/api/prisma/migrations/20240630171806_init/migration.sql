@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `categoryUrl` on the `products_category` table. All the data in the column will be lost.
-
-*/
--- AlterTable
-ALTER TABLE `products_category` DROP COLUMN `categoryUrl`;
-
 -- CreateTable
 CREATE TABLE `product_category_image` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
