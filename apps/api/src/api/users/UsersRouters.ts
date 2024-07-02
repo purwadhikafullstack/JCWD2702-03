@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserUid, passwordVerification, registerUserWithGoogle, registerUsers, resetPasswordVerification } from "./UsersController";
+import { getUserUid, passwordVerification, registerUserWithGoogle, registerUsers, resetPasswordVerification, resendEmailVerification, forgotPassword } from "./UsersController";
 import { validatorCreateUsers } from "../../middleware/UsersValidator";
 import { handleErrorValidator } from "@/middleware/HandleErrorExpressValidator";
 import { tokenVerify } from "../../helpers/Token";
@@ -16,5 +16,7 @@ router.post('/verification', tokenVerify, passwordVerification)
 router.post('/google', registerUserWithGoogle)
 router.put('/reset-password', tokenVerify, resetPasswordVerification)
 router.get('/',tokenVerify, getUserUid)
+router.post('/resend-email',  resendEmailVerification)
+router.put('/forgot-password', forgotPassword)
 
 export default router

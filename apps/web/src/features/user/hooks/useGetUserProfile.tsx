@@ -1,8 +1,9 @@
 import { useGetUserProfileQuery } from "../api/useGetUserProfileQuery"
 
-export const useGetUserProfileResult = (id: number) =>{
-  const { data } = useGetUserProfileQuery(id)
+export const useGetUserProfileResult = () =>{
+  const { data } = useGetUserProfileQuery()
+  
   return{
-    data
+    dataUser: data?.data.data
   }
 }

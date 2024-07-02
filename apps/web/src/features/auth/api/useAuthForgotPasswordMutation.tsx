@@ -1,18 +1,16 @@
 'use client'
-
 import { axiosInstanceInterceptor } from "@/utils/axiosInstanceInterceptor"
 import { useMutation } from "@tanstack/react-query"
 
-export const useUpdateUserProfileMutation = ({onSuccess, onError}: any) => {
+export const useAuthForgotPasswordMutation = ({ onSuccess, onError }: any) => {
   const { mutate } = useMutation({
-    mutationFn: async(fd: any) => {
-      return await axiosInstanceInterceptor.put('/users/profile/update', fd)
+    mutationFn: async ({email}: {email: string}) => {
+      return await axiosInstanceInterceptor.put('/users/forgot-password', {email}) 
     },
 
     onSuccess,
-    onError
+    onError,
   })
-
   return{
     mutate
   }

@@ -109,32 +109,32 @@ export const createResetPasswordService = async ({
   uid: string;
   date: string;
 }) => {
-  const findResetPassword = await prisma.resetPassword.findFirst({
-    where: {
-      userUid: uid,
-    },
-    orderBy: {
-      id: 'desc',
-    },
-  });
+  // const findResetPassword = await prisma.resetPassword.findFirst({
+  //   where: {
+  //     userUid: uid,
+  //   },
+  //   orderBy: {
+  //     id: 'desc',
+  //   },
+  // });
 
-  if (findResetPassword?.status !== 'DONE') {
+  // if (findResetPassword?.status !== 'DONE') {
     await prisma.resetPassword.create({
       data: {
         expiredAt: date,
         userUid: uid,
       },
     });
-  }
+  // }
 
-  return await prisma.resetPassword.update({
-    where: {
-      id: findResetPassword?.id,
-    },
-    data: {
-      status: 'EXPIRED',
-    },
-  });
+  // return await prisma.resetPassword.update({
+  //   where: {
+  //     id: findResetPassword?.id,
+  //   },
+  //   data: {
+  //     status: 'EXPIRED',
+  //   },
+  // });
 };
 
 export const findResetPasswordServices = async ({ uid }: { uid: string }) => {
@@ -147,6 +147,7 @@ export const findResetPasswordServices = async ({ uid }: { uid: string }) => {
     },
   });
 };
+
 
 export const getUserUidService = async ({ uid }: { uid: string }) => {
   return await prisma.user.findUnique({

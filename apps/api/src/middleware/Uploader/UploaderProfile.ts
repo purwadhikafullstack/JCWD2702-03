@@ -16,7 +16,7 @@ export const uploader = (req: Request, res: Response, next: NextFunction) => {
 
         if (Array.isArray(uploadFiles)) {
           uploadFiles?.forEach((item) => {
-            if (item.size > 10000000) {
+            if (item.size > 1000000) {
               throw { message: `${item.originalname} is to Large` };
             }
           });
