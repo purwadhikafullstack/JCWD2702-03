@@ -8,12 +8,12 @@ import { useState } from 'react';
 import { useGetFilterStock } from '@/features/stock/hooks/useFilterStock';
 
 export default function StockPage() {
-  const [getAsc, setAsc] = useState('asc');
-  const [getDesc, setDesc] = useState('desc');
+  // const [getAsc, setAsc] = useState('asc');
+  // const [getDesc, setDesc] = useState('desc');
   const [page, setPage] = useState(1);
-  const [asc] = useDebounce(getAsc, 500);
-  const [desc] = useDebounce(getDesc, 500);
-  const { filterStock, isLoading } = useGetFilterStock(page, asc, desc);
+  // const [asc] = useDebounce(getAsc, 500);
+  // const [desc] = useDebounce(getDesc, 500);
+  const { filterStock, isLoading } = useGetFilterStock(page);
 
   if (isLoading)
     return (
@@ -27,7 +27,7 @@ export default function StockPage() {
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">STOCK PRODUCT</h1>
         <div className="flex items-end justify-end pt-10">
-          <ModalCreateStock />
+          <ModalCreateStock page={page} />
         </div>
         <div>
           <FormStock stockData={filterStock} />

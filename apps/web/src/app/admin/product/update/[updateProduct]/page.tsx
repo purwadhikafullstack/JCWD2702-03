@@ -6,6 +6,7 @@ import { useUpdateProduct } from '@/features/product/hooks/useUpdateProduct';
 import { ValidasiCreateProduct } from '@/supports/schema/createProductSchema';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import { useRouter } from 'next/navigation';
+import ModalCreateProductDiscount from '@/components/modalCreateProductDiscount';
 
 export default function ModalUpdateProductPage(params: any) {
   const [upload, setUpload]: any = useState([]);
@@ -40,7 +41,7 @@ export default function ModalUpdateProductPage(params: any) {
     <div className="min-h-screen">
       <div className="p-10">
         <h1 className="text-3xl font-semibold">Update Product</h1>
-        <div className="divider w-full"></div>
+
         {data?.data?.data ? (
           <Formik
             initialValues={{

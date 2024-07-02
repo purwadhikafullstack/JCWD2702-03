@@ -1,13 +1,11 @@
 'use client';
-import { useCreateStock } from '@/features/stock/hooks/useCreateStock';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { ValidasiCreateStock } from '@/supports/schema/createStockSchema';
+import { useCreateProductDiscount } from '@/features/product/hooks/useCreateProductDiscount';
 import { useGetProduct } from '@/features/product/hooks/useGetProduct';
-import { useGetStore } from '@/features/store/hooks/useGetStore';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useState } from 'react';
 
-export default function ModalCreateStock({ page }: any) {
-  const { createStock } = useCreateStock(page);
-  const { dataStore } = useGetStore();
+export default function ModalCreateProductDiscount(params: any) {
+  const { createProductDiscount } = useCreateProductDiscount();
   const { dataProduct } = useGetProduct();
   return (
     <div>
@@ -15,21 +13,21 @@ export default function ModalCreateStock({ page }: any) {
         htmlFor="my_modal_7"
         className="btn bg-gray-800 text-white hover:bg-gray-800"
       >
-        Create Stock
+        Create Discount Product
       </label>
       <Formik
         initialValues={{
-          stock: '',
           productId: '',
-          storeId: '',
+          pieces: '',
+          expired: '',
         }}
-        validationSchema={ValidasiCreateStock}
+        //   validationSchema={ValidasiCreateStore}
         onSubmit={(values, { resetForm }) => {
           try {
-            createStock({
-              stock: parseInt(values.stock),
+            createProductDiscount({
               productId: parseInt(values.productId),
-              storeId: parseInt(values.storeId),
+              pieces: parseInt(values.pieces),
+              expired: values.expired,
             });
             resetForm();
           } catch (error) {
@@ -49,26 +47,8 @@ export default function ModalCreateStock({ page }: any) {
                 <div className="modal" role="dialog">
                   <div className="modal-box w-[50vw]">
                     <h3 className="text-lg font-semibold text-center">
-                      CREATE STOCK
+                      CREATE PRODUCT DISCOUNT
                     </h3>
-                    <div className="pb-5">
-                      <label className="form-control">
-                        <div className="label">
-                          <span className="label-text">Stock</span>
-                        </div>
-                        <Field
-                          type="text"
-                          name="stock"
-                          placeholder="Input Stock"
-                          className="input input-bordered"
-                        />
-                        <ErrorMessage
-                          name="stock"
-                          component="div"
-                          className="text-red-500"
-                        />
-                      </label>
-                    </div>
                     <div className="pb-5">
                       <label className="form-control">
                         <div className="label">
@@ -89,38 +69,47 @@ export default function ModalCreateStock({ page }: any) {
                             );
                           })}
                         </Field>
-                        <ErrorMessage
-                          name="productId"
-                          component="div"
-                          className="text-red-500"
-                        />
+                        {/* <ErrorMessage
+                            name="productId"
+                            component="div"
+                            className="text-red-500"
+                          /> */}
                       </label>
                     </div>
                     <div className="pb-5">
                       <label className="form-control">
                         <div className="label">
-                          <span className="label-text">Store</span>
+                          <span className="label-text">Pieces</span>
                         </div>
                         <Field
-                          component="select"
-                          id="storeId"
-                          name="storeId"
-                          className="select select-bordered"
-                        >
-                          <option>Choose Store</option>
-                          {dataStore?.data.map((store: any, index: number) => {
-                            return (
-                              <option value={store.id} key={index}>
-                                {store.name}
-                              </option>
-                            );
-                          })}
-                        </Field>
-                        <ErrorMessage
-                          name="storeId"
-                          component="div"
-                          className="text-red-500"
+                          type="number"
+                          name="pieces"
+                          placeholder="Input Pieces Discount"
+                          className="input input-bordered"
                         />
+                        {/* <ErrorMessage
+                            name="pieces"
+                            component="div"
+                            className="text-red-500"
+                          /> */}
+                      </label>
+                    </div>
+                    <div className="pb-5">
+                      <label className="form-control">
+                        <div className="label">
+                          <span className="label-text">Expired</span>
+                        </div>
+                        <Field
+                          type="date"
+                          name="expired"
+                          placeholder="Select Expired Discount"
+                          className="input input-bordered"
+                        />
+                        {/* <ErrorMessage
+                            name="expired"
+                            component="div"
+                            className="text-red-500"
+                          /> */}
                       </label>
                     </div>
                     <button

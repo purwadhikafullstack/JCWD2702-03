@@ -7,6 +7,7 @@ import { useDebounce } from 'use-debounce';
 import Link from 'next/link';
 import { Pagination } from 'antd';
 import { useFilterProduct } from '@/features/product/hooks/useFilterProduct';
+import ModalCreateProductDiscount from '@/components/modalCreateProductDiscount';
 
 export default function ProductAdminPage() {
   const [getName, setName] = useState('');
@@ -26,7 +27,7 @@ export default function ProductAdminPage() {
     setIsDebouncing(true);
     const timeout = setTimeout(() => {
       setIsDebouncing(false);
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timeout);
   }, [productName, category, page]);
 
@@ -70,7 +71,12 @@ export default function ProductAdminPage() {
           >
             Reset
           </button>
-          <ModalCreateProduct />
+          <div>{/* <ModalCreateProductDiscount /> */}</div>
+          <ModalCreateProduct
+            page={page}
+            product={productName}
+            category={category}
+          />
         </div>
         <div className="h-full w-full overflow-x-auto">
           {isDebouncing ? (

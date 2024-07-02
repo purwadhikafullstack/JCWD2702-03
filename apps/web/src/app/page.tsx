@@ -7,11 +7,12 @@ import { useGetProduct } from '@/features/product/hooks/useGetProduct';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import CardHelper from '@/components/cardHelper';
 import SortByCategory from '@/components/sortByCategory';
+
 export default function Home() {
   const [getName, setName] = useState('');
   const { dataCategory } = useGetCategory();
   const productName: any = useDebounce(getName, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName);
+  const { dataProduct, isLoading } = useGetProduct();
 
   if (isLoading)
     return (
@@ -47,7 +48,7 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center py-10">
-        <div className=''>
+        <div className="">
           <CardHelper />
         </div>
       </div>

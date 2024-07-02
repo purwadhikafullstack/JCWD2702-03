@@ -1,7 +1,7 @@
 import { useGetFilterStockQuery } from '../api/useGetFilterStockQuery';
 
-export const useGetFilterStock = (page: number, asc: string, desc: string) => {
-  const { data, isLoading, refetch } = useGetFilterStockQuery(page, asc, desc);
+export const useGetFilterStock = (page: number) => {
+  const { data, isLoading, refetch } = useGetFilterStockQuery(page);
 
   return {
     filterStock: data?.data,

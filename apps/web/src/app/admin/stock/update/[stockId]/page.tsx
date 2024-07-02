@@ -7,9 +7,9 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { ValidasiCreateStock } from '@/supports/schema/createStockSchema';
 import { useRouter } from 'next/navigation';
 
-export default function UpdateStockPage(params: any) {
+export default function UpdateStockPage(params: any, { page }: any) {
   const { dataStockById } = useGetStockById(params.params.stockId);
-  const { updateStock } = useUpdateStock();
+  const { updateStock } = useUpdateStock(page);
   const { dataStore } = useGetStore();
 
   const { dataProduct } = useGetProduct();
@@ -102,7 +102,7 @@ export default function UpdateStockPage(params: any) {
                           className="select select-bordered"
                         >
                           <option>Choose Store</option>
-                          {dataStore?.map((store: any, index: number) => {
+                          {dataStore?.data.map((store: any, index: number) => {
                             return (
                               <option value={store.id} key={index}>
                                 {store.name}

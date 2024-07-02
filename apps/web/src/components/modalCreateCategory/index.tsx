@@ -4,8 +4,8 @@ import { ValidasiCreateCategory } from '@/supports/schema/createCategorySchema';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 
-export default function ModalCreateCategory() {
-  const { mutateCreateCategory } = useCreateCategoryMutate();
+export default function ModalCreateCategory({ page }: any) {
+  const { mutateCreateCategory } = useCreateCategoryMutate(page);
   const [upload, setUpload]: any = useState([]);
 
   const onSetFile = (event: any) => {
@@ -57,6 +57,7 @@ export default function ModalCreateCategory() {
             });
             mutateCreateCategory(fd);
             resetForm();
+            // refetchCategory();
           } catch (error) {
             console.log('Error', error);
           }

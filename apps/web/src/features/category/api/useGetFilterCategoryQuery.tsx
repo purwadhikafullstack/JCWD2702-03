@@ -3,7 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const useGetFilterCategoryQuery = (page: number) => {
-  const { data, isLoading, refetch } = useQuery({
+  const {
+    data,
+    isLoading,
+    refetch: refetchCategory,
+  } = useQuery({
     queryKey: ['getAllProduct', page],
     queryFn: async () => {
       return await axios.get(
@@ -14,6 +18,6 @@ export const useGetFilterCategoryQuery = (page: number) => {
   return {
     data,
     isLoading,
-    refetch,
+    refetchCategory,
   };
 };

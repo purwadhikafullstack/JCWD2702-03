@@ -2,8 +2,27 @@
 import { useCreateStore } from '@/features/store/hooks/useCreateStore';
 import { ValidasiCreateStore } from '@/supports/schema/createStoreSchema';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-export default function ModalCreateStore() {
-  const { createStore } = useCreateStore();
+import { useGetProvince } from '@/features/rajaOngkir/api/useGetProvince';
+import { useGetCity } from '@/features/rajaOngkir/api/useGetCity';
+import { useState } from 'react';
+export default function ModalCreateStore({ page }: any) {
+  const { createStore } = useCreateStore(page);
+  const { province } = useGetProvince();
+  const { city, onHandleGetCity } = useGetCity();
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [getProvinceName, setProvinceName] = useState<string>('');
+
+  const handleCity = (e: any) => {
+    const provinceId = e.target.value;
+    const provinceName = province.find(
+      (provinceName: any) => provinceName.province_id === provinceId,
+    ).province;
+    setProvinceName(provinceName);
+    setSelectedCity(provinceId);
+    if (provinceId) {
+      onHandleGetCity(provinceId);
+    }
+  };
   return (
     <div>
       <label
@@ -22,19 +41,20 @@ export default function ModalCreateStore() {
           latitude: '',
           longitude: '',
         }}
-        validationSchema={ValidasiCreateStore}
+        // validationSchema={ValidasiCreateStore}
         onSubmit={(values, { resetForm }) => {
           try {
+            console.log(values);
             createStore({
               name: values.name,
-              province: values.province,
+              province: getProvinceName,
               city: values.city,
               address: values.address,
               zip_code: values.zip_code,
               latitude: parseFloat(values.latitude),
               longitude: parseFloat(values.longitude),
             });
-            resetForm();
+            // resetForm();
           } catch (error) {
             console.log('Error', error);
           }
@@ -78,11 +98,22 @@ export default function ModalCreateStore() {
                           <span className="label-text">Province</span>
                         </div>
                         <Field
-                          type="text"
+                          component="select"
+                          value={selectedCity}
+                          onChange={handleCity}
+                          id="province"
                           name="province"
-                          placeholder="Input Province Store"
-                          className="input input-bordered"
-                        />
+                          className="select select-bordered"
+                        >
+                          <option>Select Province</option>
+                          {province?.map((province: any, index: number) => {
+                            return (
+                              <option key={index} value={province.province_id}>
+                                {province.province}
+                              </option>
+                            );
+                          })}
+                        </Field>
                         <ErrorMessage
                           name="province"
                           component="div"
@@ -96,11 +127,18 @@ export default function ModalCreateStore() {
                           <span className="label-text">City</span>
                         </div>
                         <Field
-                          type="text"
+                          component="select"
+                          id="city"
                           name="city"
-                          placeholder="Input City Store"
-                          className="input input-bordered"
-                        />
+                          className="select select-bordered"
+                        >
+                          <option>Select City</option>
+                          {city?.map((city: any, index: number) => {
+                            return (
+                              <option key={index}>{city.city_name}</option>
+                            );
+                          })}
+                        </Field>
                         <ErrorMessage
                           name="city"
                           component="div"

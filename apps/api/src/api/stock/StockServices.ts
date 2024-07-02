@@ -45,8 +45,8 @@ export const updateStockQuery = async (
     });
 
     if (!findStock) throw new Error('Stock Not Found or Add Stock First!');
-    if (findStock.productId === productId)
-      throw new Error('Stock Product has been changed!');
+    // if (findStock.productId === productId)
+    //   throw new Error('Stock Product has been changed!');
 
     return await tx.stockProduct.update({
       where: {

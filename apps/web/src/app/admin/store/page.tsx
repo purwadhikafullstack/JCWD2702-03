@@ -23,7 +23,7 @@ export default function StorePage() {
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">STORE</h1>
         <div className="flex items-end justify-end pt-10">
-          <ModalCreateStore />
+          <ModalCreateStore page={page} />
         </div>
         <div>
           <FormStorePage storeData={filterStore} />

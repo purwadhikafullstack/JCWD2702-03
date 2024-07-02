@@ -4,15 +4,13 @@ import axios from 'axios';
 
 export const useGetFilterStockQuery = (
   page: number,
-  asc: string,
-  desc: string,
+  // asc: string,
+  // desc: string,
 ) => {
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['getStock', page, asc, desc],
+    queryKey: ['getStock', page],
     queryFn: async () => {
-      return await axios.get(
-        `http://localhost:8000/stock/filter?asc=${asc}&desc=${desc}&page=${page}`,
-      );
+      return await axios.get(`http://localhost:8000/stock/filter?page=${page}`);
     },
   });
   return {

@@ -7,7 +7,8 @@ import { useState } from 'react';
 import { useGetFilterCategory } from '@/features/category/hooks/useGetFilterCategory';
 export default function ProductAdminPage() {
   const [page, setPage] = useState(1);
-  const { filterCategory, isLoading, refetch } = useGetFilterCategory(page);
+  const { filterCategory, isLoading, refetchCategory } =
+    useGetFilterCategory(page);
   const { dataCategory } = useGetCategory();
 
   if (isLoading)
@@ -22,7 +23,7 @@ export default function ProductAdminPage() {
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">CATEGORY PRODUCT</h1>
         <div className="flex items-end justify-end pt-10">
-          <ModalCreateCategory />
+          <ModalCreateCategory page={page} />
         </div>
         <div>
           <FormCategoryPage categoryData={filterCategory} />

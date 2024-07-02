@@ -1,9 +1,9 @@
 import { useCreateStockMutation } from '../api/useCreateStockMutation';
 import { toast } from 'react-toastify';
-import { useGetStockQuery } from '../api/useGetStockQuery';
+import { useGetFilterStock } from './useFilterStock';
 
-export const useCreateStock = () => {
-  const { refetch } = useGetStockQuery();
+export const useCreateStock = (page: any) => {
+  const { refetch } = useGetFilterStock(page);
   const { mutateAsync: createStock } = useCreateStockMutation({
     onSuccess: (res: any) => {
       toast.success(res.data.message);

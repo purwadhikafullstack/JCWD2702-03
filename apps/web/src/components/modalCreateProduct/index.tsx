@@ -6,9 +6,9 @@ import { ValidasiCreateProduct } from '@/supports/schema/createProductSchema';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import { useRouter } from 'next/navigation';
 
-export default function ModalCreateProduct() {
+export default function ModalCreateProduct({ page, product, category }: any) {
   const [upload, setUpload]: any = useState([]);
-  const { createProduct } = useCreateProduct();
+  const { createProduct } = useCreateProduct(product, category, page);
   const { dataCategory }: any = useGetCategory();
 
   const nav = useRouter();

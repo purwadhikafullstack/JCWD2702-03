@@ -4,13 +4,13 @@ import { Formik, Field, Form } from 'formik';
 import { useUpdateCategory } from '@/features/category/hooks/useUpdateCategory';
 import { useGetCategoryById } from '@/features/category/hooks/useGetCategoryById';
 import { useRouter } from 'next/navigation';
+import { useGetFilterCategory } from '@/features/category/hooks/useGetFilterCategory';
 
-export default function UpdateCategoryPage(params: any) {
+export default function UpdateCategoryPage(params: any, { page }: any) {
   const [upload, setUpload]: any = useState([]);
-  const { dataCategoryById, refetch } = useGetCategoryById(
-    params.params.updateCategory,
-  );
-  const { updateCategory } = useUpdateCategory();
+  const { dataCategoryById } = useGetCategoryById(params.params.updateCategory);
+  // const { refetchCategory } = useGetFilterCategory(page);
+  const { updateCategory } = useUpdateCategory(page);
   const onSetFile = (event: any) => {
     try {
       const acceptedFormat = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
@@ -61,6 +61,7 @@ export default function UpdateCategoryPage(params: any) {
                   fd: fd,
                 });
                 resetForm();
+                // refetchCategory();
               } catch (error) {
                 console.log('Error', error);
               }
