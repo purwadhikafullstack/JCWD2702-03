@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ICreateStoreMutation } from './type';
 
 export const useCreateStoreMutation = ({ onSuccess, onError }: any) => {
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: ['createStore'],
     mutationFn: async ({
       name,
@@ -29,6 +29,6 @@ export const useCreateStoreMutation = ({ onSuccess, onError }: any) => {
     onError,
   });
   return {
-    mutate,
+    mutateAsync,
   };
 };

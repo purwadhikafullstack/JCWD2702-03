@@ -1,9 +1,49 @@
 import { PrismaClient } from '@prisma/client';
+import { HashPassword } from '../src/helpers/Hashing';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
   await prisma.$transaction(async (tx) => {
+    await tx.userRole.createMany({
+      data: [
+        {
+          role: 'Super Admin',
+        },
+        {
+          role: 'Store Admin',
+        },
+        {
+          role: 'User',
+        },
+      ],
+    });
+    await tx.user.createMany({
+      data: [
+        {
+          firstName: 'Super Admin',
+          verify: 'VERFIY',
+          email: 'superadmin@me.com',
+          roleId: 1,
+          password: await HashPassword({ password: 'superadmin' }),
+        },
+        {
+          firstName: 'Store Admin',
+          verify: 'VERFIY',
+          email: 'storeadmin@me.com',
+          roleId: 2,
+          password: await HashPassword({ password: 'admin' }),
+        },
+        {
+          firstName: 'Mustofa',
+          verify: 'VERFIY',
+          email: 'mustofawho12@gmail.com',
+          password: await HashPassword({ password: '123456' }),
+          googleAuth: 'TRUE',
+        },
+      ],
+    });
+
     await tx.productCategory.createMany({
       data: [
         {
@@ -38,20 +78,6 @@ const main = async () => {
         {
           productCategoryId: 4,
           categoryUrl: 'src/public/image_category/image/icon5.png',
-        },
-      ],
-    });
-
-    await tx.userRole.createMany({
-      data: [
-        {
-          role: 'Super Admin',
-        },
-        {
-          role: 'Store Admin',
-        },
-        {
-          role: 'User',
         },
       ],
     });

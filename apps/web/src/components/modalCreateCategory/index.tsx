@@ -4,8 +4,8 @@ import { ValidasiCreateCategory } from '@/supports/schema/createCategorySchema';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 
-export default function ModalCreateCategory() {
-  const { mutateCreateCategory } = useCreateCategoryMutate();
+export default function ModalCreateCategory({ page }: any) {
+  const { mutateCreateCategory } = useCreateCategoryMutate(page);
   const [upload, setUpload]: any = useState([]);
 
   const onSetFile = (event: any) => {
@@ -44,18 +44,23 @@ export default function ModalCreateCategory() {
         }}
         validationSchema={ValidasiCreateCategory}
         onSubmit={(values, { resetForm }) => {
-          const fd = new FormData();
-          fd.append(
-            'data',
-            JSON.stringify({
-              name: values.name,
-            }),
-          );
-          upload.forEach((file: any) => {
-            fd.append('image_category', file);
-          });
-          mutateCreateCategory(fd);
-          resetForm();
+          try {
+            const fd = new FormData();
+            fd.append(
+              'data',
+              JSON.stringify({
+                name: values.name,
+              }),
+            );
+            upload.forEach((file: any) => {
+              fd.append('image_category', file);
+            });
+            mutateCreateCategory(fd);
+            resetForm();
+            // refetchCategory();
+          } catch (error) {
+            console.log('Error', error);
+          }
         }}
       >
         {({ dirty, isValid }) => {

@@ -6,9 +6,9 @@ import { ValidasiCreateProduct } from '@/supports/schema/createProductSchema';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import { useRouter } from 'next/navigation';
 
-export default function ModalCreateProduct() {
+export default function ModalCreateProduct({ page, product, category }: any) {
   const [upload, setUpload]: any = useState([]);
-  const { createProduct } = useCreateProduct();
+  const { createProduct } = useCreateProduct(product, category, page);
   const { dataCategory }: any = useGetCategory();
 
   const nav = useRouter();
@@ -51,21 +51,27 @@ export default function ModalCreateProduct() {
         }}
         validationSchema={ValidasiCreateProduct}
         onSubmit={(values, { resetForm }) => {
-          const fd = new FormData();
-          fd.append(
-            'data',
-            JSON.stringify({
-              name: values.name,
-              price: parseInt(values.price),
-              description: values.description,
-              categoryId: parseInt(values.categoryId),
-            }),
-          );
-          upload.forEach((file: any) => {
-            fd.append('image_product', file);
-          });
-          createProduct(fd);
-          resetForm();
+          {
+            try {
+              const fd = new FormData();
+              fd.append(
+                'data',
+                JSON.stringify({
+                  name: values.name,
+                  price: parseInt(values.price),
+                  description: values.description,
+                  categoryId: parseInt(values.categoryId),
+                }),
+              );
+              upload.forEach((file: any) => {
+                fd.append('image_product', file);
+              });
+              createProduct(fd);
+              resetForm();
+            } catch (error) {
+              console.log('Error', error);
+            }
+          }
         }}
       >
         {({ dirty, isValid }) => {
@@ -112,13 +118,15 @@ export default function ModalCreateProduct() {
                           className="select select-bordered"
                         >
                           <option>Choose Category</option>
-                          {dataCategory?.map((category: any, index: number) => {
-                            return (
-                              <option value={category.id} key={index}>
-                                {category.name}
-                              </option>
-                            );
-                          })}
+                          {dataCategory?.data.map(
+                            (category: any, index: number) => {
+                              return (
+                                <option value={category.id} key={index}>
+                                  {category.name}
+                                </option>
+                              );
+                            },
+                          )}
                         </Field>
                         <ErrorMessage
                           name="categoryId"

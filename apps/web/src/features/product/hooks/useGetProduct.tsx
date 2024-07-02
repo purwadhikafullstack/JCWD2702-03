@@ -1,18 +1,11 @@
 import { useGetProductQuery } from '../api/useGetProductQuery';
 
-export const useGetProduct = (
-  productName: string,
-  category: any,
-  page: any,
-) => {
-  const { data: mutateGetProduct, isLoading } = useGetProductQuery(
-    productName,
-    category,
-    page,
-  );
+export const useGetProduct = () => {
+  const { data: mutateGetProduct, isLoading, refetch } = useGetProductQuery();
 
   return {
     dataProduct: mutateGetProduct?.data?.data,
     isLoading,
+    refetch,
   };
 };

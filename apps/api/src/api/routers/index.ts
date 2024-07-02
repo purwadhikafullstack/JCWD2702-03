@@ -7,7 +7,8 @@ import AuthRouters from '../auth/AuthRouters';
 import StoreRouter from '../store/StoreRouter';
 import StockRouter from '../stock/StockRouter';
 import DiscountRouter from '../discount/DiscountRouter';
-
+import cityRouters from '../RajaOngkir/city';
+import provinceRouters from '../RajaOngkir/province';
 
 const router = Router();
 
@@ -25,5 +26,7 @@ router.use('/discount', DiscountRouter);
 router.use('/role', RoleRouters);
 router.use('/users', UsersRouters);
 router.use('/auth', AuthRouters);
+router.use('/city', cityRouters);
+router.use('/province', provinceRouters);
 
 export default router;
