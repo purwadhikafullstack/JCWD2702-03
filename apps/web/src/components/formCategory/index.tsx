@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useDeleteCategory } from '@/features/category/hooks/useDeleteCategory';
 
 export default function FormCategoryPage({ categoryData }: any) {
+  const { deleteCategory } = useDeleteCategory();
+
   return (
     <div>
       <div className="text-gray-800 h-full w-full">
@@ -29,7 +32,7 @@ export default function FormCategoryPage({ categoryData }: any) {
               </tr>
             </thead>
             <tbody>
-              {categoryData?.map((category: any, i: number) => (
+              {categoryData?.data.map((category: any, i: number) => (
                 <tr
                   key={i}
                   className="border-b border-opacity-20 border-gray-300 bg-gray-50"
@@ -60,7 +63,10 @@ export default function FormCategoryPage({ categoryData }: any) {
                         Edit
                       </button>
                     </Link>
-                    <button className="btn btn-error btn-sm text-xs w-14 text-white">
+                    <button
+                      // onClick={() => deleteCategory()}
+                      className="btn btn-error btn-sm text-xs w-14 text-white"
+                    >
                       Delete
                     </button>
                   </td>

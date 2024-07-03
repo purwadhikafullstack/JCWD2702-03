@@ -2,22 +2,17 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useGetProductQuery = (
-  productName: string,
-  category: any,
-  page: any,
-) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['getProduct', productName, category, page],
+export const useGetProductQuery = () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['getProduct'],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:8000/product?productName=${productName}&category=${category}&page=${page}`,
-      );
+      const res = await axios.get(`http://localhost:8000/product/`);
       return res;
     },
   });
   return {
     data,
     isLoading,
+    refetch,
   };
 };

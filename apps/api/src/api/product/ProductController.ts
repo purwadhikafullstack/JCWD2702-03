@@ -3,9 +3,11 @@ import { deletedUploadFileProduct } from '@/helpers/product/DeletedFileProduct';
 import {
   createProductQuery,
   deletedProductQuery,
-  findAllAndFilterProductQuery,
+  findProductQuery,
   findProductByIdQuery,
   updateProductQuery,
+  filterProductQuery,
+  updateProductDiscountQuery,
 } from './ProductServices';
 import prisma from '@/prisma';
 
@@ -53,20 +55,13 @@ export const updateProduct = async (
   }
 };
 
-export const findAllAndFilterProduct = async (
+export const findProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const productName = req.query.productName as string | undefined;
-    const category = req.query.category as string | undefined;
-    const page = req.query.page as any;
-    const result = await findAllAndFilterProductQuery(
-      productName,
-      category,
-      // page,
-    );
+    const result = await findProductQuery();
     const productCount = await prisma.product.count({
       where: {
         deletedAt: null,
@@ -76,6 +71,32 @@ export const findAllAndFilterProduct = async (
       count: productCount,
       error: false,
       message: 'Find Product Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const filterProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const productName = req.query.productName as string | undefined;
+    const category = req.query.category as string | undefined;
+    const page = req.query.page as any;
+    const result = await filterProductQuery(productName, category, page);
+    const productCount = await prisma.product.count({
+      where: {
+        deletedAt: null,
+      },
+    });
+    res.status(200).send({
+      count: productCount,
+      error: false,
+      message: 'Filter Product Success!',
       data: result,
     });
   } catch (error) {
@@ -94,6 +115,28 @@ export const findProductById = async (
     res.status(200).send({
       error: false,
       message: 'Find Product Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const discountProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { productId, pieces, expired } = req.body;
+  try {
+    const result = await updateProductDiscountQuery({
+      productId,
+      pieces,
+      expired,
+    });
+    res.status(201).send({
+      error: false,
+      message: 'Discount Product Success!',
       data: result,
     });
   } catch (error) {

@@ -27,7 +27,7 @@ export default function FormStock({ stockData }: any) {
               </tr>
             </thead>
             <tbody>
-              {stockData?.map((stock: any, i: number) => (
+              {stockData?.data.map((stock: any, i: number) => (
                 <tr
                   key={i}
                   className="border-b border-opacity-20 border-gray-300 bg-gray-50"

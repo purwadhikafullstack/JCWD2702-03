@@ -2,10 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import {
   createStoreQuery,
   deleteStoreQuery,
-  findAllStoreQuery,
+  findStoreQuery,
   findStoreByIdQuery,
   updateStoreQuery,
+  filterStoreQuery,
 } from './StoreServices';
+import prisma from '@/prisma';
 
 export const createStore = async (
   req: Request,
@@ -80,16 +82,46 @@ export const findStoreById = async (
   }
 };
 
-export const findAllStore = async (
+export const findStore = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await findAllStoreQuery();
+    const result = await findStoreQuery();
+    const storeCount = await prisma.store.count({
+      where: {
+        deletedAt: null,
+      },
+    });
     res.status(200).send({
+      count: storeCount,
       error: false,
       message: 'Find Store Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const filterStore = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const page = req.query.page as any;
+  try {
+    const result = await filterStoreQuery(page);
+    const storeCount = await prisma.store.count({
+      where: {
+        deletedAt: null,
+      },
+    });
+    res.status(200).send({
+      count: storeCount,
+      error: false,
+      message: 'Filter Store Success!',
       data: result,
     });
   } catch (error) {

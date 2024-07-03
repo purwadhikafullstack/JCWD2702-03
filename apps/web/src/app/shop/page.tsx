@@ -6,16 +6,22 @@ import { useDebounce } from 'use-debounce';
 import { useGetProduct } from '@/features/product/hooks/useGetProduct';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import Image from 'next/image';
+import { Pagination } from 'antd';
+import { useFilterProduct } from '@/features/product/hooks/useFilterProduct';
 
 export default function ShopPage() {
   const [getName, setName] = useState('');
   const [getCategory, setCategory] = useState('');
-  const { dataCategory } = useGetCategory();
   const [page, setPage] = useState(1);
+  const { dataCategory } = useGetCategory();
 
   const [productName] = useDebounce(getName, 1000);
   const [category] = useDebounce(getCategory, 1000);
-  const { dataProduct, isLoading } = useGetProduct(productName, category, page);
+  const { filterProduct, isLoading } = useFilterProduct(
+    productName,
+    category,
+    page,
+  );
   const [isDebouncing, setIsDebouncing] = useState(false);
 
   useEffect(() => {
@@ -79,7 +85,7 @@ export default function ShopPage() {
               className="select select-md select-bordered w-[250px] bg-[#f3f3f3]"
             >
               <option value="">Category</option>
-              {dataCategory?.map((category: any) => {
+              {dataCategory?.data.map((category: any) => {
                 return (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -94,10 +100,10 @@ export default function ShopPage() {
                 <span className="loading loading-bars loading-lg h-[50px]"></span>
                 <div>Finding Product</div>
               </div>
-            ) : dataProduct.length === 0 ? (
+            ) : filterProduct?.data.length === 0 ? (
               <div className="text-center">Product Not Found</div>
             ) : (
-              dataProduct.map((product: any, i: number) => {
+              filterProduct?.data.map((product: any, i: number) => {
                 return (
                   <div key={i}>
                     <ProductCard
@@ -115,6 +121,13 @@ export default function ShopPage() {
           </div>
         </div>
       </div>
+      <Pagination
+        className="flex justify-center py-10"
+        current={page}
+        pageSize={5}
+        total={filterProduct.count}
+        onChange={(page) => setPage(page)}
+      />
     </div>
   );
 }

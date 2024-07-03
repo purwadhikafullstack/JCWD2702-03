@@ -26,17 +26,21 @@ export default function UpdateStorePage(params: any) {
             }}
             validationSchema={ValidasiCreateStore}
             onSubmit={(value, { resetForm }) => {
-              updateStore({
-                storeId: params.params.storeId,
-                name: value.name,
-                province: value.province,
-                city: value.city,
-                address: value.address,
-                zip_code: value.zip_code,
-                latitude: parseFloat(value.latitude),
-                longitude: parseFloat(value.longitude),
-              });
-              resetForm();
+              try {
+                updateStore({
+                  storeId: params.params.storeId,
+                  name: value.name,
+                  province: value.province,
+                  city: value.city,
+                  address: value.address,
+                  zip_code: value.zip_code,
+                  latitude: parseFloat(value.latitude),
+                  longitude: parseFloat(value.longitude),
+                });
+                resetForm();
+              } catch (error) {
+                console.log('Error', error);
+              }
             }}
           >
             {({ dirty, isValid }) => {
@@ -172,7 +176,13 @@ export default function UpdateStorePage(params: any) {
                     <button
                       type="submit"
                       onClick={() => {
-                        nav.push('/admin/store');
+                        if (
+                          window.confirm(
+                            'Are you sure you want to save the changes?',
+                          )
+                        ) {
+                          nav.push('/admin/store');
+                        }
                       }}
                       disabled={!(dirty && isValid)}
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"

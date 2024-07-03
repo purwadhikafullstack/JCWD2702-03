@@ -11,14 +11,6 @@ export const createStoreQuery = async ({
   longitude,
 }: ICreateStore) => {
   return await prisma.$transaction(async (tx) => {
-    // const findNameStore = await tx.store.findFirst({
-    //   where: {
-    //     name: name,
-    //   },
-    // });
-    // if (findNameStore) {
-    //   throw new Error(`Store with the name ${name} already exists!`);
-    // }
     return await tx.store.create({
       data: {
         name: name,
@@ -81,7 +73,7 @@ export const findStoreByIdQuery = async (id: string) => {
   });
 };
 
-export const findAllStoreQuery = async () => {
+export const findStoreQuery = async () => {
   return await prisma.store.findMany({
     include: {
       StockProduct: true,
@@ -89,6 +81,18 @@ export const findAllStoreQuery = async () => {
     where: {
       deletedAt: null,
     },
+  });
+};
+export const filterStoreQuery = async (page?: any) => {
+  return await prisma.store.findMany({
+    include: {
+      StockProduct: true,
+    },
+    where: {
+      deletedAt: null,
+    },
+    skip: (Number(page) - 1) * Number(5) || 0,
+    take: 5,
   });
 };
 

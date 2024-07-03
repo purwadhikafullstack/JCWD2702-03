@@ -45,8 +45,8 @@ export const updateStockQuery = async (
     });
 
     if (!findStock) throw new Error('Stock Not Found or Add Stock First!');
-    if (findStock.productId === productId)
-      throw new Error('Stock Product has been changed!');
+    // if (findStock.productId === productId)
+    //   throw new Error('Stock Product has been changed!');
 
     return await tx.stockProduct.update({
       where: {
@@ -74,7 +74,7 @@ export const findStockByIdQuery = async (id: string) => {
   });
 };
 
-export const findAllStockQuery = async () => {
+export const findStockQuery = async () => {
   return await prisma.stockProduct.findMany({
     where: {
       deletedAt: null,
@@ -83,6 +83,52 @@ export const findAllStockQuery = async () => {
       product: true,
       store: true,
     },
+  });
+};
+
+export const filterStockQuery = async (
+  asc?: string,
+  desc?: string,
+  page?: any,
+) => {
+  if (asc === 'asc') {
+    return await prisma.stockProduct.findMany({
+      where: {
+        deletedAt: null,
+      },
+      include: {
+        product: true,
+        store: true,
+      },
+      orderBy: {
+        stock: 'asc',
+      },
+    });
+  }
+  if (desc === 'desc') {
+    return await prisma.stockProduct.findMany({
+      where: {
+        deletedAt: null,
+      },
+      include: {
+        product: true,
+        store: true,
+      },
+      orderBy: {
+        stock: 'desc',
+      },
+    });
+  }
+  return await prisma.stockProduct.findMany({
+    where: {
+      deletedAt: null,
+    },
+    include: {
+      product: true,
+      store: true,
+    },
+    skip: (Number(page) - 1) * Number(5) || 0,
+    take: 5,
   });
 };
 

@@ -1,9 +1,10 @@
 import { useGetStoreQuery } from '../api/useGetStoreQuery';
 
 export const useGetStore = () => {
-  const { data, isLoading } = useGetStoreQuery();
+  const { data, isLoading, refetch } = useGetStoreQuery();
   return {
-    dataStore: data?.data?.data,
+    dataStore: data?.data,
     isLoading,
+    refetch,
   };
 };
