@@ -61,6 +61,61 @@ const main = async () => {
       ],
     });
 
+    await tx.store.createMany({
+      data: [
+        {
+          name: 'VOC MART Tangerang',
+          province: 'Banten',
+          city: 'Tangerang',
+          address:
+            'Jl. KH. Hasyim Ashari No.14, Poris Plawad Utara, Kec. Cipondoh, Kota Tangerang, Banten 15141',
+          zip_code: '15141',
+          latitude: -6.186096666634241,
+          longitude: 106.65615636333443,
+        },
+        {
+          name: 'VOC MART Bintaro',
+          province: 'Banten',
+          city: 'Tangerang Selatan',
+          address:
+            'Jl. RC. Veteran Raya, RT.1/RW.6, Bintaro, Kec. Pesanggrahan, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12330',
+          zip_code: '15132',
+          latitude: -6.270276920513733,
+          longitude: 106.76467328668699,
+        },
+        {
+          name: 'VOC MART Jakarta',
+          province: 'DKI Jakarta',
+          city: 'Jakarta Selatan',
+          address:
+            'Jl. Taman Margasatwa Raya No.6 6, RT.6/RW.11, Jati Padang, Ps. Minggu, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12540',
+          zip_code: '15112',
+          latitude: -6.289089027849154,
+          longitude: 106.82426497487465,
+        },
+        {
+          name: 'VOC MART Cengkareng',
+          province: 'DKI Jakarta',
+          city: 'Jakarta Barat',
+          address:
+            'Jl. Inspeksi Kali Mookervaart, RT.11/RW.2, Rw. Buaya, Kecamatan Cengkareng, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11740',
+          zip_code: '15122',
+          latitude: -6.154961138143089,
+          longitude: 106.73421521719752,
+        },
+        {
+          name: 'VOC MART Parung',
+          province: 'Jawa Barat',
+          city: 'Parung',
+          address:
+            'Jl. Raya Parung No.05, Jabon Mekar, Kec. Parung, Kabupaten Bogor, Jawa Barat 16330',
+          zip_code: '15141',
+          latitude: -6.452913875627019,
+          longitude: 106.73094938976591,
+        },
+      ],
+    });
+
     await tx.productCategoryImage.createMany({
       data: [
         {
@@ -412,6 +467,161 @@ const main = async () => {
         {
           productId: 30,
           productImage: 'src/public/image_product/image/30.jpg',
+        },
+      ],
+    });
+
+    await tx.stockProduct.createMany({
+      data: [
+        {
+          storeId: 2,
+          productId: 1,
+          stock: 25,
+        },
+        {
+          storeId: 1,
+          productId: 2,
+          stock: 37,
+        },
+        {
+          storeId: 4,
+          productId: 3,
+          stock: 15,
+        },
+        {
+          storeId: 3,
+          productId: 4,
+          stock: 25,
+        },
+        {
+          storeId: 1,
+          productId: 5,
+          stock: 36,
+        },
+        {
+          storeId: 5,
+          productId: 6,
+          stock: 50,
+        },
+        {
+          storeId: 2,
+          productId: 7,
+          stock: 20,
+        },
+        {
+          storeId: 3,
+          productId: 8,
+          stock: 100,
+        },
+        {
+          storeId: 1,
+          productId: 9,
+          stock: 32,
+        },
+        {
+          storeId: 4,
+          productId: 10,
+          stock: 11,
+        },
+        {
+          storeId: 5,
+          productId: 11,
+          stock: 9,
+        },
+        {
+          storeId: 1,
+          productId: 12,
+          stock: 53,
+        },
+        {
+          storeId: 3,
+          productId: 13,
+          stock: 22,
+        },
+        {
+          storeId: 2,
+          productId: 14,
+          stock: 23,
+        },
+        {
+          storeId: 4,
+          productId: 15,
+          stock: 7,
+        },
+        {
+          storeId: 2,
+          productId: 16,
+          stock: 10,
+        },
+        {
+          storeId: 1,
+          productId: 17,
+          stock: 5,
+        },
+        {
+          storeId: 3,
+          productId: 18,
+          stock: 4,
+        },
+        {
+          storeId: 1,
+          productId: 19,
+          stock: 10,
+        },
+        {
+          storeId: 1,
+          productId: 20,
+          stock: 20,
+        },
+        {
+          storeId: 5,
+          productId: 21,
+          stock: 45,
+        },
+        {
+          storeId: 1,
+          productId: 22,
+          stock: 50,
+        },
+        {
+          storeId: 4,
+          productId: 23,
+          stock: 11,
+        },
+        {
+          storeId: 5,
+          productId: 24,
+          stock: 23,
+        },
+        {
+          storeId: 1,
+          productId: 25,
+          stock: 7,
+        },
+        {
+          storeId: 1,
+          productId: 26,
+          stock: 11,
+        },
+        {
+          storeId: 2,
+          productId: 27,
+          stock: 25,
+        },
+        {
+          storeId: 3,
+          productId: 28,
+          stock: 36,
+        },
+        {
+          storeId: 4,
+          productId: 29,
+          stock: 9,
+        },
+        {
+          storeId: 2,
+          productId: 30,
+          stock: 6,
         },
       ],
     });

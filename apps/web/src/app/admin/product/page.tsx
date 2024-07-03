@@ -94,7 +94,7 @@ export default function ProductAdminPage() {
       <Pagination
         className="flex justify-center"
         current={page}
-        pageSize={5}
+        pageSize={6}
         total={filterProduct.count}
         onChange={(page) => setPage(page)}
       />
