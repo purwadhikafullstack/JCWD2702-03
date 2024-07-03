@@ -96,7 +96,7 @@ export default function ShopPage() {
           </div>
           <div className="grid grid-cols-3 gap-10">
             {isDebouncing ? (
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center h-full w-full">
                 <span className="loading loading-bars loading-lg h-[50px]"></span>
                 <div>Finding Product</div>
               </div>
@@ -124,7 +124,7 @@ export default function ShopPage() {
       <Pagination
         className="flex justify-center py-10"
         current={page}
-        pageSize={5}
+        pageSize={6}
         total={filterProduct.count}
         onChange={(page) => setPage(page)}
       />

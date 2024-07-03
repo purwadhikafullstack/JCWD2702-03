@@ -169,8 +169,8 @@ export const filterProductQuery = async (
         },
       },
     },
-    skip: (Number(page) - 1) * Number(5) || 0,
-    take: 5,
+    skip: (Number(page) - 1) * Number(6) || 0,
+    take: 6,
   });
 };
 
