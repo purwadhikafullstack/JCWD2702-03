@@ -20,5 +20,5 @@ router.post('/discount/', discountProduct);
 router.get('/', findProduct);
 router.get('/filter', filterProduct);
 router.get('/:id', findProductById);
-router.delete('/:id', deletedProduct);
+router.patch('/:id', deletedProduct);
 export default router;

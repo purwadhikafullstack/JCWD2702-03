@@ -4,13 +4,32 @@ import { useGetStoreById } from '@/features/store/hooks/useGetStoreById';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { ValidasiCreateStore } from '@/supports/schema/createStoreSchema';
 import { useRouter } from 'next/navigation';
+import { useGetProvince } from '@/features/rajaOngkir/api/useGetProvince';
+import { useGetCity } from '@/features/rajaOngkir/api/useGetCity';
+import { useState } from 'react';
 
 export default function UpdateStorePage(params: any) {
   const { data } = useGetStoreById(params.params.storeId);
   const { updateStore } = useUpdateStore();
+  const { province } = useGetProvince();
+  const { city, onHandleGetCity } = useGetCity();
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [getProvinceName, setProvinceName] = useState<string>('');
+
+  const handleCity = (e: any) => {
+    const provinceId = e.target.value;
+    const provinceName = province.find(
+      (provinceName: any) => provinceName.province_id === provinceId,
+    ).province;
+    setProvinceName(provinceName);
+    setSelectedCity(provinceId);
+    if (provinceId) {
+      onHandleGetCity(provinceId);
+    }
+  };
   const nav = useRouter();
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-h-[50vh] overflow-y-auto">
       <div className="p-10">
         <h1 className="text-3xl font-semibold pb-5">Update Store</h1>
         {data?.data?.data ? (
@@ -30,7 +49,7 @@ export default function UpdateStorePage(params: any) {
                 updateStore({
                   storeId: params.params.storeId,
                   name: value.name,
-                  province: value.province,
+                  province: getProvinceName,
                   city: value.city,
                   address: value.address,
                   zip_code: value.zip_code,
@@ -65,17 +84,28 @@ export default function UpdateStorePage(params: any) {
                         />
                       </label>
                     </div>
-                    <div className="">
+                    <div className="pb-5">
                       <label className="form-control">
                         <div className="label">
                           <span className="label-text">Province</span>
                         </div>
                         <Field
-                          type="text"
+                          component="select"
+                          value={selectedCity}
+                          onChange={handleCity}
+                          id="province"
                           name="province"
-                          placeholder="Input Province Store"
-                          className="input input-bordered"
-                        />
+                          className="select select-bordered"
+                        >
+                          <option>Select Province</option>
+                          {province?.map((province: any, index: number) => {
+                            return (
+                              <option key={index} value={province.province_id}>
+                                {province.province}
+                              </option>
+                            );
+                          })}
+                        </Field>
                         <ErrorMessage
                           name="province"
                           component="div"
@@ -83,17 +113,24 @@ export default function UpdateStorePage(params: any) {
                         />
                       </label>
                     </div>
-                    <div className="">
+                    <div className="pb-5">
                       <label className="form-control">
                         <div className="label">
                           <span className="label-text">City</span>
                         </div>
                         <Field
-                          type="text"
+                          component="select"
+                          id="city"
                           name="city"
-                          placeholder="Input City Store"
-                          className="input input-bordered"
-                        />
+                          className="select select-bordered"
+                        >
+                          <option>Select City</option>
+                          {city?.map((city: any, index: number) => {
+                            return (
+                              <option key={index}>{city.city_name}</option>
+                            );
+                          })}
+                        </Field>
                         <ErrorMessage
                           name="city"
                           component="div"

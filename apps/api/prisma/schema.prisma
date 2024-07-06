@@ -313,7 +313,7 @@ model Discount {
 
 model DiscountProduct {
   id      Int      @id @default(autoincrement())
-  pieces  Int      @default(0)
+  pieces  Float    @default(0)
   expired DateTime @db.Date
 
   createdAt DateTime  @default(now())

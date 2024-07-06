@@ -35,10 +35,10 @@ export default function FormStock({ stockData }: any) {
                   <td className="p-3">
                     <p>{stock.stock}</p>
                   </td>
-                  <td>
+                  <td className="p-3">
                     <p>{stock.product.name}</p>
                   </td>
-                  <td>
+                  <td className="p-3">
                     <p>{stock.store.name}</p>
                   </td>
                   <td></td>
@@ -49,9 +49,9 @@ export default function FormStock({ stockData }: any) {
                         Edit
                       </button>
                     </Link>
-                    <button className="btn btn-error btn-sm text-xs w-14 text-white">
+                    {/* <button className="btn btn-error btn-sm text-xs w-14 text-white">
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

@@ -30,7 +30,7 @@ export const SidebarDashboard = () => {
         </div>
       </Link>
 
-      <div className="flex items-center p-2 space-x-4">
+      {/* <div className="flex items-center p-2 space-x-4">
         <img
           src="https://source.unsplash.com/100x100/?portrait"
           alt=""
@@ -48,10 +48,10 @@ export const SidebarDashboard = () => {
             </a>
           </span>
         </div>
-      </div>
+      </div> */}
       <div className="divide-y divide-gray-300">
         <ul className="pt-2 pb-4 space-y-1 text-sm">
-          <li>
+          {/* <li>
             <Link
               rel="noopener noreferrer"
               href={'/admin/dashboard'}
@@ -62,7 +62,7 @@ export const SidebarDashboard = () => {
                 DASHBOARD
               </span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <div className="collapse collapse-arrow">
               <input type="checkbox" />

@@ -44,7 +44,7 @@ export default function ProductAdminPage() {
     );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-h-[50vh] overflow-y-auto">
       <div className="p-5">
         <Link href="/admin/product">
           <h1 className="text-3xl font-semibold pb-5">PRODUCT</h1>
@@ -63,7 +63,7 @@ export default function ProductAdminPage() {
             />
           </label>
         </div>
-        <div className="flex items-center justify-between py-5">
+        <div className="flex items-center justify-end py-5 gap-6">
           <button
             onClick={resetData}
             className="btn bg-gray-800 text-white hover:bg-gray-800"
@@ -71,7 +71,11 @@ export default function ProductAdminPage() {
           >
             Reset
           </button>
-          <div>{/* <ModalCreateProductDiscount /> */}</div>
+          <Link href={'/admin/product/restore'}>
+            <button className="btn bg-gray-800 text-white hover:bg-gray-800">
+              Restore Data
+            </button>
+          </Link>
           <ModalCreateProduct
             page={page}
             product={productName}
@@ -87,7 +91,14 @@ export default function ProductAdminPage() {
           ) : filterProduct.length === 0 ? (
             <div className="text-center">Product Not Found</div>
           ) : (
-            <FormProduct productData={filterProduct} />
+            <div className="">
+              <FormProduct
+                page={page}
+                product={productName}
+                category={category}
+                productData={filterProduct}
+              />
+            </div>
           )}
         </div>
       </div>

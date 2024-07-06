@@ -46,16 +46,6 @@ export const updateProductQuery = async (
     });
     if (!findProduct) throw new Error('Product Not Found');
 
-    const existingProduct = await tx.product.findFirst({
-      where: {
-        name: data.name,
-      },
-    });
-
-    if (existingProduct) {
-      throw new Error(`Product with the name ${data.name} already exists!`);
-    }
-
     await tx.product.update({
       where: {
         id: Number(id),
@@ -120,6 +110,7 @@ export const filterProductQuery = async (
   if (productName) {
     return await prisma.product.findMany({
       where: {
+        deletedAt: null,
         name: {
           contains: productName,
         },
@@ -139,6 +130,7 @@ export const filterProductQuery = async (
   if (category) {
     return await prisma.product.findMany({
       where: {
+        deletedAt: null,
         productCategory: {
           id: Number(category),
         },
@@ -213,7 +205,7 @@ export const updateProductDiscountQuery = async ({
 
 export const deletedProductQuery = async (id: string) => {
   return await prisma.$transaction(async (tx) => {
-    await tx.product.update({
+    const deleted = await tx.product.update({
       where: {
         id: Number(id),
       },
@@ -221,5 +213,14 @@ export const deletedProductQuery = async (id: string) => {
         deletedAt: new Date(),
       },
     });
+    await tx.stockProduct.updateMany({
+      where: {
+        productId: Number(id),
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+    return deleted;
   });
 };

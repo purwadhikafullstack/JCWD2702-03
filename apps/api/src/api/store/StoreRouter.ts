@@ -15,6 +15,6 @@ router.put('/:id', updateStore);
 router.get('/', findStore);
 router.get('/filter', filterStore);
 router.get('/:id', findStoreById);
-router.delete('/:id', deletedStore);
+router.patch('/:id', deletedStore);
 
 export default router;

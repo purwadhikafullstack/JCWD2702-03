@@ -193,9 +193,6 @@ export default function ModalCreateProduct({ page, product, category }: any) {
                     </fieldset>
                     <button
                       type="submit"
-                      onClick={() => {
-                        nav.push('/admin/product');
-                      }}
                       disabled={!(dirty && isValid)}
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"
                     >

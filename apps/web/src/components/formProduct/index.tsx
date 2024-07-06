@@ -4,8 +4,13 @@ import { useDeletedProduct } from '@/features/product/hooks/useDeletedProduct';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function FormProduct({ productData }: any) {
-  const { deleteProduct } = useDeletedProduct();
+export default function FormProduct({
+  page,
+  category,
+  product,
+  productData,
+}: any) {
+  const { deleteProduct } = useDeletedProduct(page, product, category);
   const nav = useRouter();
   return (
     <div className="text-gray-800 h-full w-full">
@@ -55,7 +60,7 @@ export default function FormProduct({ productData }: any) {
                 <td className="p-3">
                   <p>{product.productCategory.name}</p>
                 </td>
-                <td className="p-3"></td>
+                <td></td>
                 <td className="p-3 text-center flex gap-2">
                   <Link href={`/admin/product/${product.id}`}>
                     <button className="btn btn-info btn-sm text-xs w-14 text-white">
@@ -67,7 +72,19 @@ export default function FormProduct({ productData }: any) {
                       Edit
                     </button>
                   </Link>
-                  <button className="btn btn-error btn-sm text-xs w-14 text-white">
+                  <button
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          'Are you sure you want to delete this product?',
+                        )
+                      ) {
+                        deleteProduct({ productId: product.id });
+                        window.location.reload();
+                      }
+                    }}
+                    className="btn btn-error btn-sm text-xs w-14 text-white"
+                  >
                     Delete
                   </button>
                 </td>
