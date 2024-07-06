@@ -8,13 +8,16 @@ import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import { useRouter } from 'next/navigation';
 import ModalCreateProductDiscount from '@/components/modalCreateProductDiscount';
 
-export default function ModalUpdateProductPage(params: any) {
+export default function ModalUpdateProductPage(
+  params: any,
+  { productName, category, page }: any,
+) {
   const [upload, setUpload]: any = useState([]);
   const { data, refetch } = useGetProductById(params.params.updateProduct);
   const { dataCategory }: any = useGetCategory();
 
   const nav = useRouter();
-  const { updateProduct } = useUpdateProduct();
+  const { updateProduct } = useUpdateProduct(productName, category, page);
   const onSetFile = (event: any) => {
     try {
       const acceptedFormat = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
@@ -185,15 +188,6 @@ export default function ModalUpdateProductPage(params: any) {
                     </fieldset>
                     <button
                       type="submit"
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            'Are you sure you want to save the changes?',
-                          )
-                        ) {
-                          nav.push('/admin/product');
-                        }
-                      }}
                       disabled={!(dirty && isValid)}
                       className="btn bg-gray-800 text-white hover:bg-gray-800 w-full"
                     >

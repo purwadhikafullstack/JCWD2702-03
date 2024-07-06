@@ -1,15 +1,24 @@
 import { useDeletedProductMutation } from '../api/useDeletedProductMutation';
-import { useGetProduct } from './useGetProduct';
+import { useFilterProduct } from './useFilterProduct';
+import { toast } from 'react-toastify';
 
-export const useDeletedProduct = () => {
-  const { refetch } = useGetProduct();
+export const useDeletedProduct = (
+  productName: string,
+  category: any,
+  page: any,
+) => {
+  const { refetch: refetchFilterProduct } = useFilterProduct(
+    productName,
+    category,
+    page,
+  );
   const { mutateAsync: deleteProduct } = useDeletedProductMutation({
     onSuccess: (res: any) => {
-      console.log(res);
-      refetch();
+      toast.success(res.data.message);
+      refetchFilterProduct();
     },
     onError: (err: any) => {
-      console.log(err);
+      toast.error(err.response.data.message);
     },
   });
   return {

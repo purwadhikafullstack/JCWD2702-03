@@ -9,6 +9,7 @@ import StockRouter from '../stock/StockRouter';
 import DiscountRouter from '../discount/DiscountRouter';
 import cityRouters from '../RajaOngkir/city';
 import provinceRouters from '../RajaOngkir/province';
+import RestoreRouter from '../restoreData/RestoreRouter';
 
 const router = Router();
 
@@ -16,7 +17,6 @@ router.use(express.json());
 router.use('*/image_product', express.static('src/public/image_product'));
 router.use('*/image_category', express.static('src/public/image_category'));
 router.use('*/profile_images', express.static('src/public/profile_images'));
-
 
 router.use('/product', ProductRouter);
 router.use('/category', CategoryRouter);
@@ -28,5 +28,6 @@ router.use('/users', UsersRouters);
 router.use('/auth', AuthRouters);
 router.use('/city', cityRouters);
 router.use('/province', provinceRouters);
+router.use('/restore', RestoreRouter);
 
 export default router;

@@ -16,6 +16,6 @@ router.put('/:id', uploaderCategory, UpdateCategory);
 router.get('/', FindCategory);
 router.get('/filter', FilterCategory);
 router.get('/:id', FindCategoryById);
-router.delete('/:id', DeletedCategory);
+router.patch('/:id', DeletedCategory);
 
 export default router;

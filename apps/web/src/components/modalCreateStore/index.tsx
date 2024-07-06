@@ -54,7 +54,7 @@ export default function ModalCreateStore({ page }: any) {
               latitude: parseFloat(values.latitude),
               longitude: parseFloat(values.longitude),
             });
-            // resetForm();
+            resetForm();
           } catch (error) {
             console.log('Error', error);
           }

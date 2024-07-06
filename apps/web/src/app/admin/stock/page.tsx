@@ -4,7 +4,7 @@ import { useGetStock } from '@/features/stock/hooks/useGetStock';
 import FormStock from '@/components/fromStock';
 import { Pagination } from 'antd';
 import { useDebounce } from 'use-debounce';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetFilterStock } from '@/features/stock/hooks/useFilterStock';
 
 export default function StockPage() {
@@ -14,12 +14,21 @@ export default function StockPage() {
   // const [asc] = useDebounce(getAsc, 500);
   // const [desc] = useDebounce(getDesc, 500);
   const { filterStock, isLoading } = useGetFilterStock(page);
+  const [isDebouncing, setIsDebouncing] = useState(false);
+
+  useEffect(() => {
+    setIsDebouncing(true);
+    const timeout = setTimeout(() => {
+      setIsDebouncing(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [page]);
 
   if (isLoading)
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <span className="loading loading-bars loading-lg h-[50px]"></span>
-        <div>Finding Stock</div>
+        <div></div>
       </div>
     );
   return (
@@ -29,8 +38,17 @@ export default function StockPage() {
         <div className="flex items-end justify-end pt-10">
           <ModalCreateStock page={page} />
         </div>
-        <div>
-          <FormStock stockData={filterStock} />
+        <div className="h-full w-full overflow-x-auto">
+          {isDebouncing ? (
+            <div className="flex flex-col items-center justify-center">
+              <span className="loading loading-bars loading-lg h-[50px]"></span>
+              <div>Finding Stock</div>
+            </div>
+          ) : (
+            <div>
+              <FormStock stockData={filterStock} />
+            </div>
+          )}
         </div>
       </div>
       <Pagination

@@ -43,13 +43,19 @@ export const updateProduct = async (
   const data = JSON.parse(req.body.data);
   const { id } = req.params;
   try {
+    let resultProduct;
     if (req.files) {
       const uploadFile = Array.isArray(req.files)
         ? req.files
         : req.files['image_product'];
-      const resultProduct = await updateProductQuery(data, uploadFile, id);
+      resultProduct = await updateProductQuery(data, uploadFile, id);
       deletedUploadFileProduct({ image_product: resultProduct });
     }
+    res.status(201).send({
+      error: false,
+      message: 'Update Product Success!',
+      data: resultProduct,
+    });
   } catch (error) {
     next(error);
   }

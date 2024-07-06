@@ -1,6 +1,7 @@
 import Link from 'next/link';
-
-export default function FormStorePage({ storeData }: any) {
+import { useDeleteStore } from '@/features/store/hooks/useDeleteStore';
+export default function FormStorePage({ storeData, page }: any) {
+  const { deleteStore } = useDeleteStore(page);
   return (
     <div>
       <div className="text-gray-800 h-full w-full">
@@ -36,10 +37,16 @@ export default function FormStorePage({ storeData }: any) {
                   <td className="p-3">
                     <p>{store.name}</p>
                   </td>
-                  <td>{store.province}</td>
-                  <td>{store.city}</td>
-                  <td>{store.address}</td>
-                  <td>{store.zip_code}</td>
+                  <td className="p-3">{store.province}</td>
+                  <td className="p-3">
+                    <p>{store.city}</p>
+                  </td>
+                  <td className="p-3">
+                    <p>{store.address}</p>
+                  </td>
+                  <td className="p-3">
+                    <p>{store.zip_code}</p>
+                  </td>
                   <td className="p-3 text-center flex gap-2">
                     <Link href={`/admin/store/${store.id}`}>
                       <button className="btn btn-info btn-sm text-xs w-14 text-white">
@@ -51,7 +58,18 @@ export default function FormStorePage({ storeData }: any) {
                         Edit
                       </button>
                     </Link>
-                    <button className="btn btn-error btn-sm text-xs w-14 text-white">
+                    <button
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            'Are you sure you want to delete this store?',
+                          )
+                        ) {
+                          deleteStore({ storeId: store.id });
+                        }
+                      }}
+                      className="btn btn-error btn-sm text-xs w-14 text-white"
+                    >
                       Delete
                     </button>
                   </td>

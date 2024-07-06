@@ -1,13 +1,16 @@
 import { useDeleteCategoryMutation } from '../api/useDeleteCategoryMutation';
 import { toast } from 'react-toastify';
+import { useGetFilterCategory } from './useGetFilterCategory';
 
-export const useDeleteCategory = () => {
+export const useDeleteCategory = (page: any) => {
+  const { refetchCategory } = useGetFilterCategory(page);
   const { mutateAsync: deleteCategory } = useDeleteCategoryMutation({
     onSuccess: (res: any) => {
-      console.log(res);
+      toast.success(res.data.message);
+      refetchCategory();
     },
     onError: (err: any) => {
-      console.log(err);
+      toast.error(err.response.data.message);
     },
   });
   return {

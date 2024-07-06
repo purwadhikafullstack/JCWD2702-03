@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDeleteCategory } from '@/features/category/hooks/useDeleteCategory';
+import { useRouter } from 'next/navigation';
 
-export default function FormCategoryPage({ categoryData }: any) {
-  const { deleteCategory } = useDeleteCategory();
+export default function FormCategoryPage({ categoryData, page }: any) {
+  const nav = useRouter();
+  const { deleteCategory } = useDeleteCategory(page);
 
   return (
     <div>
@@ -58,13 +60,25 @@ export default function FormCategoryPage({ categoryData }: any) {
                   <td></td>
                   <td></td>
                   <td className="p-3 text-center flex gap-2">
-                    <Link href={`/admin/category/update/${category.id}`}>
-                      <button className="btn btn-success btn-sm text-xs w-14 text-white">
-                        Edit
-                      </button>
-                    </Link>
                     <button
-                      // onClick={() => deleteCategory()}
+                      onClick={() => {
+                        nav.push(`/admin/category/update/${category.id}`);
+                      }}
+                      className="btn btn-success btn-sm text-xs w-14 text-white"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            'Are you sure you want to delete this category?',
+                          )
+                        ) {
+                          deleteCategory({ categoryId: category.id });
+                        }
+                      }}
                       className="btn btn-error btn-sm text-xs w-14 text-white"
                     >
                       Delete
