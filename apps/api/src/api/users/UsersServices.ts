@@ -166,7 +166,6 @@ export const getUserUidService = async ({ uid }: { uid: string }) => {
     include: {
       userProfile: {
         include: {
-          address: true,
           UserImagesProfile: true,
         },
       },

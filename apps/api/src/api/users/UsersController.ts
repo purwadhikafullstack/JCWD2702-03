@@ -137,11 +137,6 @@ export const passwordVerification = async (
     
     await udpateResetPasswordService({ uid });
 
-    // if(details == "reset-password"){
-    //   await udpateResetPasswordService({
-    //     uid})
-    // }
-
     res.status(200).send({
       error: false,
       message: 'Verify Password Account Success!',

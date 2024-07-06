@@ -5,26 +5,25 @@ export const createProfileAndImagesProfileServices = async (
   profile_images: any,
   uid: string,
 ) => {
-    const createUserProfile = await prisma.userProfile.create({
-      data: {
-        fullname: data.fullname,
-        birthDate: new Date(data.birthDate),
-        userUid:uid,
-        addressId: data.addressId,
-      },
-    });
+  const createUserProfile = await prisma.userProfile.create({
+    data: {
+      fullname: data.fullname,
+      birthDate: new Date(data.birthDate),
+      userUid: uid,
+    },
+  });
 
-    const imagesToCreate: any = [];
-    profile_images.forEach((item: any) => {
-      imagesToCreate.push({
-        url: item.path,
-        userProfileId: createUserProfile.id,
-      });
+  const imagesToCreate: any = [];
+  profile_images.forEach((item: any) => {
+    imagesToCreate.push({
+      url: item.path,
+      userProfileId: createUserProfile.id,
     });
+  });
 
-    const imageProfile = await prisma.userImagesProfile.createMany({
-      data: [...imagesToCreate],
-    });
+  const imageProfile = await prisma.userImagesProfile.createMany({
+    data: [...imagesToCreate],
+  });
 };
 
 export const UpdateProfileAndImagesProfileServices = async (
@@ -32,7 +31,7 @@ export const UpdateProfileAndImagesProfileServices = async (
   profile_images: any,
   uid: string,
 ) => {
-  return await prisma.$transaction(async(tx) => {
+  return await prisma.$transaction(async (tx) => {
     const findProfile = await tx.userProfile.findUnique({
       where: {
         userUid: uid,
@@ -43,22 +42,20 @@ export const UpdateProfileAndImagesProfileServices = async (
     await tx.userProfile.update({
       where: {
         userUid: uid,
-      },
+      },  
       data: {
         fullname: data.fullname,
         birthDate: new Date(data.birthDate),
-        addressId: data.addressId,
       },
     });
     console.log(findProfile);
-    
+
     const findUserImagesProfile = await tx.userImagesProfile.findMany({
       where: {
-        userProfileId: findProfile.id
-      }
-    })
+        userProfileId: findProfile.id,
+      },
+    });
     console.log(findUserImagesProfile);
-    
 
     const imagesToCreate: any = [];
     profile_images.forEach((item: any) => {
@@ -70,14 +67,14 @@ export const UpdateProfileAndImagesProfileServices = async (
 
     await tx.userImagesProfile.deleteMany({
       where: {
-        userProfileId: findProfile.id
-      }
-    })
+        userProfileId: findProfile.id,
+      },
+    });
 
     await tx.userImagesProfile.createMany({
       data: [...imagesToCreate],
     });
 
-    return findUserImagesProfile
-  })
-}
+    return findUserImagesProfile;
+  });
+};

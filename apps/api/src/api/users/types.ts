@@ -5,6 +5,7 @@ export interface ICreateUser {
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+  addressId?: number;
 }
 
 export interface ICreateUserProfile {
@@ -19,4 +20,5 @@ export interface ICreateUserWithGoogle {
   uid: string;
   firstName: string;
   lastName: string;
+  addressId?: number;
 }

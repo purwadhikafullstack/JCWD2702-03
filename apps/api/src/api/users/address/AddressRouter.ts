@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { tokenVerify } from "@/helpers/Token";
-import { CreateAddress } from "./AddressController";
+import { CreateAddress, deleteAddress, getAddress, setMainAddress } from "./AddressController";
 
 const router = Router()
 
 router.post('/', tokenVerify, CreateAddress)
-// router.get('/province', tokenVerify, getProvince)
-// router.get('/city', tokenVerify, getCity)
+router.get('/', tokenVerify, getAddress)
+router.patch('/', tokenVerify, deleteAddress)
+router.patch('/main', tokenVerify, setMainAddress)
 
 export default router

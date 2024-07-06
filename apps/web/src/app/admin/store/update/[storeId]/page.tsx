@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function UpdateStorePage(params: any) {
   const { data } = useGetStoreById(params.params.storeId);
+  console.log(data)
   const { updateStore } = useUpdateStore();
   const nav = useRouter();
   return (
@@ -25,9 +26,9 @@ export default function UpdateStorePage(params: any) {
               longitude: data?.data?.data.longitude,
             }}
             validationSchema={ValidasiCreateStore}
-            onSubmit={(value, { resetForm }) => {
+            onSubmit={async(value, { resetForm }) => {
               try {
-                updateStore({
+               await updateStore({
                   storeId: params.params.storeId,
                   name: value.name,
                   province: value.province,
