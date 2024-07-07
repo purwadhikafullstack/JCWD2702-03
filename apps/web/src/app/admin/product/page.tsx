@@ -7,7 +7,6 @@ import { useDebounce } from 'use-debounce';
 import Link from 'next/link';
 import { Pagination } from 'antd';
 import { useFilterProduct } from '@/features/product/hooks/useFilterProduct';
-import ModalCreateProductDiscount from '@/components/modalCreateProductDiscount';
 
 export default function ProductAdminPage() {
   const [getName, setName] = useState('');
@@ -74,6 +73,11 @@ export default function ProductAdminPage() {
           <Link href={'/admin/product/restore'}>
             <button className="btn bg-gray-800 text-white hover:bg-gray-800">
               Restore Data
+            </button>
+          </Link>
+          <Link href={'/admin/product/discount'}>
+            <button className="btn bg-gray-800 text-white hover:bg-gray-800">
+              Discount Product
             </button>
           </Link>
           <ModalCreateProduct

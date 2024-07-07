@@ -17,7 +17,7 @@ export const useCreateProductDiscountMutation = ({
       pieces: number;
       expired: string;
     }) => {
-      return await axios.post('http://localhost:8000/product/discount', {
+      return await axios.post('http://localhost:8000/discount/product', {
         productId,
         pieces,
         expired,

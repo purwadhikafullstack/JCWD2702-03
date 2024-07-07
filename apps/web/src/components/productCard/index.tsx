@@ -7,6 +7,7 @@ export default function ProductCard({
   category,
   image,
   stock,
+  discount,
 }: any) {
   return (
     <div>
@@ -34,6 +35,11 @@ export default function ProductCard({
               style: 'currency',
               currency: 'IDR',
             })}
+            {discount ? (
+              <span className="bg-red-500 text-white ml-2 px-2 py-1 rounded-md text-sm font-bold">
+                {discount.pieces}%
+              </span>
+            ) : null}
           </p>
           <div>
             <span className="font-semibold">Stock</span> :{' '}

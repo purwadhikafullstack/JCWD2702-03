@@ -4,6 +4,7 @@ import {
   findByIdDiscountQuery,
   findDiscountQuery,
   updateDiscountQuery,
+  updateProductDiscountQuery,
 } from './DiscountServices';
 
 export const createDiscount = async (
@@ -79,6 +80,27 @@ export const findByIdDiscount = async (
     res.status(200).send({
       error: false,
       message: 'Find Discount Success!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const discountProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { productId, pieces, expired } = req.body;
+  try {
+    const result = await updateProductDiscountQuery({
+      productId,
+      pieces,
+      expired,
+    });
+    res.status(201).send({
+      error: false,
+      message: 'Discount Product Success!',
       data: result,
     });
   } catch (error) {
