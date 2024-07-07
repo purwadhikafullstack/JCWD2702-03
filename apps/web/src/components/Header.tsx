@@ -82,9 +82,9 @@ export const Header = () => {
               </Link>
             </li>
             <li className="flex">
-              <Link href={'/bantuan'}>
+              <Link href={'/tentang-kami'}>
                 <div className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white h-16">
-                  Bantuan
+                  Tentang Kami
                 </div>
               </Link>
             </li>

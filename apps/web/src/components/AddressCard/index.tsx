@@ -22,7 +22,7 @@ export default function AddressCard(data: AddressCardProps) {
     >
       <div className="card-body">
         <div className='flex justify-between'>
-          <h2 className="card-title">{data.receipents}</h2> <FaCheck />
+          <h2 className="card-title">{data.receipents}</h2>
         </div>
         <p>{data.province}</p>
         <p>{data.city}</p>
