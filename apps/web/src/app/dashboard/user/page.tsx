@@ -11,7 +11,7 @@ export default function DashboardUser() {
         fullname={dataUser?.userProfile?.fullname}
         email={dataUser?.email}
         birthdate={dataUser?.userProfile?.birthDate}
-        profile_images={dataUser?.userProfile?.UserImagesProfile[0].url}
+        profile_images={dataUser?.userProfile?.UserImagesProfile[0]?.url}
       />
     </div>
   );

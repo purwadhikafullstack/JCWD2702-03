@@ -31,7 +31,7 @@ export const useAuthCreateUserWithGoogle = () =>{
     onSuccess: (res: any) =>{
       toast.success(res.data.message, {
         position: 'top-center',
-        autoClose: 2000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -51,6 +51,8 @@ export const useAuthCreateUserWithGoogle = () =>{
     },
     onError: (err: any) =>{
       toast.error(err.response.data.message);
+      console.log(err);
+      
     }
   })
 

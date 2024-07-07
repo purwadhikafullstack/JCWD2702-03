@@ -30,6 +30,7 @@ model User {
   Transaction   Transaction[]
   Cart          Cart[]
   resetPassword ResetPassword[]
+  Address       Address[]
 
   @@map("users")
 }
@@ -53,10 +54,9 @@ model UserProfile {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userUid           String              @unique
-  user              User                @relation(fields: [userUid], references: [uid])
-  addressId         Int?
-  address           Address?            @relation(fields: [addressId], references: [id])
+  userUid String @unique
+  user    User   @relation(fields: [userUid], references: [uid])
+
   UserImagesProfile UserImagesProfile[]
 
   @@map("user_profiles")
@@ -97,18 +97,21 @@ enum ResetPasswordStatus {
 }
 
 model Address {
-  id           Int    @id @default(autoincrement())
+  id           Int             @id @default(autoincrement())
+  receipents   String
   province     String
   city         String
   address      String
   zip_code     String
   phone_number String
+  mainAddress  GoogleAuthVeify @default(FALSE)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userProfileId UserProfile[]
+  userUid String
+  User    User   @relation(fields: [userUid], references: [uid])
 
   @@map("address")
 }

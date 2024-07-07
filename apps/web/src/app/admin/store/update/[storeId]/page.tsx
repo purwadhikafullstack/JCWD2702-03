@@ -10,6 +10,7 @@ import { useState } from 'react';
 
 export default function UpdateStorePage(params: any) {
   const { data } = useGetStoreById(params.params.storeId);
+  console.log(data)
   const { updateStore } = useUpdateStore();
   const { province } = useGetProvince();
   const { city, onHandleGetCity } = useGetCity();
@@ -44,9 +45,9 @@ export default function UpdateStorePage(params: any) {
               longitude: data?.data?.data.longitude,
             }}
             validationSchema={ValidasiCreateStore}
-            onSubmit={(value, { resetForm }) => {
+            onSubmit={async(value, { resetForm }) => {
               try {
-                updateStore({
+               await updateStore({
                   storeId: params.params.storeId,
                   name: value.name,
                   province: getProvinceName,

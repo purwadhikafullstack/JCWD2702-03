@@ -8,6 +8,7 @@ export const useUpdateStore = () => {
     onSuccess: (res: any) => {
       toast.success(res.data.message);
       refetch();
+      // window.location.reload();
     },
     onError: (err: any) => {
       toast.error(err.response.data.message);

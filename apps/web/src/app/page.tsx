@@ -7,6 +7,7 @@ import { useGetProduct } from '@/features/product/hooks/useGetProduct';
 import { useGetCategory } from '@/features/category/hooks/useGetCategory';
 import CardHelper from '@/components/cardHelper';
 import SortByCategory from '@/components/sortByCategory';
+import Image from 'next/image';
 
 export default function Home() {
   const [getName, setName] = useState('');
@@ -24,6 +25,9 @@ export default function Home() {
   return (
     <div className="overflow-hidden min-h-screen">
       <SimpleSlider />
+      <div className='flex justify-center'>
+        <Image src={'/fs.webp'} alt="logo" className="w-[70vw] h-[500px]" width={10000} height={10000}/>
+      </div>
       <div className="pt-10 flex flex-col-2 min-h-screen">
         <div className="px-20">
           <SortByCategory />
