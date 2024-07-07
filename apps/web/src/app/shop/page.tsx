@@ -113,6 +113,7 @@ export default function ShopPage() {
                       image={product.ProductImage[0].productImage}
                       category={product.productCategory.name}
                       stock={product.StockProduct[0]}
+                      discount={product.DiscountProduct[0]}
                     />
                   </div>
                 );

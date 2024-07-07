@@ -185,24 +185,6 @@ export const findProductByIdQuery = async (id: string) => {
   });
 };
 
-export const updateProductDiscountQuery = async ({
-  productId,
-  pieces,
-  expired,
-}: {
-  productId: number;
-  pieces: number;
-  expired: string;
-}) => {
-  return await prisma.discountProduct.create({
-    data: {
-      productId: productId,
-      pieces: pieces,
-      expired: new Date(expired),
-    },
-  });
-};
-
 export const deletedProductQuery = async (id: string) => {
   return await prisma.$transaction(async (tx) => {
     const deleted = await tx.product.update({

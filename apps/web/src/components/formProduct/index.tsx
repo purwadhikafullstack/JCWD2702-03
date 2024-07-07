@@ -74,14 +74,7 @@ export default function FormProduct({
                   </Link>
                   <button
                     onClick={() => {
-                      if (
-                        window.confirm(
-                          'Are you sure you want to delete this product?',
-                        )
-                      ) {
-                        deleteProduct({ productId: product.id });
-                        window.location.reload();
-                      }
+                      deleteProduct({ productId: product.id });
                     }}
                     className="btn btn-error btn-sm text-xs w-14 text-white"
                   >

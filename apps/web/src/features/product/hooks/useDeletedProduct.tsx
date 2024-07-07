@@ -15,6 +15,10 @@ export const useDeletedProduct = (
   const { mutateAsync: deleteProduct } = useDeletedProductMutation({
     onSuccess: (res: any) => {
       toast.success(res.data.message);
+      if (window.confirm('Are you sure you want to delete this product?')) {
+        window.location.reload();
+      }
+
       refetchFilterProduct();
     },
     onError: (err: any) => {

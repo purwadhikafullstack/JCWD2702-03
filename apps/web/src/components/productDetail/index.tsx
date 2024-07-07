@@ -9,6 +9,7 @@ export default function ProductDetailPage({
   description,
   category,
   stock,
+  discount,
 }: any) {
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(price);
@@ -22,6 +23,13 @@ export default function ProductDetailPage({
   useEffect(() => {
     setTotalPrice(price * quantity);
   }, [quantity, price]);
+
+  const handleQuantityChange = (e: any) => {
+    const value = parseInt(e.target.value, 10);
+    if (value > 0 && value <= stock.stock) {
+      setQuantity(value);
+    }
+  };
 
   const increment = () => {
     if (quantity < stock.stock) {
@@ -61,6 +69,11 @@ export default function ProductDetailPage({
                   style: 'currency',
                   currency: 'IDR',
                 })}
+                {discount ? (
+                  <span className="bg-red-500 text-white ml-2 px-2 py-1 rounded-md text-sm font-bold">
+                    {discount.pieces}%
+                  </span>
+                ) : null}
               </h1>
               <h1 className="py-2">
                 <span className="font-semibold">Category</span> : {category}
@@ -79,17 +92,30 @@ export default function ProductDetailPage({
             <div className="flex items-center justify-start py-5">
               <button
                 className="btn w-[5vw] bg-softed text-white"
-                onClick={decrement}
-                disabled={quantity === 1 ? true : false}
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                disabled={quantity === 1}
               >
                 -
               </button>
-              <span className="px-10">{quantity}</span>
+              {stock ? (
+                <input
+                  type="text"
+                  className="input mx-2 w-[5vw] text-center"
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  min="1"
+                  max={stock.stock}
+                />
+              ) : (
+                <p className="mx-2 w-[5vw] text-center">0</p>
+              )}
               {stock ? (
                 <button
                   className="btn w-[5vw] bg-softed text-white"
-                  onClick={increment}
-                  disabled={stock.stock === quantity ? true : false}
+                  onClick={() =>
+                    setQuantity((prev) => Math.min(stock.stock, prev + 1))
+                  }
+                  disabled={quantity === stock.stock}
                 >
                   +
                 </button>
@@ -99,25 +125,21 @@ export default function ProductDetailPage({
                 </button>
               )}
             </div>
-            {stock ? (
-              <button className="btn w-[16vw] bg-softed text-white ext-[15px] tracking-wide hover:bg-softed">
-                ADD TO CART
-              </button>
-            ) : (
-              <button
-                disabled
-                className="btn w-[16vw] bg-softed text-white ext-[15px] tracking-wide hover:bg-softed"
-              >
-                ADD TO CART
-              </button>
-            )}
+            <button
+              className={`btn w-[16vw] bg-softed text-white text-[15px] tracking-wide hover:bg-softed ${
+                stock ? '' : 'opacity-50 cursor-not-allowed'
+              }`}
+              disabled={!stock}
+            >
+              ADD TO CART
+            </button>
             <h1 className="font-semibold py-5">Description</h1>
             <div className="text-justify">
               <p>{description}</p>
             </div>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-4">
           {images?.map((image: any, index: number) => (
             <Image
               key={index}

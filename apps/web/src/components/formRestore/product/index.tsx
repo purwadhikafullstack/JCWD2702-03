@@ -69,7 +69,12 @@ export default function FormRestoreProduct({ restore }: any) {
                     <p>{trash.description}</p>
                   </td>
                   <td className="p-3">
-                    <p>{trash.price}</p>
+                    <p>
+                      {trash.price.toLocaleString('ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                      })}
+                    </p>
                   </td>
                   <td className="p-3">
                     <div className="flex gap-2">
