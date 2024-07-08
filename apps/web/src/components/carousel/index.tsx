@@ -19,7 +19,7 @@ export const SimpleSlider = () => {
         <Image
           src={'/1.jpg'}
           alt="logo"
-          className="w-[100vw] h-[500px] object-cover"
+          className="w-[100vw] sm:h-[300px] lg:h-[500px] object-cover mobile:h-[150px]"
           width={10000}
           height={10000}
         />
@@ -28,7 +28,7 @@ export const SimpleSlider = () => {
         <Image
           src={'/2.jpg'}
           alt="logo"
-          className="w-[100vw] h-[500px] object-cover"
+          className="w-[100vw] sm:h-[300px] lg:h-[500px] object-cover mobile:h-[150px]"
           width={10000}
           height={10000}
         />
@@ -37,7 +37,7 @@ export const SimpleSlider = () => {
         <Image
           src={'/3.jpg'}
           alt="logo"
-          className="w-[100vw] h-[500px] object-cover"
+          className="w-[100vw] sm:h-[300px] lg:h-[500px] object-cover mobile:h-[150px]"
           width={10000}
           height={10000}
         />
@@ -46,7 +46,7 @@ export const SimpleSlider = () => {
         <Image
           src={'/6.png'}
           alt="logo"
-          className="w-[100vw] h-[500px] object-cover"
+          className="w-[100vw] sm:h-[300px] lg:h-[500px] object-cover mobile:h-[150px]"
           width={10000}
           height={10000}
         />
