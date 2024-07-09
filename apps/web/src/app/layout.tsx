@@ -10,7 +10,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../supports/context/userContext';
 import { useState } from 'react';
-// import ReduxProvider from '@/providers/ReduxProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,16 +27,15 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           {/* <ReduxProvider> */}
-            <TanstackProvider>
-              <ToastContainer />
-              {path.includes(admin) ? null : <Header />}
-              {children}
-              {path.includes(admin) ? null : <Footer />}
-            </TanstackProvider>
+          <TanstackProvider>
+            <ToastContainer />
+            {path.includes(admin) ? null : <Header />}
+            {children}
+            {path.includes(admin) ? null : <Footer />}
+          </TanstackProvider>
           {/* </ReduxProvider> */}
         </body>
       </html>
     </UserContext.Provider>
-
   );
 }

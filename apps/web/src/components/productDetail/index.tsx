@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+
 export default function ProductDetailPage({
   productId,
   name,
@@ -31,17 +32,6 @@ export default function ProductDetailPage({
     }
   };
 
-  const increment = () => {
-    if (quantity < stock.stock) {
-      setQuantity((prevQuantity) => prevQuantity + 1);
-    }
-  };
-
-  const decrement = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
   return (
     <div className="min-h-screen">
       <div className="py-10">

@@ -65,7 +65,7 @@ export default function Home() {
         </div>
 
         <div className="">
-          <div className="xxl:grid-cols-3 grid grid-cols-1 py-12 md:grid-cols-2 xl:grid-cols-3 gap-10 w-[100vw]">
+          <div className="xxl:grid-cols-3 grid grid-cols-1 py-12 md:grid-cols-3 xl:grid-cols-3 gap-10 w-[100vw]">
             {isDebouncing ? (
               <div className="flex flex-col items-center justify-center h-full w-full">
                 <span className="loading loading-bars loading-lg h-[50px]"></span>
@@ -76,7 +76,7 @@ export default function Home() {
             ) : (
               filterProduct?.data.map((product: any, i: number) => {
                 return (
-                  <div key={i}>
+                  <div key={product.id}>
                     <ProductCard
                       productId={product.id}
                       name={product.name}
