@@ -271,7 +271,9 @@ model Shipping {
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
+  quantity Int
+  status   Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

@@ -122,6 +122,10 @@ export const updateProductDiscountQuery = async ({
 
     const discountProduct = product?.price - product?.price * (pieces / 100);
 
+    if (pieces >= 90) {
+      throw new Error('Discount cannot be greater than 90%');
+    }
+
     await tx.product.update({
       where: {
         id: productId,
